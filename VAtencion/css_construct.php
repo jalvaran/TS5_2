@@ -238,7 +238,8 @@ class CssIni{
 	/////////////////////Crea un Formulario
 	
 	function CrearForm($nombre,$action,$method,$target){
-		print('<li><form name= "'.$nombre.'" action="'.$action.'" id="'.$nombre.'" method="'.$method.'" target="'.$target.'"></li>');
+		print('<li>'
+                        . '<form name= "'.$nombre.'" action="'.$action.'" id="'.$nombre.'" method="'.$method.'" target="'.$target.'"></li>');
 		
 	}
         /////////////////////Crea un Formulario
