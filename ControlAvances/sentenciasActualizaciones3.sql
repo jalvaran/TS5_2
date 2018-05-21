@@ -76,5 +76,6 @@ CREATE TABLE `modelos_db` (
   `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (165, 'Historial de Agenda', '45', '3', 'modelos_agenda.php', '_SELF', b'1', 'historial.png', '4', '2018-05-15 10:24:10', '2017-10-13 14:16:57');
 
 

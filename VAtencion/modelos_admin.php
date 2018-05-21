@@ -49,7 +49,7 @@ $css->CabeceraFin();
 
  $ConsultaCajas=$obVenta->ConsultarTabla("cajas", "WHERE idUsuario='$idUser' AND Estado='ABIERTA'");
     $DatosCaja=$obVenta->FetchArray($ConsultaCajas);
-
+    $idCaja=$DatosCaja["ID"];
     if($DatosCaja["ID"]<=0){
        $css->CrearNotificacionRoja("No tiene asignada una Caja, por favor Asignese a una Caja, <a href='HabilitarUser.php' target='_blank'>Vamos</a>", 16);
        exit();
@@ -64,15 +64,14 @@ $css->CrearDiv("Principal", "container", "center", 1, 1);
             print("<td>");
                 $css->CrearInputNumber("TxtTarifa", "number", "", "", "Valor Servicio", "", "", "", 200, 40, 0, 1, 10000, "", 1, 'font-size: 16pt;');
             print("</td>");
-                
             print("<td style='text-align:center'>");
-                $funcion="";
+                //$css->CrearSelectTable("CmbModelosLiquid", "modelos_db", "WHERE Estado='A'", "ID", "NombreArtistico", "ID", "", "", "", 1);
+                //print("<br>");
+                $Page="Consultas/modelos_admin.querys.php?Accion=4&"; 
+                $funcion="EnvieConsultaModelos(`$Page`,``,`DivAgenda`,`5`);return false;";
                 $css->CrearBotonEvento("BtnLiquidar", "Liquidar Modelos", 1, "onclick", $funcion, "naranja", "");
             print("</td>");
-            print("<td style='text-align:center'>");
-                $funcion="";
-                $css->CrearBotonEvento("BtnCierre", "Cerrar Turno", 1, "onclick", $funcion, "rojo", "");
-            print("</td>");
+            
             print("<td>");
             
                 $css->CrearDiv("clockdate", "", "center", 1, 1);
@@ -96,13 +95,13 @@ $css->CrearDiv("Principal", "container", "center", 1, 1);
             print("<td>");
                 $Page="Consultas/modelos_admin.querys.php?Tiempo=30&"; 
                 $funcion="EnvieConsultaModelos(`$Page`,`TxtBuscarSeparado`,`DivAgenda`,`2`);return false;";
-                $css->CrearBotonEvento("Btn30", "30 Minutos", 1, "onclick", $funcion, "rojo", "");
+                $css->CrearBotonEvento("Btn30", "30 Minutos", 1, "onclick", $funcion, "naranja", "");
             print("</td>");
             
             print("<td colspan=3>");
                 $Page="Consultas/modelos_admin.querys.php?Tiempo=60&"; 
                 $funcion="EnvieConsultaModelos(`$Page`,`TxtBuscarSeparado`,`DivAgenda`,`2`);return false;";
-                $css->CrearBotonEvento("Btn1H", "60 Minutos", 1, "onclick", $funcion, "naranja", "");
+                $css->CrearBotonEvento("Btn1H", "60 Minutos", 1, "onclick", $funcion, "rojo", "");
             print("</td>");
         $css->CierraFilaTabla();
     $css->CerrarTabla();    

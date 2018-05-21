@@ -35,9 +35,9 @@ function checkTime(i) {
 
 
 //Funcion para enviar el contenido de una caja de texto a una pagina y dibujarlo en un div
-function EnvieConsultaModelos(Page,idElement,idTarget,BorrarId=1){
+function EnvieConsultaModelos(Page,idElement,idTarget,Opcion=1){
     var Observaciones="";
-    if(BorrarId==3){
+    if(Opcion==3){
         var con=confirm('¿Estas seguro que deseas descartar este evento?');
         if(con==false){
             exit();
@@ -47,7 +47,7 @@ function EnvieConsultaModelos(Page,idElement,idTarget,BorrarId=1){
         
     }
     
-    if(BorrarId==4){
+    if(Opcion==4){
         var con=confirm('¿Estas seguro que deseas facturar este evento?');
         if(con==false){
             exit();
@@ -57,7 +57,7 @@ function EnvieConsultaModelos(Page,idElement,idTarget,BorrarId=1){
         
     }
     
-    if((document.getElementById('TxtTarifa').value>10000) || BorrarId!==2 ){
+    if((document.getElementById('TxtTarifa').value>10000) || Opcion!==2 ){
     document.getElementById(idTarget).innerHTML ='Procesando...<br><img src="../images/process.gif" alt="Cargando" height="100" width="100">';
     var  Modelo=  document.getElementById('CmbModelos').value;  
     var  Valor=  document.getElementById('TxtTarifa').value;  
@@ -66,6 +66,7 @@ function EnvieConsultaModelos(Page,idElement,idTarget,BorrarId=1){
     
     Page = Page+"Modelo="+Modelo+"&Valor="+Valor+"&HoraInicio="+HoraInicio+"&Observaciones="+Observaciones;
    
+     
         if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
                 httpEdicion = new XMLHttpRequest();

@@ -32,18 +32,21 @@ function Kardex(){
 }
 
 if(isset($_REQUEST["Accion"])){
-    $idAgenda=$obVenta->normalizar($_REQUEST["idAgenda"]);
-    $Observaciones=$obVenta->normalizar($_REQUEST["Observaciones"])." usuario: $idUser";
+    
     switch ($_REQUEST["Accion"]){
         case 1: // se anula la prestacion de un servicio
+            $idAgenda=$obVenta->normalizar($_REQUEST["idAgenda"]);
+            $Observaciones=$obVenta->normalizar($_REQUEST["Observaciones"])." usuario: $idUser";
             $sql="UPDATE modelos_agenda SET Estado='Anulado',Observaciones='$Observaciones' WHERE ID='$idAgenda'";
             $obVenta->Query($sql);
             break;
         case 2: // se cobra el servicio 
+            $idAgenda=$obVenta->normalizar($_REQUEST["idAgenda"]);
             $sql="UPDATE modelos_agenda SET Estado='Cobrado' WHERE ID='$idAgenda'";
             $obVenta->Query($sql);
             break;
         case 3: // se factura el servicio
+            $idAgenda=$obVenta->normalizar($_REQUEST["idAgenda"]);
             $sql="UPDATE modelos_agenda SET Estado='Facturado' WHERE ID='$idAgenda'";
             $obVenta->Query($sql);
             $NumFactura=$obModel->FacturarServicioModelos($idAgenda, $idUser, "");
@@ -54,7 +57,13 @@ if(isset($_REQUEST["Accion"])){
                 register_shutdown_function('Kardex');
             }
             break;
-        
+        case 4: //Liquidar Modelos
+            $idModelo=0;
+            if(isset($_REQUEST["Modelo"])){
+                $idModelo=$obVenta->normalizar($_REQUEST["Modelo"]);
+            }
+            $idCierre=$obModel->CerrarTurnoModelos($idModelo, $idUser, "");
+            $css->CrearNotificacionRoja("Se realizó el cierre Num. $idCierre", 16);
     }
     goto CargarDatos;
 }
@@ -118,7 +127,7 @@ while ($DatosAgenda=$obVenta->FetchArray($consulta)){
         print("<td>");
         
         $Page="Consultas/modelos_admin.querys.php?Accion=1&idAgenda=".$idAgenda;      
-        $Javascript="onClick=EnvieConsultaModelos(`$Page`,`TxtBuscarSeparado`,`DivAgenda`,`3`);return false;";
+        $Javascript="onClick=EnvieConsultaModelos(`$Page`,``,`DivAgenda`,`3`);return false;";
 
         $css->CrearImage("ImgDescartar$idAgenda", "../images/delete.png", "Descartar este evento", 30, 30, $Javascript);
                         
@@ -127,7 +136,7 @@ while ($DatosAgenda=$obVenta->FetchArray($consulta)){
         print("<td>");
         
         $Page="Consultas/modelos_admin.querys.php?Accion=2&idAgenda=".$idAgenda;      
-        $Javascript="onClick=EnvieConsultaModelos(`$Page`,`TxtBuscarSeparado`,`DivAgenda`,`2`);return false;";
+        $Javascript="onClick=EnvieConsultaModelos(`$Page`,``,`DivAgenda`,`2`);return false;";
 
         $css->CrearImage("ImgDescartar$idAgenda", "../images/agregar2.png", "Descartar este evento", 30, 30, $Javascript);
                         
@@ -136,7 +145,7 @@ while ($DatosAgenda=$obVenta->FetchArray($consulta)){
         print("<td>");
         
         $Page="Consultas/modelos_admin.querys.php?Accion=3&idAgenda=".$idAgenda;      
-        $Javascript="onClick=EnvieConsultaModelos(`$Page`,`TxtBuscarSeparado`,`DivAgenda`,`4`);return false;";
+        $Javascript="onClick=EnvieConsultaModelos(`$Page`,``,`DivAgenda`,`4`);return false;";
 
         $css->CrearImage("ImgDescartar$idAgenda", "../images/facturar1.png", "Descartar este evento", 30, 30, $Javascript);
         $css->CrearDiv("DivOptFact$idAgenda", "", "center", 0, 1);
