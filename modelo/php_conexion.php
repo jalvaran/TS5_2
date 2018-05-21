@@ -544,6 +544,7 @@ public function AgregaPreventa($fecha,$Cantidad,$idVentaActiva,$idProducto,$Tabl
         $TipoItem=$DatosDepartamento["TipoItem"];
         $consulta=$this->ConsultarTabla("preventa", "WHERE TablaItem='$TablaItem' AND ProductosVenta_idProductosVenta='$idProducto' AND VestasActivas_idVestasActivas='$idVentaActiva' AND idSistema='$idSistema' ORDER BY idPrecotizacion DESC");
         $DatosProduto=$this->FetchArray($consulta);
+        
         if($DatosProduto["Cantidad"]>0){
             if($DatosProductoGeneral["IVA"]=="E"){
                 $DatosProductoGeneral["IVA"]=0;
@@ -592,10 +593,11 @@ public function AgregaPreventa($fecha,$Cantidad,$idVentaActiva,$idProducto,$Tabl
             }
             $Subtotal=$ValorUnitario*$Cantidad;
             //Para colocarle el valor totoal al producto especial
-            if($DatosProductoGeneral["Especial"]=="SI"){
-                $Subtotal=$ValorUnitario;
+            if(isset($DatosProductoGeneral["Especial"])){
+                if($DatosProductoGeneral["Especial"]=="SI"){
+                    $Subtotal=$ValorUnitario;
+                }
             }
-            
             
             $impuesto=($impuesto-1)*$Subtotal +($DatosImpuestosAdicionales["ValorImpuesto"]*$Cantidad);
             
@@ -609,6 +611,11 @@ public function AgregaPreventa($fecha,$Cantidad,$idVentaActiva,$idProducto,$Tabl
             $this->Query($sql);	
 	
         }
+       
+        ///////////7
+        
+        
+        
 	}	
         			
 ////////////////////////////////////////////////////////////////////
@@ -1904,10 +1911,11 @@ public function CalculePesoRemision($idCotizacion)
             ///
             ///
             $SubtotalItem=$DatosCotizacion['ValorAcordado']*$DatosCotizacion['Cantidad'];
-            if($DatosProducto["Especial"]=='SI'){
-                $SubtotalItem=$DatosCotizacion['ValorAcordado'];
+            if(isset($DatosProducto["Especial"])){
+                if($DatosProducto["Especial"]=='SI'){
+                    $SubtotalItem=$DatosCotizacion['ValorAcordado'];
+                }
             }
-            
             $TotalSubtotal=$TotalSubtotal+$SubtotalItem; //se realiza la sumatoria del subtotal
             
             $IVAItem=($SubtotalItem*$DatosProducto["IVA"]);

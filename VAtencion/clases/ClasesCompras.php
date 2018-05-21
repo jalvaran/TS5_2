@@ -6,6 +6,7 @@
  */
 //include_once '../../php_conexion.php';
 class Compra extends ProcesoVenta{
+    
     public function CrearCompra($Fecha, $idTercero, $Observaciones,$CentroCostos, $idSucursal, $idUser,$TipoCompra,$NumeroFactura,$Concepto,$Vector ) {
         
         //////Creo la compra            

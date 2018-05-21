@@ -47,7 +47,13 @@ $css->CabeceraIni("Administracion de modelos");
     
 $css->CabeceraFin();
 
-$obTabla = new Tabla($db);
+ $ConsultaCajas=$obVenta->ConsultarTabla("cajas", "WHERE idUsuario='$idUser' AND Estado='ABIERTA'");
+    $DatosCaja=$obVenta->FetchArray($ConsultaCajas);
+
+    if($DatosCaja["ID"]<=0){
+       $css->CrearNotificacionRoja("No tiene asignada una Caja, por favor Asignese a una Caja, <a href='HabilitarUser.php' target='_blank'>Vamos</a>", 16);
+       exit();
+    }  
 
 $css->CrearDiv("Principal", "container", "center", 1, 1);
     $css->CrearTabla();
@@ -106,6 +112,7 @@ $css->CerrarDiv();
 $css->AgregaJS(); //Agregamos javascripts
 
 print('<script type="text/javascript" src="jsPages/modelos_admin.js"></script>');
+
 $css->AgregaSubir();
 $css->Footer();
 
