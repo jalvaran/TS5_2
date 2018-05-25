@@ -2744,7 +2744,15 @@ public function CalculePesoRemision($idCotizacion)
         return ($NumEgreso);
     }
     
-     //Funcion para Crear un nuevo traslado
+    /**
+     * Funcion para Crear un nuevo traslado
+     * @param type $fecha -> Fecha del traslado
+     * @param type $hora -> Hora del traslado
+     * @param type $Concepto ->  Concepto del traslado
+     * @param type $Destino ->  sede destino del traslado
+     * @param type $VectorTraslado ->Futuro
+     * @return type
+     */
      public function CrearTraslado($fecha,$hora,$Concepto,$Destino,$VectorTraslado){
         $idBodega=   $VectorTraslado["idBodega"];      
         $sql="SELECT Identificacion FROM usuarios WHERE idUsuarios='$this->idUser'";
@@ -2773,7 +2781,13 @@ public function CalculePesoRemision($idCotizacion)
         
      }
      
-     //Funcion para Crear un nuevo traslado
+     /**
+      * Agregar un item a un traslado
+      * @param type $idComprobante -> id del traslado
+      * @param type $idProducto ->id del Producto
+      * @param type $Cantidad -> Cantidad del producto
+      * @param type $VectorItem -> Futuro
+      */
      public function AgregarItemTraslado($idComprobante,$idProducto,$Cantidad,$VectorItem){
          
        $DatosTraslado=$this->DevuelveValores("traslados_mercancia", "ID", $idComprobante);

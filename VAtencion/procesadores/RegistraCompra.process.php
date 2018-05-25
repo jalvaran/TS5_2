@@ -231,8 +231,12 @@ if(isset($_REQUEST["BtnGuardarCompra"])){
     $CuentaPUCCXP=$obCompra->normalizar($_REQUEST["CmbCuentaPUCCXP"]);
     $FechaProgramada=$obCompra->normalizar($_REQUEST["TxtFechaProgramada"]);
     $obCompra->GuardarFacturaCompra($idCompra, $TipoPago, $CuentaOrigen,$CuentaPUCCXP, $FechaProgramada,"");
-    //$css->CrearNotificacionVerde("Compra Registrada Correctamente", 16);
-    header("location:$myPage");
+    $idTraslado="";
+    if($_REQUEST["CmbTraslado"]=='SI'){
+        $idTraslado=$obCompra->CrearTrasladoDesdeCompra($idCompra, "");
+    }
+    
+    header("location:$myPage?idCompraCreada=$idCompra&idTrasladoCreado=$idTraslado");
 }
 
 //Devolver un item 

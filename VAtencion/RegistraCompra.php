@@ -28,6 +28,18 @@ print("<body>");
     ///////////////Creamos el contenedor
     $css->DivNotificacionesJS();    
     $css->CrearDiv("principal", "container", "center",1,1);
+    //si se creó la compra se crea el link para verla
+    if(isset($_REQUEST["idCompraCreada"])){
+        $idCompraCreada=$_REQUEST["idCompraCreada"];
+        $css->CrearNotificacionVerde("Compra $idCompraCreada Creada Satisfactoriamente <a target='_blank'  href='PDF_FCompra.php?ID=$idCompraCreada'>ver</a>", 16);
+    }
+    //si se creó el traslado se crea el link para verlo
+    if(isset($_REQUEST["idTrasladoCreado"])){
+        $idTrasladoCreado=$_REQUEST["idTrasladoCreado"];
+        $Ruta="../tcpdf/examples/imprimirTraslado.php?idTraslado=$idTrasladoCreado";
+        $css->CrearNotificacionAzul("Traslado $idTrasladoCreado Creado Satisfactoriamente <a target='_blank' href='$Ruta'>ver</a>", 16);
+    }
+    
     
     include_once("procesadores/RegistraCompra.process.php");
     $css->CrearForm2("FrmSeleccionaCom", $myPage, "post", "_self");
@@ -68,11 +80,12 @@ print("<body>");
                 $css->ImageOcultarMostrar("ImgHidden2", "Click: ", "DivEditFactura", 30, 30, "");
                 print("</td>");
                 
+                
             $css->CierraFilaTabla();
             $css->FilaTabla(16);
                 print("<td>");
                 $Page="Consultas/BuscarItemsCompras.php?TipoItem=1&myPage=$myPage&idCompra=$idCompra&key=";
-                $css->CrearInputText("TxtProducto", "text", "", "", "Buscar Producto", "", "onChange", "EnvieObjetoConsulta(`$Page`,`TxtProducto`,`DivBusquedas`);", 200, 30, 0, 1);
+                $css->CrearInputText("TxtProducto", "text", "", "", "Buscar Producto", "", "onKeyPress", "EnvieObjetoConsulta(`$Page`,`TxtProducto`,`DivBusquedas`,`0`);", 200, 30, 0, 1);
                 print("</td>");
                 print("<td>");
                 $css->CrearDiv("DivAgregaServicio", "", "Center", 0, 1);
@@ -134,6 +147,7 @@ print("<body>");
                 $css->CerrarForm();
                 $css->CerrarDiv();
                 print("</td>");
+                
             $css->CierraFilaTabla();
             
             
@@ -337,7 +351,7 @@ print("<body>");
                     $css->ColTabla("<strong>Impuestos Devueltos:</strong>", 1);
                     $css->ColTabla("<strong>Total a Pagar:</strong>", 1);
                     $css->ColTabla("<strong>Tipo Pago:</strong>", 1);
-                    $css->ColTabla("<strong>Guardar</strong>", 1);
+                    $css->ColTabla("<strong>Opciones</strong>", 1);
                 $css->CierraFilaTabla();
                 $css->FilaTabla(14);
                     $css->ColTabla(number_format($TotalesCompra["Subtotal_Descuentos_Productos_Add"]+$TotalesCompra["Subtotal_Productos_Add"]+$TotalesCompra["Subtotal_Servicios"]), 1);
@@ -386,6 +400,11 @@ print("<body>");
                         $css->CerrarDiv();
                     print("</td>");
                     print("<td>");
+                    print("<strong>Traslado?</strong><br>");
+                    $css->CrearSelect("CmbTraslado", "",60);
+                            $css->CrearOptionSelect("NO", "NO", 1);
+                            $css->CrearOptionSelect("SI", "SI", 0);
+                        $css->CerrarSelect();
                     $css->CrearBotonConfirmado("BtnGuardarCompra", "Guardar");
                     print("</td>");
                 $css->CierraFilaTabla();

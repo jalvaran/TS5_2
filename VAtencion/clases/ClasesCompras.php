@@ -530,5 +530,29 @@ class Compra extends ProcesoVenta{
          */
         $this->ActualizaRegistro("factura_compra_notas_devolucion", "Estado", "CERRADA", "ID", $idNota);
     }
+    /**
+     * Funcion para crear un traslado desde una compra
+     * @param type $idCompra -> id de la compra de donde se va a realizar el traslado
+     * @param type $Vector ->Futuro
+     */
+    public function CrearTrasladoDesdeCompra($idCompra,$Vector) {
+        $DatosCompra= $this->DevuelveValores("factura_compra", "ID", $idCompra);
+        $VectorTraslado["idBodega"]=1;
+        $fecha=date("Y-m-d");
+        $hora=date("H:i:s");
+        $Concepto="FC_$idCompra";
+        $Destino=$DatosCompra["idSucursal"];        
+        $Consulta=$this->ConsultarTabla("factura_compra_items", "WHERE idFacturaCompra='$idCompra'");
+        if($this->NumRows($Consulta)){
+            $idTraslado=$this->CrearTraslado($fecha, $hora, $Concepto, $Destino, $VectorTraslado);
+            while($ItemsCompra=$this->FetchArray($Consulta)){
+                $this->AgregarItemTraslado($idTraslado, $ItemsCompra["idProducto"], $ItemsCompra["Cantidad"], "");
+            }
+            return($idTraslado);
+        }else{
+            return("ENI"); //No Items en la factura de compra
+        }
+        
+    }
     //Fin Clases
 }
