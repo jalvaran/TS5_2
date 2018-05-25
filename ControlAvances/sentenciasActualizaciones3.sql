@@ -78,4 +78,82 @@ CREATE TABLE `modelos_db` (
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (165, 'Historial de Agenda', '45', '3', 'modelos_agenda.php', '_SELF', b'1', 'historial.png', '4', '2018-05-15 10:24:10', '2017-10-13 14:16:57');
 
+CREATE TABLE `modelos_cierres` (
+  `ID` bigint(20) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
+  `idUser` bigint(20) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `modelos_cierres`
+--
+ALTER TABLE `modelos_cierres`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `modelos_cierres`
+--
+ALTER TABLE `modelos_cierres`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+
+--
+-- Indexes for table `modelos_agenda`
+--
+ALTER TABLE `modelos_agenda`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `modelos_config_factura`
+--
+ALTER TABLE `modelos_config_factura`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `modelos_db`
+--
+ALTER TABLE `modelos_db`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `NombreArtistico` (`NombreArtistico`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `modelos_agenda`
+--
+ALTER TABLE `modelos_agenda`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT for table `modelos_config_factura`
+--
+ALTER TABLE `modelos_config_factura`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `modelos_db`
+--
+ALTER TABLE `modelos_db`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
+
+ALTER TABLE `factura_compra_items_devoluciones` ADD `idNotaDevolucion` BIGINT NOT NULL AFTER `ID`;
+
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (166, 'Notas de Devolucion', '13', '3', 'RegistraNotaDevolucion.php', '_SELF', b'1', 'devolucion.png', '7', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+
+
 

@@ -182,9 +182,10 @@ class Circular030 extends ProcesoVenta{
         if($archivo = fopen($nombre_archivo, "a")){
             $mensaje="";
             while($Datos030= $this->FetchArray($consulta)){
-                $Datos030[$i]= $this->QuitarAcentos($Datos030[$i]);
-                $Datos030[$i]= trim($Datos030[$i]);
+                
                 for($i=0;$i<20;$i++){
+                    $Datos030[$i]= $this->QuitarAcentos($Datos030[$i]);
+                    $Datos030[$i]= trim($Datos030[$i]);
                     if($i==8){
                         $Caracter=strpos($Datos030[$i], "-");
                         if($Caracter !== false){

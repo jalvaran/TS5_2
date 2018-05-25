@@ -436,6 +436,99 @@ class Compra extends ProcesoVenta{
         }
         return($idCompraNew);
     }
+    /**
+     * Funcion para crear una nota de devolucion 
+     * @param type $Fecha           Fecha de realizacion
+     * @param type $idTercero       Tercero al que se le devuelve
+     * @param type $Concepto        Concepto por el que se devuelve
+     * @param type $CentroCostos    Centro de costos al que afecta
+     * @param type $idSucursal      Sucursal
+     * @param type $idUser          Usuario que registra la devolcuion
+     * @param type $Vector          uso Futuro
+     * @return type $idNota         retorna el id de la nota creada            
+     */
+     public function CrearNotaDevolucion($Fecha, $idTercero, $Concepto,$CentroCostos, $idSucursal, $idUser,$Vector ) {
+        
+        //////Creo la compra            
+        $tab="factura_compra_notas_devolucion";
+        $NumRegistros=7;
+
+        $Columnas[0]="Fecha";		$Valores[0]=$Fecha;
+        $Columnas[1]="Tercero";         $Valores[1]=$idTercero;
+        $Columnas[2]="Concepto";        $Valores[2]=$Concepto;
+        $Columnas[3]="Estado";		$Valores[3]="ABIERTA";
+        $Columnas[4]="idUser";          $Valores[4]=$idUser;
+        $Columnas[5]="idCentroCostos";	$Valores[5]=$CentroCostos;
+        $Columnas[6]="idSucursal";	$Valores[6]=$idSucursal;
+        
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+
+        $idNota=$this->ObtenerMAX($tab,"ID", 1,"");
+        return $idNota;
+    }
     
+    /**
+     * funcion para ingresar los items a la devolucion
+     * @param type $idNota              id de la nota
+     * @param type $idProducto          id del producto a devolver
+     * @param type $Cantidad            cantidad del producto devuelto
+     * @param type $CostoUnitario       Costo unitario del producto
+     * @param type $TipoIVA             Tipo del iva del producto
+     * @param type $IVAIncluido         Si tiene iva incluido
+     * @param type $Vector              futuro
+     */
+    public function IngresaItemNotaDevolucion($idNota,$idProducto,$Cantidad,$CostoUnitario,$TipoIVA,$IVAIncluido,$Vector) {
+        //Proceso la informacion
+        if($IVAIncluido=="SI"){
+            if(is_numeric($TipoIVA)){
+                $CostoUnitario=round($CostoUnitario/(1+$TipoIVA));
+            }            
+        }
+        $Subtotal=round($CostoUnitario*$Cantidad);
+        if(is_numeric($TipoIVA)){
+            $Impuestos=round($Subtotal*$TipoIVA);
+        }else{
+            $Impuestos=0;
+        }
+        
+        $Impuestos= round($Subtotal*$TipoIVA);
+        $Total=$Subtotal+$Impuestos;
+        //////Agrego el registro           
+        $tab="factura_compra_items_devoluciones";
+        $NumRegistros=8;
+
+        $Columnas[0]="idNotaDevolucion";    $Valores[0]=$idNota;
+        $Columnas[1]="idProducto";          $Valores[1]=$idProducto;
+        $Columnas[2]="Cantidad";            $Valores[2]=$Cantidad;
+        $Columnas[3]="CostoUnitarioCompra"; $Valores[3]=$CostoUnitario;
+        $Columnas[4]="SubtotalCompra";      $Valores[4]=$Subtotal;
+        $Columnas[5]="ImpuestoCompra";      $Valores[5]=$Impuestos;
+        $Columnas[6]="TotalCompra";         $Valores[6]=$Total;
+        $Columnas[7]="Tipo_Impuesto";       $Valores[7]=$TipoIVA;
+                    
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+    }
+    
+    //Guarde una Compra
+    public function GuardarNotaDevolucion($idNota,$Vector) {
+        $DatosEmpresa=$this->ValorActual("empresapro", "CXPAutomaticas", "idEmpresaPro='1'");
+        $DatosNota= $this->DevuelveValores("factura_compra_notas_devolucion", "ID", $idNota);
+        $sql="SELECT SUM(SubtotalCompra) as Subtotal, SUM(ImpuestoCompra) as IVA,SUM(TotalCompra) as Total "
+                . " FROM factura_compra_items_devoluciones WHERE idNotaDevolucion='$idNota'";
+        $Datos=$this->Query($sql);
+        $DatosTotalesNota= $this->FetchArray($Datos);
+        /* 
+        $this->IngreseMovimientoLibroDiario($DatosFacturaCompra["Fecha"], "FacturaCompra", $idCompra, $DatosFacturaCompra["NumeroFactura"], $DatosFacturaCompra["Tercero"], $CuentaDestino, $NombreCuenta, "Compras", "CR", $TotalesCompra["Total_Productos_Add"]+$TotalesCompra["Total_Servicios"]-$TotalesCompra["Total_Retenciones"], $DatosFacturaCompra["Concepto"], $DatosFacturaCompra["idCentroCostos"], $DatosFacturaCompra["idSucursal"], "");
+        if($TotalesCompra["Total_Productos_Dev"]>0){  //Si hay devoluciones en compras se debita la cuenta de proveedores
+          $this->IngreseMovimientoLibroDiario($DatosFacturaCompra["Fecha"], "FacturaCompra", $idCompra, $DatosFacturaCompra["NumeroFactura"], $DatosFacturaCompra["Tercero"], $CuentaDestino, $NombreCuenta, "DevolucionCompras", "DB", $TotalesCompra["Total_Productos_Dev"], $DatosFacturaCompra["Concepto"], $DatosFacturaCompra["idCentroCostos"], $DatosFacturaCompra["idSucursal"], "");
+            
+        }
+        $this->ContabiliceProductosDevueltos($idCompra);
+        $this->IngreseRetireProductosInventarioCompra($idCompra,"ENTRADA");  //Ingreso los productos al inventario
+        
+         * 
+         */
+        $this->ActualizaRegistro("factura_compra_notas_devolucion", "Estado", "CERRADA", "ID", $idNota);
+    }
     //Fin Clases
 }

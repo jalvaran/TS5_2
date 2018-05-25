@@ -26,7 +26,7 @@ print("<body>");
     
     include_once 'cuadros_dialogo/RegistraCompraCuadrosDialogo.php';
     ///////////////Creamos el contenedor
-        
+    $css->DivNotificacionesJS();    
     $css->CrearDiv("principal", "container", "center",1,1);
     
     include_once("procesadores/RegistraCompra.process.php");
@@ -431,7 +431,7 @@ print("<body>");
             $css->FilaTabla(14);
                
                $css->ColTabla("<strong>idProducto</strong>", 1);
-               $css->ColTabla("<strong>Referencia</strong>", 1);
+               $css->ColTabla("<strong>Imprimir</strong>", 1);
                $css->ColTabla("<strong>Nombre</strong>", 1);
                $css->ColTabla("<strong>Cantidad</strong>", 1);
                $css->ColTabla("<strong>CostoUnitario</strong>", 1);
@@ -446,10 +446,16 @@ print("<body>");
                $css->CierraFilaTabla();
             while($DatosItems=$obVenta->FetchAssoc($consulta)){
                $css->FilaTabla(14);
-               $DatosProducto=$obVenta->DevuelveValores("productosventa", "idProductosVenta", $DatosItems["idProducto"]);
+               $idProducto=$DatosItems["idProducto"];
+               $DatosProducto=$obVenta->DevuelveValores("productosventa", "idProductosVenta", $idProducto);
                $DatosIVA=$obVenta->DevuelveValores("porcentajes_iva", "Valor", $DatosItems["Tipo_Impuesto"]);
-                    $css->ColTabla($DatosItems["idProducto"], 1);
-                    $css->ColTabla($DatosProducto["Referencia"], 1);
+                    $css->ColTabla($idProducto, 1);
+                    print("<td>");
+                        $css->CrearInputNumber("TxtCantidadCodigos$idProducto", "number", "Cantidad:", 1, "Cantidad", "black", "", "", 100, 30, 0, 0, 1, 1000, 1);
+                        $RutaPrint="ProcesadoresJS/PrintCodigoBarras.php?TipoCodigo=1&idProducto=$idProducto&TxtCantidad=";
+                        $css->CrearBotonEvento("BtnPrintCB$idProducto", "BARRAS", 1, "onclick", "EnvieObjetoConsulta(`$RutaPrint`,`TxtCantidadCodigos$idProducto`,`DivRespuestasJS`,`0`)", "naranja", "");
+                
+                    print("</td>");
                     $css->ColTabla($DatosProducto["Nombre"], 1);
                     $css->ColTabla(number_format($DatosItems["Cantidad"]), 1);
                     

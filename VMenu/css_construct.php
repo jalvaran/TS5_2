@@ -191,13 +191,13 @@ function SubTabs($link,$target,$image,$SubTitle){
 ////////////////////////////Crear Footer	
 		
 function Footer(){
-		
+		$Year=date("Y");
 		print('<footer>    
   <div class="container_12">
     <div class="grid_6 prefix_3">
        <a href="../index.php" class="f_logo"><img src="../images/header-logo.png" alt=""></a>
       <div class="copy">
-      &copy; 2016 | <a href="#">Privacy Policy</a> <br> Software  designed by <a href="http://technosoluciones.com/" rel="nofollow" target="_blank">Techno Soluciones SAS</a>
+      &copy; '.$Year.' | <a href="#">Privacy Policy</a> <br> Software  designed by <a href="http://technosoluciones.com.co/" rel="nofollow" target="_blank">Techno Soluciones SAS</a>
       </div>
     </div>
   </div>

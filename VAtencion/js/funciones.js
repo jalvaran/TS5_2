@@ -237,7 +237,7 @@ function ConfirmarLink(id){
 function MuestraOculta(id){
     
     estado=document.getElementById(id).style.display;
-    if(estado=="none" | estado==""){
+    if(estado=="none" || estado==""){
         document.getElementById(id).style.display="block";
     }
     if(estado=="block"){
