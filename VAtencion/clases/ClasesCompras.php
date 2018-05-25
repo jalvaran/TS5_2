@@ -535,13 +535,13 @@ class Compra extends ProcesoVenta{
      * @param type $idCompra -> id de la compra de donde se va a realizar el traslado
      * @param type $Vector ->Futuro
      */
-    public function CrearTrasladoDesdeCompra($idCompra,$Vector) {
+    public function CrearTrasladoDesdeCompra($idCompra,$idSede,$Vector) {
         $DatosCompra= $this->DevuelveValores("factura_compra", "ID", $idCompra);
         $VectorTraslado["idBodega"]=1;
         $fecha=date("Y-m-d");
         $hora=date("H:i:s");
         $Concepto="FC_$idCompra";
-        $Destino=$DatosCompra["idSucursal"];        
+        $Destino=$idSede;        
         $Consulta=$this->ConsultarTabla("factura_compra_items", "WHERE idFacturaCompra='$idCompra'");
         if($this->NumRows($Consulta)){
             $idTraslado=$this->CrearTraslado($fecha, $hora, $Concepto, $Destino, $VectorTraslado);

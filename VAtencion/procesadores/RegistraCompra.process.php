@@ -232,8 +232,9 @@ if(isset($_REQUEST["BtnGuardarCompra"])){
     $FechaProgramada=$obCompra->normalizar($_REQUEST["TxtFechaProgramada"]);
     $obCompra->GuardarFacturaCompra($idCompra, $TipoPago, $CuentaOrigen,$CuentaPUCCXP, $FechaProgramada,"");
     $idTraslado="";
-    if($_REQUEST["CmbTraslado"]=='SI'){
-        $idTraslado=$obCompra->CrearTrasladoDesdeCompra($idCompra, "");
+    if($_REQUEST["CmbTraslado"]>0){
+        $idSede=$obCompra->normalizar($_REQUEST["CmbTraslado"]);
+        $idTraslado=$obCompra->CrearTrasladoDesdeCompra($idCompra,$idSede, "");
     }
     
     header("location:$myPage?idCompraCreada=$idCompra&idTrasladoCreado=$idTraslado");
