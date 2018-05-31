@@ -25,6 +25,10 @@ if(isset($_REQUEST["idDocumento"])){
             $idCuenta=$obVenta->normalizar($_REQUEST["idCuenta"]);
             $obDoc->CuentaCobroTercero($idCuenta,"");            
             break;
+        case 31: //ODF de una nota de devolucion
+            $idNota=$obVenta->normalizar($_REQUEST["idNotaDevolucion"]);
+            $obDoc->PDF_NotaDevolucion($idNota,"");            
+            break;
     }
 }else{
     print("No se recibió parametro de documento");

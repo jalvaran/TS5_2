@@ -59,8 +59,8 @@ if(isset($_REQUEST["GuardarNota"])){
     $idNota=$obCompra->normalizar($_REQUEST["idNota"]);
     
     $obCompra->GuardarNotaDevolucion($idNota,"");
-    //$css->CrearNotificacionVerde("Compra Registrada Correctamente", 16);
-    header("location:$myPage");
+    
+    header("location:$myPage?idNotaDevolucion=$idNota");
 }
 
 

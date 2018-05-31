@@ -28,6 +28,12 @@ print("<body>");
         
     $css->CrearDiv("principal", "container", "center",1,1);
     
+    if(isset($_REQUEST["idNotaDevolucion"])){
+        $idNotaDevolucion=$obCompra->normalizar($_REQUEST["idNotaDevolucion"]);
+        $Link="PDF_Documentos.php?idDocumento=31&idNotaDevolucion=$idNotaDevolucion";
+        $css->CrearNotificacionAzul("Nota creada Satisfactoriamente <a href='$Link' target='_blank'>Ver Nota</a>", 16);
+    }
+    
     include_once("procesadores/RegistraNotaDevolucion.process.php");
     $css->CrearForm2("FrmSeleccionaNota", $myPage, "post", "_self");
     $css->CrearSelect("idNota", "EnviaForm('FrmSeleccionaNota')");

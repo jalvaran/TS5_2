@@ -452,6 +452,199 @@ class Documento extends Tabla{
         
         $this->PDF_Output($idCuenta."_CuentaCobro");
     }
+    
+   
+    /**
+     * Funcion para generar el PDF de una nota de devolucion
+     * @param type $idNota -> id de la nota de devolucion
+     * @param type $Vector -> Futuro
+     */
+    public function PDF_NotaDevolucion($idNota,$Vector) {
+        $DatosNota=$this->obCon->DevuelveValores("factura_compra_notas_devolucion", "ID", $idNota);
+        $CodigoNota="$DatosNota[ID]";
+        $Documento="NOTA DE DEVOLUCION No. $CodigoNota";
+        
+        $this->PDF_Ini("ND_$CodigoNota", 8, "");
+        $idFormato=31;
+        $this->PDF_Encabezado($DatosNota["Fecha"],1, $idFormato, "",$Documento);
+        $this->PDF_Encabezado_Nota_Devolucion($idNota,$DatosNota,"");
+        
+        
+        $Position=$this->PDF->SetY(80);
+        
+        $html= $this->HTML_productos_devueltos_ND($idNota,"");
+        $this->PDF_Write($html);
+        $sql="SELECT Tercero_Identificacion,NombreCuenta,Tercero_Razon_Social ,CuentaPUC,Debito,Credito FROM librodiario "
+                . "WHERE Tipo_Documento_Intero='NOTA_DEVOLUCION' AND Num_Documento_Interno='$idNota'";
+        $html=$this->HTML_Movimientos_Resumen($sql, $Vector);
+        $this->PDF_Write("<BR><BR><BR><strong>MOVIMIENTOS CONTABLES:</strong><BR>".$html);
+                
+        $this->PDF_Output("ND_$CodigoNota");
+    }
+    
+    /**
+     * Funcion para hacer el encabezado de una nota de devolucion
+     * @param type $idNota ->id de la nota de devolucion
+     * @param type $DatosNota -> Vector que contiene los datos de la nota
+     * @param type $Vector ->Uso Futuro
+     */
+    public function PDF_Encabezado_Nota_Devolucion($idNota,$DatosNota,$Vector) {
+        
+        $DatosTercero=$this->obCon->DevuelveValores("proveedores", "Num_Identificacion", $DatosNota["Tercero"]);
+        $DatosCentroCostos=$this->obCon->DevuelveValores("centrocosto","ID",$DatosNota["idCentroCostos"]);
+        $DatosEmpresaPro=$this->obCon->DevuelveValores("empresapro", "idEmpresaPro", $DatosCentroCostos["EmpresaPro"]);
+      
+        $DatosUsuario=$this->obCon->DevuelveValores("usuarios", "idUsuarios", $DatosNota["idUser"]);
+        $Comprador=$DatosUsuario["Nombre"]." ".$DatosUsuario["Apellido"];
+        $tbl = <<<EOD
+<table cellspacing="0" cellpadding="2" border="1">
+    <tr>
+        <td><strong>Tercero:</strong></td>
+        <td colspan="3">$DatosTercero[RazonSocial]</td>
+        
+    </tr>
+    <tr>
+    	<td><strong>NIT:</strong></td>
+        <td colspan="3">$DatosTercero[Num_Identificacion] - $DatosTercero[DV]</td>
+    </tr>
+    <tr>
+        <td colspan="2"><strong>Dirección:</strong></td>
+        <td><strong>Ciudad:</strong></td>
+        <td><strong>Teléfono:</strong></td>
+    </tr>
+    <tr>
+        <td colspan="2">$DatosTercero[Direccion]</td>
+        <td>$DatosTercero[Ciudad]</td>
+        <td>$DatosTercero[Telefono]</td>
+    </tr>
+    <tr>
+        <td colspan="4"><strong>Fecha:</strong> $DatosNota[Fecha]</td>
+        
+    </tr>
+    
+</table>
+        
+EOD;
+
+
+$this->PDF->MultiCell(93, 25, $tbl, 0, 'L', 1, 0, '', '', true,0, true, true, 10, 'M');
+
+
+////Concepto
+////
+////
+
+$tbl = <<<EOD
+<table cellspacing="0" cellpadding="2" border="1">
+    <tr>
+        <td height="42" align="center" >$DatosNota[Concepto]</td> 
+    </tr>
+     
+</table>
+<table cellspacing="0" cellpadding="2" border="1">
+    <tr>
+        <td align="center" ><strong>Comprador: </strong></td>
+        
+    </tr>
+    <tr>
+        <td align="center" >$Comprador</td>
+        
+    </tr>
+     
+</table>
+<br>  <br><br><br>      
+EOD;
+
+$this->PDF->MultiCell(93, 25, $tbl, 0, 'R', 1, 0, '', '', true,0, true, true, 10, 'M');
+
+    
+    }
+    
+    /**
+     * Funcion para dibujar los productos devueltos en una nota de dovolucion
+     * @param type $idNota ->id de la nota
+     * @param type $Vector ->Futuro
+     * @return type -> retorna el html para dibujar los productos devueltos en la nota
+     */
+    public function HTML_productos_devueltos_ND($idNota,$Vector) {
+        $tbl = "";
+        
+
+$sql="SELECT fi.idProducto,fi.Cantidad, fi.CostoUnitarioCompra, fi.SubtotalCompra, fi.ImpuestoCompra, fi.TotalCompra, fi.Tipo_Impuesto, pv.Referencia,pv.Nombre"
+        . " FROM factura_compra_items_devoluciones fi INNER JOIN productosventa pv ON fi.idProducto=pv.idProductosVenta WHERE fi.idNotaDevolucion='$idNota'";
+$Consulta= $this->obCon->Query($sql);
+$h=1;  
+if($this->obCon->NumRows($Consulta)){
+    $tbl = <<<EOD
+            <br>
+                <h3 align="center">PRODUCTOS DEVUELTOS</h3>
+<table cellspacing="1" cellpadding="2" border="0">
+    <tr>
+        <td align="center" ><strong>ID</strong></td>
+        <td align="center" ><strong>Referencia</strong></td>
+        <td align="center" colspan="3"><strong>Producto</strong></td>
+        <td align="center" ><strong>Costo Unitario</strong></td>
+        <td align="center" ><strong>Cantidad</strong></td>
+        <td align="center" ><strong>Subtotal</strong></td>
+        <td align="center" ><strong>Impuestos</strong></td>
+        <td align="center" ><strong>Total</strong></td>
+        <td align="center" ><strong>TipoIVA</strong></td>
+    </tr>
+    
+         
+EOD;
+$GranSubtotal=0;
+$GranIVA=0;
+$GranTotal=0;
+while($DatosItemFactura=$this->obCon->FetchArray($Consulta)){
+    $GranSubtotal=$GranSubtotal+$DatosItemFactura["SubtotalCompra"];
+    $GranIVA=$GranIVA+$DatosItemFactura["ImpuestoCompra"];
+    $GranTotal=$GranTotal+$DatosItemFactura["TotalCompra"];
+    
+    $ValorUnitario=  number_format($DatosItemFactura["CostoUnitarioCompra"]);
+    $SubTotalItem=  number_format($DatosItemFactura["SubtotalCompra"]);
+    $Cantidad=$DatosItemFactura["Cantidad"];
+    
+    if($h==0){
+        $Back="#f2f2f2";
+        $h=1;
+    }else{
+        $Back="white";
+        $h=0;
+    }
+    
+    $tbl .= '    
+    
+    <tr>
+        <td align="left" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["idProducto"].'</td>    
+        <td align="left" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["Referencia"].'</td>
+        <td align="left" colspan="3" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["Nombre"].'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$ValorUnitario.'</td>
+        <td align="center" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$Cantidad.'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$SubTotalItem.'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.number_format($DatosItemFactura["ImpuestoCompra"]).'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.number_format($DatosItemFactura["TotalCompra"]).'</td>
+        <td align="center" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["Tipo_Impuesto"].'</td>
+    </tr>
+        
+ ';
+    
+}
+$tbl.= '<tr>'
+        . '<td align="right" colspan="7" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>TOTALES</strong></td>'
+        . '<td align="right" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>'.number_format($GranSubtotal).'</strong></td>'
+        . '<td align="right" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>'.number_format($GranIVA).'</strong></td>'
+        . '<td align="right" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>'.number_format($GranTotal).'</strong></td>'
+        . '<td align="center" style="border-bottom: 1px solid #ddd;background-color: white;"> </td>'
+        . '</tr>';
+$tbl.= "</table>";
+        
+}
+        return($tbl);
+
+    }
+    
+    
    //Fin Clases
 }
     

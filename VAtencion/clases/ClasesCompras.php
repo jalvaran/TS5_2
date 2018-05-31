@@ -134,12 +134,12 @@ class Compra extends ProcesoVenta{
     }
     
     //Ingrese los items al inventario o retire items del inventario
-    public function IngreseRetireProductosInventarioCompra($idCompra,$Movimiento) {
+    public function IngreseRetireProductosInventarioCompra($idCompra,$Movimiento,$idTabla='idFacturaCompra') {
         if($Movimiento=="ENTRADA"){
-            $consulta= $this->ConsultarTabla("factura_compra_items", "WHERE idFacturaCompra='$idCompra'");
+            $consulta= $this->ConsultarTabla("factura_compra_items", "WHERE $idTabla='$idCompra'");
             $DatosKardex["CalcularCostoPromedio"]=1;
         }else{
-            $consulta= $this->ConsultarTabla("factura_compra_items_devoluciones", "WHERE idFacturaCompra='$idCompra'");
+            $consulta= $this->ConsultarTabla("factura_compra_items_devoluciones", "WHERE $idTabla='$idCompra'");
         } 
         while($DatosProductos= $this->FetchArray($consulta)){
             $DatosProductoGeneral= $this->DevuelveValores("productosventa", "idProductosVenta", $DatosProductos["idProducto"]);
@@ -147,7 +147,11 @@ class Compra extends ProcesoVenta{
             $DatosKardex["idProductosVenta"]=$DatosProductos["idProducto"];
             $DatosKardex["CostoUnitario"]=$DatosProductos['CostoUnitarioCompra'];
             $DatosKardex["Existencias"]=$DatosProductoGeneral['Existencias'];
-            $DatosKardex["Detalle"]="FacturaCompra";   //No cambiar, con este valor se calcula el costo promedio
+            $Detalle="FacturaCompra";
+            if($idTabla=='idNotaDevolucion'){
+                $Detalle="NotaDevolucion";
+            }
+            $DatosKardex["Detalle"]=$Detalle;   
             $DatosKardex["idDocumento"]=$idCompra;
             $DatosKardex["TotalCosto"]=$DatosProductos["Cantidad"]*$DatosProductos['CostoUnitarioCompra'];
             $DatosKardex["Movimiento"]=$Movimiento;
@@ -589,15 +593,11 @@ class Compra extends ProcesoVenta{
             $Datos["Neto"]=$DatosTotalesNota["Total"];
             $sql=$this->getSQLInsert($Tabla, $Datos);
             $this->Query($sql);
-            
+         
+            $this->IngreseRetireProductosInventarioCompra($idNota,"SALIDA","idNotaDevolucion");  //Retiro los productos del inventario
+           
         }
-        /*
-        $this->ContabiliceProductosDevueltos($idCompra);
-        $this->IngreseRetireProductosInventarioCompra($idCompra,"ENTRADA");  //Ingreso los productos al inventario
         
-        *
-         * 
-         */
         $this->ActualizaRegistro("factura_compra_notas_devolucion", "Estado", "CERRADA", "ID", $idNota);
     }
     /**
