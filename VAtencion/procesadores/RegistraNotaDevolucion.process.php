@@ -1,9 +1,8 @@
 <?php
 /* 
- * Este archivo procesa el registro de compras
+ * Este archivo procesa el registro de notas de devolucion
  */
 
-//$obVenta=new ProcesoVenta($idUser); 
 $obCompra=new Compra($idUser);
 if(!empty($_REQUEST["BtnCrear"])){
       

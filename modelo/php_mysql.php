@@ -4,8 +4,8 @@
  * Clase con todas las acciones requeridas para la conexion a la base de datos
  */
 include_once 'php_settings.php';
-$con = mysql_connect($host,$user,$pw);
-mysql_select_db($db,$con) or die(mysql_error());
+$con = mysql_connect(HOST,USER,PW);
+mysql_select_db(DB,$con) or die(mysql_error());
 date_default_timezone_set("America/Bogota");
 
 class db_conexion{
@@ -332,6 +332,34 @@ public function fetch_object($Consulta) {
     $Objeto=mysql_fetch_object($Consulta);
     return($Objeto);
 }
+
+
+/**
+ * Esta Funcion devuelve el sql para la insercion de datos.
+ * @param type $Tabla -> Tabla de la base de datos
+ * @param type $Datos -> el indice será el campo y el valor el dato a ingresar
+ * @return string -> retorna el sql
+ */
+    function getSQLInsert($Tabla,$Datos){
+      $sqlCampos = "INSERT INTO $Tabla (";
+      $sqlValores= ' VALUES (';
+      $length_array = count($Datos);
+      $i = 1;
+      foreach ($Datos as $key => $value) {
+        $sqlCampos .= "`$key`";
+        $sqlValores .= "'$value'";
+        if ($i!= $length_array) {
+          $sqlCampos .= ", " ;
+          $sqlValores .= ", " ;
+        }else {
+          $sqlCampos .= ')';
+          $sqlValores .= ');'."\n\r";
+        }
+        $i++;
+      }
+      $sql=$sqlCampos.$sqlValores;
+      return $sql;
+    }
 //Fin Clases
 }
 ?>

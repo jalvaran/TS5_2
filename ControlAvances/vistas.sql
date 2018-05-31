@@ -117,3 +117,11 @@ round(sum(`librodiario`.`Debito`)) AS `Debitos`,round(sum(`librodiario`.`Credito
 from `librodiario` where ((`librodiario`.`Fecha` >= '2017-01-01') and (`librodiario`.`Fecha` <= '2017-12-31'))
  group by SUBSTRING(`CuentaPUC`,1,4),`librodiario`.`Tercero_Identificacion`;
 
+
+DROP VIEW IF EXISTS `vista_notas_devolucion`;
+CREATE VIEW vista_notas_devolucion AS
+SELECT `ID`,`Fecha`,`Tercero`,`Concepto`,(SELECT SUM(SubtotalCompra) FROM factura_compra_items_devoluciones WHERE factura_compra_items_devoluciones.idNotaDevolucion = factura_compra_notas_devolucion.ID) as Subtotal,
+(SELECT SUM(ImpuestoCompra) FROM factura_compra_items_devoluciones WHERE factura_compra_items_devoluciones.idNotaDevolucion = factura_compra_notas_devolucion.ID) as IVA,
+(SELECT SUM(TotalCompra) FROM factura_compra_items_devoluciones WHERE factura_compra_items_devoluciones.idNotaDevolucion = factura_compra_notas_devolucion.ID) as Total,
+`idCentroCostos`,`idSucursal`,`idUser`,`Estado`
+FROM `factura_compra_notas_devolucion`;

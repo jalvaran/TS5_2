@@ -509,23 +509,93 @@ class Compra extends ProcesoVenta{
         $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
     }
     
-    //Guarde una Compra
+    /**
+     * Funcion para guardar una nota de devolucion
+     * @param type $idNota -> id de la nota
+     * @param type $Vector -> Futuro
+     */
     public function GuardarNotaDevolucion($idNota,$Vector) {
-        $DatosEmpresa=$this->ValorActual("empresapro", "CXPAutomaticas", "idEmpresaPro='1'");
+       
         $DatosNota= $this->DevuelveValores("factura_compra_notas_devolucion", "ID", $idNota);
+        $DatosTercero=$this->DevuelveValores("proveedores", "Num_Identificacion", $DatosNota["Tercero"]);
         $sql="SELECT SUM(SubtotalCompra) as Subtotal, SUM(ImpuestoCompra) as IVA,SUM(TotalCompra) as Total "
-                . " FROM factura_compra_items_devoluciones WHERE idNotaDevolucion='$idNota'";
-        $Datos=$this->Query($sql);
-        $DatosTotalesNota= $this->FetchArray($Datos);
-        /* 
-        $this->IngreseMovimientoLibroDiario($DatosFacturaCompra["Fecha"], "FacturaCompra", $idCompra, $DatosFacturaCompra["NumeroFactura"], $DatosFacturaCompra["Tercero"], $CuentaDestino, $NombreCuenta, "Compras", "CR", $TotalesCompra["Total_Productos_Add"]+$TotalesCompra["Total_Servicios"]-$TotalesCompra["Total_Retenciones"], $DatosFacturaCompra["Concepto"], $DatosFacturaCompra["idCentroCostos"], $DatosFacturaCompra["idSucursal"], "");
-        if($TotalesCompra["Total_Productos_Dev"]>0){  //Si hay devoluciones en compras se debita la cuenta de proveedores
-          $this->IngreseMovimientoLibroDiario($DatosFacturaCompra["Fecha"], "FacturaCompra", $idCompra, $DatosFacturaCompra["NumeroFactura"], $DatosFacturaCompra["Tercero"], $CuentaDestino, $NombreCuenta, "DevolucionCompras", "DB", $TotalesCompra["Total_Productos_Dev"], $DatosFacturaCompra["Concepto"], $DatosFacturaCompra["idCentroCostos"], $DatosFacturaCompra["idSucursal"], "");
+                . " FROM factura_compra_items_devoluciones WHERE idNotaDevolucion='$idNota' AND idNotaDevolucion<>'0'";
+        $consulta=$this->Query($sql);
+        $DatosTotalesNota= $this->FetchArray($consulta);
+        
+        if($DatosTotalesNota["Total"]>0){  //Si tenemos totales
+            
+            //Se arma el SQL para el subtotal en la cuenta de inventarios inventarios
+            $Parametros=$this->DevuelveValores("parametros_contables", "ID", 4); //Datos de la cuenta de inventarios
+            $CuentaPUC=$Parametros["CuentaPUC"];
+            $NombreCuenta=$Parametros["NombreCuenta"];
+            $Tabla="librodiario";
+            
+            $Datos["Fecha"]=$DatosNota["Fecha"];
+            $Datos["Tipo_Documento_Intero"]="NOTA_DEVOLUCION";
+            $Datos["Num_Documento_Interno"]=$idNota;
+            $Datos["Num_Documento_Externo"]="";
+            $Datos["Tercero_Tipo_Documento"]=$DatosTercero["Tipo_Documento"];
+            $Datos["Tercero_Identificacion"]=$DatosTercero["Num_Identificacion"];
+            $Datos["Tercero_DV"]=$DatosTercero["DV"];
+            $Datos["Tercero_Primer_Apellido"]=$DatosTercero["Primer_Apellido"];
+            $Datos["Tercero_Segundo_Apellido"]=$DatosTercero["Segundo_Apellido"];
+            $Datos["Tercero_Primer_Nombre"]=$DatosTercero["Primer_Nombre"];
+            $Datos["Tercero_Otros_Nombres"]=$DatosTercero["Otros_Nombres"];
+            $Datos["Tercero_Razon_Social"]=$DatosTercero["RazonSocial"];
+            $Datos["Tercero_Direccion"]=$DatosTercero["Direccion"];
+            $Datos["Tercero_Cod_Dpto"]=$DatosTercero["Cod_Dpto"];
+            $Datos["Tercero_Cod_Mcipio"]=$DatosTercero["Cod_Mcipio"];
+            $Datos["Tercero_Pais_Domicilio"]=$DatosTercero["Pais_Domicilio"];
+            $Datos["Concepto"]="Devolucion de mercancia";
+            $Datos["CuentaPUC"]=$CuentaPUC;
+            $Datos["NombreCuenta"]=$NombreCuenta;
+            $Datos["Detalle"]="Nota $idNota";
+            $Datos["Debito"]=0;
+            $Datos["Credito"]=$DatosTotalesNota["Subtotal"];
+            $Datos["Neto"]=$Datos["Credito"]*(-1);
+            $Datos["idCentroCosto"]=$DatosNota["idCentroCostos"];
+            $Datos["idEmpresa"]=1;
+            $Datos["idSucursal"]=$DatosNota["idSucursal"];
+            $Datos["idUsuario"]=$DatosNota["idUser"];
+
+            $sql=$this->getSQLInsert($Tabla, $Datos);
+            $this->Query($sql);
+            //Se arma el SQL para el iva de acuerdo a cada tipo
+            if($DatosTotalesNota["IVA"]>0){
+                $sql_items="SELECT Tipo_Impuesto,SUM(ImpuestoCompra) as IVA FROM factura_compra_items_devoluciones WHERE idNotaDevolucion='$idNota' AND idNotaDevolucion<>'0' "
+                        . "GROUP BY Tipo_Impuesto";
+                $consulta = $this->Query($sql_items);
+                while($DatosIVAItems= $this->FetchArray($consulta)){
+                    
+                    if($DatosIVAItems["IVA"]>0){
+                        $DatosIVA= $this->DevuelveValores("porcentajes_iva", "Valor", $DatosIVAItems["Tipo_Impuesto"]);
+                        $Datos["CuentaPUC"]=$DatosIVA["CuentaPUC"];
+                        $Datos["NombreCuenta"]=$DatosIVA["NombreCuenta"];
+                        $Datos["Credito"]=$DatosIVAItems["IVA"];
+                        $Datos["Neto"]=$Datos["Credito"]*(-1);
+                        $sql=$this->getSQLInsert($Tabla, $Datos);
+                        $this->Query($sql);
+                    }
+                    
+                }
+            }
+            //Se arma el SQL para para la contrapartida a la cuenta de proveedores
+            $Parametros=$this->DevuelveValores("parametros_contables", "ID", 14); //Cuentas X pagar proveedores
+            $Datos["CuentaPUC"]=$Parametros["CuentaPUC"];
+            $Datos["NombreCuenta"]=$Parametros["NombreCuenta"];
+            $Datos["Debito"]=$DatosTotalesNota["Total"];
+            $Datos["Credito"]=0;
+            $Datos["Neto"]=$DatosTotalesNota["Total"];
+            $sql=$this->getSQLInsert($Tabla, $Datos);
+            $this->Query($sql);
             
         }
+        /*
         $this->ContabiliceProductosDevueltos($idCompra);
         $this->IngreseRetireProductosInventarioCompra($idCompra,"ENTRADA");  //Ingreso los productos al inventario
         
+        *
          * 
          */
         $this->ActualizaRegistro("factura_compra_notas_devolucion", "Estado", "CERRADA", "ID", $idNota);

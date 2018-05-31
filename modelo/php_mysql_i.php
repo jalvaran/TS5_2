@@ -6,10 +6,10 @@
 include_once("php_settings.php");
 class db_conexion{
     public  $mysqli;
-    public  $host="localhost";
-    public  $user="root";
-    public  $pw="pirlo1985";
-    public  $db="ts5";
+    public  $host=HOST;
+    public  $user=USER;
+    public  $pw=PW;
+    public  $db=DB;
     
     // conectar
     public function Conectar(){
@@ -24,15 +24,15 @@ class db_conexion{
         $str=str_ireplace("'", "", $string);
         $str=str_ireplace('"', "", $string);
         //$str=$string;
-        $str=str_ireplace("CREATE", "ISQL", $str);
-        $str=str_ireplace("DROP", "ISQL", $str);
-        $str=str_ireplace("ALTER", "ISQL", $str);
-        $str=str_ireplace("SELECT", "ISQL", $str);
-        $str=str_ireplace("INSERT", "ISQL", $str);
-        $str=str_ireplace("UPDATE", "ISQL", $str);
-        $str=str_ireplace("DELETE", "ISQL", $str);
-        $str=str_ireplace("REPLACE", "ISQL", $str);
-        $str=str_ireplace("TRUNCATE", "ISQL", $str);
+        $str=str_ireplace("CREATE ", "ISQL", $str);
+        $str=str_ireplace("DROP ", "ISQL", $str);
+        $str=str_ireplace("ALTER ", "ISQL", $str);
+        $str=str_ireplace("SELECT ", "ISQL", $str);
+        $str=str_ireplace("INSERT ", "ISQL", $str);
+        $str=str_ireplace("UPDATE ", "ISQL", $str);
+        $str=str_ireplace("DELETE ", "ISQL", $str);
+        $str=str_ireplace("REPLACE ", "ISQL", $str);
+        $str=str_ireplace("TRUNCATE ", "ISQL", $str);
         //$str=filter_var($string, FILTER_SANITIZE_STRING);
         return($str);
     }
@@ -334,6 +334,34 @@ public function ShowColums($Tabla){
         $Objeto=$Consulta->fetch_object();
         return($Objeto);
     }
+    
+    /**
+ * Esta Funcion devuelve el sql para la insercion de datos.
+ * @param type $Tabla -> Tabla de la base de datos
+ * @param type $Datos -> el indice será el campo y el valor el dato a ingresar
+ * @return string -> retorna el sql
+ */
+    function getSQLInsert($Tabla,$Datos){
+      $sqlCampos = "INSERT INTO $Tabla (";
+      $sqlValores= ' VALUES (';
+      $length_array = count($Datos);
+      $i = 1;
+      foreach ($Datos as $key => $value) {
+        $sqlCampos .= "`$key`";
+        $sqlValores .= "'$value'";
+        if ($i!= $length_array) {
+          $sqlCampos .= ", " ;
+          $sqlValores .= ", " ;
+        }else {
+          $sqlCampos .= ')';
+          $sqlValores .= ');'."\n\r";
+        }
+        $i++;
+      }
+      $sql=$sqlCampos.$sqlValores;
+      return $sql;
+    }
+    
 //Fin Clases
 }
 

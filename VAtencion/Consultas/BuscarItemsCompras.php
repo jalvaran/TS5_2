@@ -54,7 +54,7 @@ if($key<>""){
                         print("<br><strong>Tipo de IVA: </strong><br>");
                         $css->CrearSelect("TipoIVA", "");
                             $css->CrearOptionSelect("", "Seleccione un tipo de IVA", 0);
-                            $Consulta=$obVenta->ConsultarTabla("porcentajes_iva", "");
+                            $Consulta=$obVenta->ConsultarTabla("porcentajes_iva", " WHERE Habilitado='SI'");
                             while($DatosIVA=$obVenta->FetchArray($Consulta)){
                                 $sel=0;
                                 if($DatosCompraGeneral["TipoCompra"]=='RM'){

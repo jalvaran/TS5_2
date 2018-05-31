@@ -8,6 +8,8 @@ $user="techno";
 $pw="techno";
 $db="ts5";
  
+const HOST="localhost", USER="techno",PW="techno",DB="ts5"; //para uso 
+
 /* Para un servidor la combinacion deberá ser $TipoPC="Server"; $TipoKardex="Caja";
  * Para una Caja la combinacion deberá ser $TipoPC="Caja"; $TipoKardex="Caja";
  * Para un ServidorCaja la combinacion deberá ser $TipoPC="Caja"; $TipoKardex="Automatico";
