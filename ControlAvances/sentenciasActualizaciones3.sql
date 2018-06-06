@@ -157,3 +157,5 @@ INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`,
 
 INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `CuerpoFormato`, `NotasPiePagina`, `Updated`, `Sync`) VALUES (31, 'NOTA DE DEVOLUCION', '001', 'F-GC-003', '2016-05-11', '', '', '2017-10-20 10:30:00', '2017-10-20 10:30:00');
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (167, 'Totales en Facturacion', '12', '3', 'vista_totales_facturacion.php', '_SELF', b'1', 'totales_facturacion.png', '9', '2017-10-13 14:16:57', '2017-10-11 14:16:57');
+

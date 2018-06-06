@@ -18,7 +18,7 @@ GROUP BY `FechaFactura`, `Departamento`,`SubGrupo1`,`SubGrupo2`,`SubGrupo3`,`Sub
 
 DROP VIEW IF EXISTS `vista_factura_compra_totales`;
 CREATE VIEW vista_factura_compra_totales AS 
-SELECT `idFacturaCompra`,(SELECT Fecha FROM factura_compra WHERE ID=`idFacturaCompra`) as Fecha,
+SELECT `idFacturaCompra`,(SELECT Nombre FROM empresa_pro_sucursales WHERE empresa_pro_sucursales.ID=fc.idSucursal) AS Sede,(SELECT Fecha FROM factura_compra WHERE ID=`idFacturaCompra`) as Fecha,
 (SELECT NumeroFactura FROM factura_compra WHERE ID=`idFacturaCompra`) as NumeroFactura,
 fc.Tercero as Tercero,(SELECT RazonSocial FROM proveedores WHERE proveedores.Num_Identificacion=fc.Tercero LIMIT 1) as RazonSocial,
 sum(`SubtotalCompra`) AS Subtotal, sum(`ImpuestoCompra`) as Impuestos,
@@ -125,3 +125,9 @@ SELECT `ID`,`Fecha`,`Tercero`,`Concepto`,(SELECT SUM(SubtotalCompra) FROM factur
 (SELECT SUM(TotalCompra) FROM factura_compra_items_devoluciones WHERE factura_compra_items_devoluciones.idNotaDevolucion = factura_compra_notas_devolucion.ID) as Total,
 `idCentroCostos`,`idSucursal`,`idUser`,`Estado`
 FROM `factura_compra_notas_devolucion`;
+
+DROP VIEW IF EXISTS `vista_totales_facturacion`;
+CREATE VIEW vista_totales_facturacion AS
+SELECT `FechaFactura`,SUM(`Cantidad`) as Items, round(sum(`SubtotalItem`)) as Subtotal, round(SUM(`IVAItem`)) AS IVA, round(SUM(`ValorOtrosImpuestos`)) AS OtrosImpuestos, 
+round(SUM(`TotalItem`)) AS Total FROM `facturas_items` 
+GROUP BY `FechaFactura` ;

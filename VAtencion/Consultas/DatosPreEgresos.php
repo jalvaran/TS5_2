@@ -33,9 +33,18 @@ if($obVenta->NumRows($Consulta)){
         $css->CrearForm2("FrmEditarMonto".$DatosPreEgreso["ID"], $myPage, "post", "_self");
         $css->CrearInputText("idPre", "hidden", "", $DatosPreEgreso["idPre"], "", "", "", "", "", "", 0, 0);
         $css->CrearInputText("TxtSaldo", "hidden", "", $DatosPreEgreso["Saldo"], "", "", "", "", "", "", 0, 0);
+        print("<br>");
         $css->CrearInputNumber("TxtAbonoEdit", "Number", "Abono:<br>", $DatosPreEgreso['Abono'], "Abono", "", "", "", 100, 30, 0, 1, 1, $DatosPreEgreso['Saldo'], "any");
+        print("<br>");
         $css->CrearInputNumber("TxtDescuentoProntoPago", "Number", "Descuento:<br>", $DatosPreEgreso['Descuento'], "Descuento", "", "", "", 100, 30, 0, 0, 0, $DatosPreEgreso['Saldo'], 1);
-        $css->CrearBoton("BtnEditar", "E");
+        print("<br><strong>Cruzar con Nota:</strong>");
+        
+        $css->CrearSelectTable("CmbNotaDevolucion", "vista_notas_devolucion", "WHERE Tercero='$DatosPreEgreso[idProveedor]' AND Estado='CERRADA'", "ID", "Concepto", "Total", "onChange", "", "", 0);
+        print("<br>");
+        $css->CrearInputNumber("TxtCruceNota", "Number", "", 0, "Valor a Cruzar", "", "", "", 100, 30, 1, 0, 0, $DatosPreEgreso['Saldo'], 1);
+        
+        print("<br>");
+        $css->CrearBoton("BtnEditar", "Agregar");
         $css->CerrarForm();
         print("</td>");
        
