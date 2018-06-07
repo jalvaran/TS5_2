@@ -39,9 +39,7 @@ if($obVenta->NumRows($Consulta)){
         $css->CrearInputNumber("TxtDescuentoProntoPago", "Number", "Descuento:<br>", $DatosPreEgreso['Descuento'], "Descuento", "", "", "", 100, 30, 0, 0, 0, $DatosPreEgreso['Saldo'], 1);
         print("<br><strong>Cruzar con Nota:</strong>");
         
-        $css->CrearSelectTable("CmbNotaDevolucion", "vista_notas_devolucion", "WHERE Tercero='$DatosPreEgreso[idProveedor]' AND Estado='CERRADA'", "ID", "Concepto", "Total", "onChange", "", "", 0);
-        print("<br>");
-        $css->CrearInputNumber("TxtCruceNota", "Number", "", 0, "Valor a Cruzar", "", "", "", 100, 30, 1, 0, 0, $DatosPreEgreso['Saldo'], 1);
+        $css->CrearSelectTable("CmbNotaDevolucion", "vista_notas_devolucion", "WHERE Tercero='$DatosPreEgreso[idProveedor]' AND Estado='CERRADA' and Total<='$DatosPreEgreso[Saldo]'", "ID", "Concepto", "Total", "onChange", "", "", 0);
         
         print("<br>");
         $css->CrearBoton("BtnEditar", "Agregar");
@@ -65,6 +63,7 @@ if($obVenta->NumRows($Consulta)){
     $css->ColTabla("<strong>Fecha</strong>", 1);
     $css->ColTabla("<strong>Total</strong>", 1);
     $css->ColTabla("<strong>Total Descuentos</strong>", 1);
+    $css->ColTabla("<strong>Cruce de Notas</strong>", 1);
     $css->ColTabla("<strong>Gran Total</strong>", 1);
     $css->ColTabla("<strong>Cuenta Origen</strong>", 6);
     $css->ColTabla("<strong>Generar</strong>", 2);
@@ -76,13 +75,17 @@ if($obVenta->NumRows($Consulta)){
     print("<td>");
     $TotalAbono=$obVenta->Sume("egresos_pre", "Abono", " WHERE idUsuario='$idUser'");
     $TotalDescuentos=$obVenta->Sume("egresos_pre", "Descuento", " WHERE idUsuario='$idUser'");
+    $TotalCruces=$obVenta->Sume("egresos_pre", "CruceNota", " WHERE idUsuario='$idUser'");
     print(number_format($TotalAbono));
     print("</td>");
     print("<td>");
     print(number_format($TotalDescuentos));
     print("</td>");
     print("<td>");
-    print(number_format($TotalAbono+$TotalDescuentos));
+    print(number_format($TotalCruces));
+    print("</td>");
+    print("<td>");
+    print(number_format($TotalAbono+$TotalDescuentos+$TotalCruces));
     print("</td>");
     print("<td colspan='6'>");
     $VarSelect["Ancho"]=300;

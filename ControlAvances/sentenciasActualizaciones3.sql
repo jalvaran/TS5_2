@@ -159,3 +159,5 @@ INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `C
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (167, 'Totales en Facturacion', '12', '3', 'vista_totales_facturacion.php', '_SELF', b'1', 'totales_facturacion.png', '9', '2017-10-13 14:16:57', '2017-10-11 14:16:57');
 
+ALTER TABLE `egresos_pre` ADD `CruceNota` DOUBLE NOT NULL AFTER `Descuento`;
+

@@ -29,7 +29,14 @@ if(isset($_REQUEST['BtnEditar'])){
     $Saldo=$obVenta->normalizar($_REQUEST['TxtSaldo']);
     $Abono=$obVenta->normalizar($_REQUEST['TxtAbonoEdit']);
     $Descuento=$obVenta->normalizar($_REQUEST['TxtDescuentoProntoPago']);
-    $AbonoTotal=$Abono+$Descuento;
+    $Cruces=0;
+    if(isset($_REQUEST["CmbNotaDevolucion"])){
+        $idNotaDevolucion=$obVenta->normalizar($_REQUEST["CmbNotaDevolucion"]);
+        $DatosNota=$obVenta->DevuelveValores("vista_notas_devolucion", "ID", $idNotaDevolucion);
+        $Cruces=$DatosNota["Total"];
+        $obVenta->ActualizaRegistro("egresos_pre", "CruceNota", $Cruces, "ID", $idPreEgreso);
+    }
+    $AbonoTotal=$Abono+$Descuento+$Cruces;
     if($AbonoTotal<=$Saldo){
         $obVenta->ActualizaRegistro("egresos_pre", "Abono", $Abono, "ID", $idPreEgreso);
         $obVenta->ActualizaRegistro("egresos_pre", "Descuento", $Descuento, "ID", $idPreEgreso);

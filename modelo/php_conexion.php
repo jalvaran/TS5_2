@@ -5800,13 +5800,13 @@ public function VerificaPermisos($VectorPermisos) {
     //Crear un egreso desde la tabla egresos pre
     public function EgresosDesdePre($Fecha,$CuentaOrigen,$idUser,$Observaciones,$Vector){
         $DatosCuentaOrigen=$this->DevuelveValores("cuentasfrecuentes", "CuentaPUC", $CuentaOrigen);
-        $sql="SELECT ep.ID as idPre, cp.ID,cp.Soporte,cp.idCentroCostos,cp.idSucursal,cp.Concepto, ep.Abono,ep.Descuento, cp.DocumentoReferencia,cp.Subtotal,cp.IVA,cp.Total,cp.Retenciones,cp.Saldo,cp.Abonos,cp.idProveedor,cp.RazonSocial FROM egresos_pre ep "
+        $sql="SELECT ep.ID as idPre, cp.ID,cp.Soporte,cp.idCentroCostos,cp.idSucursal,cp.Concepto, ep.Abono,ep.Descuento,ep.CruceNota, cp.DocumentoReferencia,cp.Subtotal,cp.IVA,cp.Total,cp.Retenciones,cp.Saldo,cp.Abonos,cp.idProveedor,cp.RazonSocial FROM egresos_pre ep "
         . " INNER JOIN cuentasxpagar cp ON ep.idCuentaXPagar=cp.ID AND ep.idUsuario='$idUser'";
         $Consulta=$this->Query($sql);
             
         while($DatosEgresos=$this->FetchArray($Consulta)){
-            $NuevoSaldo=$DatosEgresos["Saldo"]-$DatosEgresos["Abono"]-$DatosEgresos["Descuento"];
-            $TotalAbonos=$DatosEgresos["Abonos"]+$DatosEgresos["Abono"]+$DatosEgresos["Descuento"];
+            $NuevoSaldo=$DatosEgresos["Saldo"]-$DatosEgresos["Abono"]-$DatosEgresos["Descuento"]-$DatosEgresos["CruceNota"];
+            $TotalAbonos=$DatosEgresos["Abonos"]+$DatosEgresos["Abono"]+$DatosEgresos["Descuento"]+$DatosEgresos["CruceNota"];
                         
             $this->ActualizaRegistro("cuentasxpagar", "Saldo", $NuevoSaldo, "ID", $DatosEgresos["ID"]);
             $this->ActualizaRegistro("cuentasxpagar", "Abonos", $TotalAbonos, "ID", $DatosEgresos["ID"]);
@@ -5816,7 +5816,7 @@ public function VerificaPermisos($VectorPermisos) {
         // SE crean los egresos
         
         $sql="SELECT ep.ID as idPre ,cp.CuentaPUC as CuentaPUC, GROUP_CONCAT(cp.ID SEPARATOR ';') AS ID ,cp.Soporte,cp.idCentroCostos,cp.idSucursal,GROUP_CONCAT(cp.Concepto SEPARATOR ';') AS Concepto, "
-                . "SUM(ep.Abono) AS Abono,SUM(ep.Descuento) AS Descuento, GROUP_CONCAT(cp.DocumentoReferencia SEPARATOR ';') AS DocumentoReferencia,"
+                . "SUM(ep.Abono) AS Abono,SUM(ep.Descuento) AS Descuento,SUM(ep.CruceNota) AS CruceNota, GROUP_CONCAT(cp.DocumentoReferencia SEPARATOR ';') AS DocumentoReferencia,"
                 . "SUM(cp.Subtotal) as Subtotal,SUM(cp.IVA) as IVA,SUM(cp.Total) as Total,SUM(cp.Retenciones) as Retenciones,SUM(cp.Saldo) as Saldo,"
                 . "SUM(cp.Abonos) as Abonos,cp.idProveedor,cp.RazonSocial FROM egresos_pre ep "
                 . "INNER JOIN cuentasxpagar cp ON ep.idCuentaXPagar=cp.ID AND ep.idUsuario='$idUser' GROUP BY cp.idProveedor,cp.idSucursal ";
@@ -5857,7 +5857,7 @@ public function VerificaPermisos($VectorPermisos) {
 
             $this->InsertarRegistro("egresos",$NumRegistros,$Columnas,$Valores);
             
-            $TotalPagoProveedor=$DatosEgresos["Abono"]+$DatosEgresos["Descuento"];
+            $TotalPagoProveedor=$DatosEgresos["Abono"]+$DatosEgresos["Descuento"]+$DatosEgresos["CruceNota"];
             $NumEgreso=$this->ObtenerMAX("egresos","idEgresos", 1, ""); 
             //$ParametroContable=$this->DevuelveValores("parametros_contables", "ID", 14);  //Parametro donde alberga la cuenta de proveedores
             $ParametroContable=$this->DevuelveValores("subcuentas", "PUC", $DatosEgresos["CuentaPUC"]);
@@ -5867,11 +5867,15 @@ public function VerificaPermisos($VectorPermisos) {
                 $ParametroContable=$this->DevuelveValores("parametros_contables", "ID", 15);
                 $this->IngreseMovimientoLibroDiario($Fecha, "CompEgreso", $NumEgreso, $DatosEgresos["DocumentoReferencia"], $DatosEgresos["idProveedor"], $ParametroContable["CuentaPUC"], $ParametroContable["NombreCuenta"], "Pago de Cuenta X Pagar", "CR", $DatosEgresos["Descuento"], $DatosEgresos["Concepto"], $DatosEgresos["idCentroCostos"], $DatosEgresos["idSucursal"], "");
             }
+            if($DatosEgresos["CruceNota"]>0){
+                $ParametroContable=$this->DevuelveValores("parametros_contables", "ID", 14);
+                $this->IngreseMovimientoLibroDiario($Fecha, "CompEgreso", $NumEgreso, $DatosEgresos["DocumentoReferencia"], $DatosEgresos["idProveedor"], $ParametroContable["CuentaPUC"], $ParametroContable["NombreCuenta"], "Pago de Cuenta X Pagar", "CR", $DatosEgresos["CruceNota"], "Cruce de Nota de Devolucion", $DatosEgresos["idCentroCostos"], $DatosEgresos["idSucursal"], "");
+            }
             $NumRegistros=6;
             $Columnas[0]="Fecha";               $Valores[0]=$Fecha;
             $Columnas[1]="Hora";		$Valores[1]=date("H:i:s");
             $Columnas[2]="idCuentaXPagar";	$Valores[2]=$DatosEgresos["ID"];
-            $Columnas[3]="Monto";		$Valores[3]=$DatosEgresos["Abono"]+$DatosEgresos["Descuento"];
+            $Columnas[3]="Monto";		$Valores[3]=$TotalPagoProveedor;
             $Columnas[4]="idUsuarios";          $Valores[4]=$idUser;
             $Columnas[5]="idComprobanteEgreso"; $Valores[5]=$NumEgreso;
             
