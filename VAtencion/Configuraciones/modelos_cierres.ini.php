@@ -1,8 +1,8 @@
 <?php
 
-$myTabla="modelos_agenda";
-$myPage="modelos_agenda.php";
-$myTitulo="Agenda de las Modelos";
+$myTabla="modelos_cierres";
+$myPage="modelos_cierres.php";
+$myTitulo="Historial de cierres";
 $idTabla="ID";
 
 
@@ -23,7 +23,7 @@ $Ruta="$myPage?idCierre=";
 $Vector["VerRegistro"]["Link"]=$Ruta;
 $Vector["VerRegistro"]["ColumnaLink"]="ID";
 
-$Vector["VerRegistro"]["Deshabilitado"]=1;       
+//$Vector["VerRegistro"]["Deshabilitado"]=1;       
 $Vector["NuevoRegistro"]["Deshabilitado"]=1;                                 
 $Vector["EditarRegistro"]["Deshabilitado"]=1;
 

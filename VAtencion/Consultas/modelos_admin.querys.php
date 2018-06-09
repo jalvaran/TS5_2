@@ -6,13 +6,14 @@ if (!isset($_SESSION['username'])){
 }
 
 include_once("../../modelo/php_conexion.php");
+include_once("../../modelo/PrintPos.php");
 include_once("../css_construct.php");
 include_once("../clases/ModelosAdmin.class.php");
 $css =  new CssIni("");
 $idUser=$_SESSION["idUser"];
 $obVenta = new ProcesoVenta($idUser);
 $obModel= new Modelos($idUser);
-
+$obPrint= new PrintPos($idUser);
 function Kardex(){
     $idUser=$_SESSION["idUser"];
     $obVenta = new ProcesoVenta($idUser);   
@@ -56,6 +57,7 @@ if(isset($_REQUEST["Accion"])){
             if($TipoKardex=="Automatico"){
                 register_shutdown_function('Kardex');
             }
+            $obPrint->ImprimeFacturaPOS($NumFactura, "", 1);
             break;
         case 4: //Liquidar Modelos
             $idModelo=0;
@@ -63,7 +65,9 @@ if(isset($_REQUEST["Accion"])){
                 $idModelo=$obVenta->normalizar($_REQUEST["Modelo"]);
             }
             $idCierre=$obModel->CerrarTurnoModelos($idModelo, $idUser, "");
+            $obPrint->ImprimirCierreModelos($idCierre, "", 2, "");
             $css->CrearNotificacionRoja("Se realizó el cierre Num. $idCierre", 16);
+            
     }
     goto CargarDatos;
 }

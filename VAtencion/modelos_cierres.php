@@ -16,8 +16,15 @@ $page = (int) (!isset($_GET["page"]) ? 1 : $_GET["page"]);
         
 include_once ('funciones/function.php');  //En esta funcion está la paginacion
 
-include_once("Configuraciones/modelos_agenda.ini.php");  //Clases de donde se escribirán las tablas
+include_once("Configuraciones/modelos_cierres.ini.php");  //Clases de donde se escribirán las tablas
 $obTabla = new Tabla($db);
+
+if(isset($_REQUEST["idCierre"])){
+    $idCierre=$_REQUEST["idCierre"];
+    
+    $obPrint->ImprimirCierreModelos($idCierre, "", 1,"");        
+    
+}
 
 
 $statement = $obTabla->CreeFiltro($Vector);
@@ -53,14 +60,6 @@ print("</div>");
 ///Dibujo la tabla
 ////
 ///
-$Consulta=$obVenta->Query("SELECT SUM(ValorPagado) as Total, COUNT(*) as TotalServicios, "
-        .           "SUM(ValorModelo) as TotalModelo,SUM(ValorCasa) as TotalCasa FROM $statement");
-$DatosConsulta=$obVenta->FetchArray($Consulta);
-$TotalServicios=  number_format($DatosConsulta["TotalServicios"]);
-$Total=  number_format($DatosConsulta["Total"]);
-$TotalModelo=  number_format($DatosConsulta["TotalModelo"]);
-$TotalCasa=  number_format($DatosConsulta["TotalCasa"]);
-$css->CrearNotificacionVerde("Datos incluyendo servicios Anulados <br> Cantidad de servicios: $TotalServicios //Total Modelos: $TotalModelo // Total Casa: $TotalCasa // Gran Total: $Total", 16);
 
 $obTabla->DibujeTabla($Vector);
 $css->CerrarDiv();//Cerramos contenedor Principal

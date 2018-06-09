@@ -1694,5 +1694,92 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
     fclose($handle); // cierra el fichero PRN
     $salida = shell_exec('lpr $COMPrinter');
     }
+    //Imprime cierre de modelos
+   
+    public function ImprimirCierreModelos($idCierre,$COMPrinter,$Copias,$Vector) {
+        $DatosImpresora=$this->DevuelveValores("config_puertos", "ID", 1);   
+        if($DatosImpresora["Habilitado"]<>"SI"){
+            return;
+        }
+        $COMPrinter= $this->COMPrinter;
+        if(($handle = @fopen("$COMPrinter", "w")) === FALSE){
+            die('ERROR:\nNo se puedo Imprimir, Verifique la conexion de la IMPRESORA');
+        }
+        $Titulo="Comprobante de Cierre De Modelos No. $idCierre";
+        $DatosCierre=$this->DevuelveValores("modelos_cierres", "ID", $idCierre);
+        $Fecha=$DatosCierre["Fecha"];
+        $Hora=$DatosCierre["Hora"];
+        $idUsuario=$DatosCierre["idUser"];
+        $Modelos[]="";
+        
+        for($i=1; $i<=$Copias;$i++){
+        fwrite($handle,chr(27). chr(64));//REINICIO
+        fwrite($handle, chr(27). chr(112). chr(48));//ABRIR EL CAJON
+        fwrite($handle, chr(27). chr(100). chr(0));// SALTO DE CARRO VACIO
+        fwrite($handle, chr(27). chr(33). chr(8));// NEGRITA
+        fwrite($handle, chr(27). chr(97). chr(1));// CENTRADO
+        fwrite($handle,"*************************************");
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        fwrite($handle,$Titulo); // Titulo
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        fwrite($handle,"*************************************");
+        
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        fwrite($handle, chr(27). chr(97). chr(0));// IZQUIERDA
+        fwrite($handle,"FECHA: $Fecha      HORA: $Hora");
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle,"*************************************");
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        $sql="SELECT * FROM modelos_agenda WHERE idCierre='$idCierre' AND Estado <> 'Anulado' ORDER BY idModelo";
+        $Consulta= $this->Query($sql);
+        $idModelo="";
+        $DatosCasa[]="";
+        $TotalModelo=0;
+        $TotalCasa=0;
+        while($DatosAgenda=$this->FetchArray($Consulta)){
+            $idModeloAnt=$idModelo;
+            $idModelo=$DatosAgenda["idModelo"];
+            if($idModelo<>$idModeloAnt){
+                
+                $DatosModelo=$this->DevuelveValores("modelos_db", "ID", $idModelo);
+                fwrite($handle,"Servicios de la Modelo $DatosModelo[NombreArtistico]: ");
+                fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+                
+                
+            }
+            $TotalCasa=$TotalCasa+$DatosAgenda["ValorCasa"];
+            $TotalModelo=$TotalModelo+$DatosAgenda["ValorModelo"];
+            
+            fwrite($handle,"Fecha: $DatosAgenda[HoraInicial] // ");
+            fwrite($handle,"Valor: ".number_format($DatosAgenda["ValorModelo"]));
+            fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        }
+        
+        //fwrite($handle,"Total Modelo: $DatosAgenda[HoraInicial] // ");
+        fwrite($handle,"Total Modelo: ".number_format($TotalModelo));
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+            
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+    fwrite($handle, chr(29). chr(86). chr(49));//CORTA PAPEL
+    fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+            
+        
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+    fwrite($handle,"Total Casa: ".number_format($TotalCasa));
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+            
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+    fwrite($handle, chr(29). chr(86). chr(49));//CORTA PAPEL
+    }
+    fclose($handle); // cierra el fichero PRN
+    $salida = shell_exec('lpr $COMPrinter');
+    }
+    
     //Fin Clases
 }
