@@ -165,3 +165,5 @@ ALTER TABLE `modelos_db` ADD `Telefono` VARCHAR(45) NOT NULL AFTER `Identificaci
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (168, 'Historial de Cierres', '45', '3', 'modelos_cierres.php', '_SELF', b'1', 'historial2.png', '5', '2018-05-15 10:24:10', '2017-10-13 14:16:57');
 
+ALTER TABLE `inventarios_conteo_selectivo` CHANGE `Referencia` `Referencia` BIGINT NOT NULL;
+

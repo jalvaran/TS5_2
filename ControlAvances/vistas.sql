@@ -131,3 +131,13 @@ CREATE VIEW vista_totales_facturacion AS
 SELECT `FechaFactura`,SUM(`Cantidad`) as Items, round(sum(`SubtotalItem`)) as Subtotal, round(SUM(`IVAItem`)) AS IVA, round(SUM(`ValorOtrosImpuestos`)) AS OtrosImpuestos, 
 round(SUM(`TotalItem`)) AS Total FROM `facturas_items` 
 GROUP BY `FechaFactura` ;
+
+DROP VIEW IF EXISTS `vista_diferencia_inventarios_selectivos`;
+CREATE VIEW vista_diferencia_inventarios_selectivos AS
+SELECT idProductosVenta,`Referencia`,`Nombre`,`Existencias` as ExistenciaAnterior,
+(SELECT IFNULL((SELECT Cantidad FROM inventarios_conteo_selectivo WHERE productosventa.idProductosVenta = inventarios_conteo_selectivo.Referencia),0)) as ExistenciaActual,
+(SELECT ExistenciaActual) - (Existencias) as Diferencia,PrecioVenta,CostoUnitario,
+(SELECT Diferencia)*CostoUnitario AS TotalCostosDiferencia,Departamento,Sub1,Sub2,Sub3,Sub4,Sub5
+  FROM `productosventa` 
+WHERE (SELECT IFNULL((SELECT Cantidad FROM inventarios_conteo_selectivo WHERE productosventa.idProductosVenta = inventarios_conteo_selectivo.Referencia),0))>0;
+
