@@ -298,14 +298,12 @@ round(s.`CostoUnitario`) AS CostoUnitario,round(si.Cantidad*s.`CostoUnitario`) a
 s.`Departamento`,s.Sub1,s.`Sub2`,s.`Sub3`,s.`Sub4`,s.`Sub5`,st.`Updated`,st.`Sync` 
 FROM sistemas_relaciones si INNER JOIN `productosventa` s  ON s.Referencia=si.Referencia INNER JOIN sistemas st ON st.ID=si.idSistema
 
-2017-05-28
-
 ALTER TABLE `sistemas_relaciones` CHANGE `Referencia` `Referencia` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL;
 ALTER TABLE `sistemas_relaciones` CHANGE `TablaOrigen` `TablaOrigen` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL;
 
 
 
-2017-05-28
+
 
 --
 -- Estructura de tabla para la tabla `factura_compra_servicios`

@@ -173,7 +173,7 @@ class CssIni{
 		");
 		print('<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>	
-		<script type="text/javascript" src="js/DateTimePicker.js"></script>
+		
                 <script src="../plugins/ckeditor/ckeditor.js"></script>
                 <script src="../plugins/ckeditor/samples/js/sample.js"></script>
 ');
@@ -872,7 +872,7 @@ class CssIni{
             
             print('<script src="js/jquery.js"></script>
             <script src="js/bootstrap-transition.js"></script>
-            <script src="js/beeper.js"></script>
+            
             <script src="js/bootstrap-alert.js"></script>
             <script src="js/bootstrap-modal.js"></script>
             <script src="js/bootstrap-dropdown.js"></script>

@@ -167,3 +167,5 @@ INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`,
 
 ALTER TABLE `inventarios_conteo_selectivo` CHANGE `Referencia` `Referencia` BIGINT NOT NULL;
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (169, 'Ventas', '30', '3', 'VentasRestaurante.php', '_SELF', b'1', 'vender.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+
