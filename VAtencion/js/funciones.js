@@ -795,6 +795,39 @@ function EnvieObjetoConsulta2(Page,idElement,idTarget,BorrarId=1){
             ValorElement="?TxtFechaInicial="+FechaInicial+"&TxtFechaFinal="+FechaFinal;
             document.getElementById(idTarget).innerHTML ='<br><img src="../images/cargando.gif" alt="Cargando" height="100" width="100">';
         }
+        
+        //crear un domicilio
+        if(BorrarId==8){
+            Nombre =document.getElementById('Nombre').value;
+            Direccion =document.getElementById('Direccion').value;   
+            Observaciones =document.getElementById('Observaciones').value; 
+            Telefono=document.getElementById('Telefono').value; 
+            if(Nombre =='' || Direccion=='' || Telefono==''){
+                alert("Debes completar todos los campos");
+                return;
+            }
+            ValorElement="?TipoPedido=DO&CrearDomicilio=Crear&Nombre="+Nombre+"&Direccion="+Direccion+"&Observaciones="+Observaciones+"&Telefono="+Telefono;            
+            document.getElementById(idTarget).innerHTML ='<br><img src="../images/cargando.gif" alt="Cargando" height="100" width="100">';
+            
+        }
+        
+        //Agregar un producto a un pedido
+        if(BorrarId==9){
+            
+            Mesa =document.getElementById('idMesa').value;
+            idDepartamento =document.getElementById('idDepartamento').value;   
+            Observaciones =document.getElementById('Observaciones').value; 
+            idProducto=document.getElementById('idProducto').value; 
+            Cantidad=document.getElementById('Cantidad').value; 
+            if(Mesa =='' || idDepartamento=='' || idProducto=='' || Cantidad==''){
+                alert("Debes completar todos los campos");
+                return;
+            }
+            ValorElement="?TipoPedido=AB&AgregarItemPedido=Agregar&Mesa="+Mesa+"&idDepartamento="+idDepartamento+"&Observaciones="+Observaciones+"&idProducto="+idProducto+"&Cantidad="+Cantidad;            
+            document.getElementById(idTarget).innerHTML ='<br><img src="../images/cargando.gif" alt="Cargando" height="100" width="100">';
+            
+        }
+        
         if(BorrarId==98){
             document.getElementById(idTarget).innerHTML ='<br><img src="../images/cargando.gif" alt="Cargando" height="100" width="100">';
         }

@@ -5042,57 +5042,7 @@ public function VerificaPermisos($VectorPermisos) {
         return($Valores);
     }
     
-   
-    //Crear un Domicilio
-    //
-    public function CreeDomicilio($fecha,$hora,$idCliente,$DireccionEnvio, $TelefonoConfimacion,$Observaciones,$Vector) {
-        $FechaHora=$fecha." ".$hora;
-        $DatosCliente=$this->DevuelveValores("clientes", "idClientes", $idCliente);
-        if($DireccionEnvio==""){
-            $DireccionEnvio=$DatosCliente["Direccion"];
-        }
-        if($TelefonoConfimacion==""){
-            $TelefonoConfimacion=$DatosCliente["Telefono"];
-        }
-        $tab="restaurante_pedidos";
-        $NumRegistros=11; 
-        
-        $Columnas[0]="Fecha";               $Valores[0]=$fecha;
-        $Columnas[1]="Hora";                $Valores[1]=$hora;
-        $Columnas[2]="idUsuario";           $Valores[2]=$this->idUser;
-        $Columnas[3]="idMesa";              $Valores[3]="";
-        $Columnas[4]="Estado";              $Valores[4]="DO";
-        $Columnas[5]="FechaCreacion";       $Valores[5]=$FechaHora;
-        $Columnas[6]="NombreCliente";       $Valores[6]=$DatosCliente["RazonSocial"];
-        $Columnas[7]="DireccionEnvio";      $Valores[7]=$DireccionEnvio;
-        $Columnas[8]="TelefonoConfirmacion";$Valores[8]=$TelefonoConfimacion;
-        $Columnas[9]="Observaciones";       $Valores[9]=$Observaciones;
-        $Columnas[10]="idCliente";          $Valores[10]=$idCliente;
-        
-        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
-        $idPedido=$this->ObtenerMAX($tab,"ID", 1,"");
-        return($idPedido);
-    }
-    //cerrar el turno en restaurante
-    public function CierreTurnoRestaurante($Vector) {
-        $fecha=date("Y-m-d");
-        $hora=date("H:i:s");
-        $tab="restaurante_cierres";
-        $NumRegistros=3; 
-        
-        $Columnas[0]="Fecha";               $Valores[0]=$fecha;
-        $Columnas[1]="Hora";                $Valores[1]=$hora;
-        $Columnas[2]="idUsuario";           $Valores[2]=$this->idUser;
-                
-        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
-        $idCierre=$this->ObtenerMAX($tab,"ID", 1,"");
-        $this->update("restaurante_pedidos", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>'AB'");
-        $this->update("restaurante_pedidos_items", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>''");
-        
-        return($idCierre);
-    }
-    
-        
+       
     //Quitar acentos y eñes
     public function QuitarAcentos($str) {
         $no_permitidas= array ('"',"`","´","á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","Ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");

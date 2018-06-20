@@ -1,8 +1,9 @@
 <?php 
 $myPage="VentasRestaurante.php";
 include_once("../sesiones/php_control.php");
+include_once("clases/Restaurante.class.php");
 include_once("css_construct.php");
-	
+$obRest=new Restaurante($idUser);	
 print("<html>");
 print("<head>");
 $css =  new CssIni("Ventas Restaurante");
@@ -20,35 +21,42 @@ print("<body>");
     ///////////////Creamos el contenedor
     /////
     /////
-   $css->DivGrid("DivOpciones", "", "left", 1, 1, 1, 100, 8,1,"transparent");
+
+    
+    
+   //$css->DivGrid("DivOpciones", "", "left", 1, 1, 1, 100, 8,1,"transparent");
+    $css->CrearDiv("DivOpciones", "container", "center", 1, 1);
         $evento="onClick";
-        $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&Carry=";
-        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);return false;";
+        $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&CuadroAdd=1&Carry=";
+        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);TimersPedidos(1);";
+        
         $css->CrearBotonEvento("BtnPedidos", "-Pedidos-", 1, $evento, $funcion, "naranja", "");
-        print("<br> <br>");
-        $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=DO&Carry=";
-        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);return false;";
+        print(" ");
+        $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=DO&CuadroAdd=1&Carry=";
+        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);TimersPedidos(2);";
+        
         $css->CrearBotonEvento("BtnDomicilios", "Domicilios", 1, $evento, $funcion, "rojo", "");
-        print("<br><br>");
+        print(" ");
         $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=LL&Carry=";
         $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);return false;";
+        
         $css->CrearBotonEvento("BtnLlevar", "<-Llevar->", 1, $evento, $funcion, "verde", "");
         
+        
+        
    $css->CerrarDiv();
-   $css->DivGrid("DivPedidos", "", "center", 1, 1, 2, 100, 60,1,"transparent");
+   $css->CrearDiv("DivPedidos", "container", "center", 1, 1);
+   //$css->DivGrid("DivPedidos", "", "center", 1, 1, 2, 100, 90,1,"transparent");
     
    $css->CerrarDiv();
-   $css->DivGrid("DivItems", "", "center", 1, 1, 2, 100, 30,1,"transparent");
+   //$css->DivGrid("DivItems", "", "center", 1, 1, 2, 100, 30,1,"transparent");
     
-   $css->CerrarDiv();
-    $css->CrearDiv("principal", "container", "center",1,1);
+   //$css->CerrarDiv();
     
-    
-    
-    $css->CerrarDiv();//Cerramos contenedor Principal
     $css->AgregaJS(); //Agregamos javascripts
     $css->AgregaSubir();
     $css->Footer();
+    print('<script src="jsPages/restaurante_ventas.js"></script>');
     print("</body></html>");
     ob_end_flush();
 ?>

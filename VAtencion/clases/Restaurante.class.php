@@ -4,9 +4,10 @@
  * Julian Alvaran
  * Techno Soluciones SAS
  */
-//include_once '../../php_conexion.php';
+//include_once '../../modelo/php_conexion.php';
 class Restaurante extends ProcesoVenta{
-    //Agregar un Producto a un pedido
+    
+        
         /**
          * Agregue un producto a un pedido
          * @param type $idMesa  -> Mesa
@@ -18,8 +19,8 @@ class Restaurante extends ProcesoVenta{
          * @param type $Vector ->uso futuro
          * @return type -> Retorna el id del pedido
          */
-        public function AgregueProductoAPedido($idMesa,$fecha,$hora,$Cantidad,$idProducto,$Observaciones,$Vector) {
-            $idUser=$this->idUser;
+        public function AgregueProductoAPedido($idMesa,$fecha,$hora,$Cantidad,$idProducto,$Observaciones,$idUser,$Vector) {
+            
             $FechaHora=$fecha." ".$hora;
             $sql="SELECT ID FROM restaurante_pedidos WHERE idMesa='$idMesa' AND idUsuario='$idUser' AND Estado='AB'";
             $Consulta=$this->Query($sql);
@@ -54,7 +55,7 @@ class Restaurante extends ProcesoVenta{
             $Columnas[6]="Total";               $Valores[6]=$ValoresProducto["Total"];
             $Columnas[7]="Observaciones";       $Valores[7]=$Observaciones;
             $Columnas[8]="idPedido";            $Valores[8]=$idPedido;
-            $Columnas[9]="idUsuario";           $Valores[9]=  $this->idUser;
+            $Columnas[9]="idUsuario";           $Valores[9]=  $idUser;
             $Columnas[10]="Fecha";              $Valores[10]=$fecha;
             $Columnas[11]="Hora";               $Valores[11]= $hora;
             $Columnas[12]="ProcentajeIVA";      $Valores[12]=($DatosProductos["IVA"]*100)."%";
@@ -71,8 +72,8 @@ class Restaurante extends ProcesoVenta{
         
        //Agregar un Producto a un domicilio
         
-        public function AgregueProductoADomicilio($idDomicilio,$fecha,$hora,$Cantidad,$idProducto,$Observaciones,$Vector) {
-            $idUser=$this->idUser;
+        public function AgregueProductoADomicilio($idPedido,$fecha,$hora,$Cantidad,$idProducto,$Observaciones,$idUser,$Vector) {
+            //$idUser=$this->idUser;
             $FechaHora=$fecha." ".$hora;
             
             $DatosProductos=$this->DevuelveValores("productosventa", "idProductosVenta", $idProducto);
@@ -88,8 +89,8 @@ class Restaurante extends ProcesoVenta{
             $Columnas[5]="IVA";                 $Valores[5]=$ValoresProducto["IVA"];
             $Columnas[6]="Total";               $Valores[6]=$ValoresProducto["Total"];
             $Columnas[7]="Observaciones";       $Valores[7]=$Observaciones;
-            $Columnas[8]="idPedido";            $Valores[8]=$idDomicilio;
-            $Columnas[9]="idUsuario";           $Valores[9]= $this->idUser;
+            $Columnas[8]="idPedido";            $Valores[8]=$idPedido;
+            $Columnas[9]="idUsuario";           $Valores[9]= $idUser;
             $Columnas[10]="Fecha";              $Valores[10]=$fecha;
             $Columnas[11]="Hora";               $Valores[11]= $hora;
             $Columnas[12]="ProcentajeIVA";      $Valores[12]=($DatosProductos["IVA"]*100)."%";
@@ -346,6 +347,66 @@ class Restaurante extends ProcesoVenta{
         $this->Query($sql);
         
     } 
+    
+    
+    /**
+     * Crear un Domicilio
+     * @param type $fecha : fecha
+     * @param type $hora : hora
+     * @param type $idCliente : id del cliente
+     * @param type $DireccionEnvio : direccion de envio
+     * @param type $TelefonoConfimacion : telefono
+     * @param type $Observaciones : observaciones
+     * @param type $Vector : uso futuro
+     * @return type : id del Pedido
+     */
+    public function CreeDomicilio($fecha,$hora,$idCliente,$Nombre,$DireccionEnvio, $TelefonoConfimacion,$Observaciones,$idUser,$Vector) {
+        $FechaHora=$fecha." ".$hora;
+        //$DatosCliente=$this->DevuelveValores("clientes", "idClientes", $idCliente);
+        if($DireccionEnvio==""){
+            $DireccionEnvio=$DatosCliente["Direccion"];
+        }
+        if($TelefonoConfimacion==""){
+            $TelefonoConfimacion=$DatosCliente["Telefono"];
+        }
+        $tab="restaurante_pedidos";
+        $NumRegistros=11; 
+        
+        $Columnas[0]="Fecha";               $Valores[0]=$fecha;
+        $Columnas[1]="Hora";                $Valores[1]=$hora;
+        $Columnas[2]="idUsuario";           $Valores[2]=$idUser;
+        $Columnas[3]="idMesa";              $Valores[3]="";
+        $Columnas[4]="Estado";              $Valores[4]="DO";
+        $Columnas[5]="FechaCreacion";       $Valores[5]=$FechaHora;
+        $Columnas[6]="NombreCliente";       $Valores[6]=$Nombre;
+        $Columnas[7]="DireccionEnvio";      $Valores[7]=$DireccionEnvio;
+        $Columnas[8]="TelefonoConfirmacion";$Valores[8]=$TelefonoConfimacion;
+        $Columnas[9]="Observaciones";       $Valores[9]=$Observaciones;
+        $Columnas[10]="idCliente";          $Valores[10]=$idCliente;
+        
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        $idPedido=$this->ObtenerMAX($tab,"ID", 1,"");
+        return($idPedido);
+    }
+    
+    //cerrar el turno en restaurante
+    public function CierreTurnoRestaurante($Vector) {
+        $fecha=date("Y-m-d");
+        $hora=date("H:i:s");
+        $tab="restaurante_cierres";
+        $NumRegistros=3; 
+        
+        $Columnas[0]="Fecha";               $Valores[0]=$fecha;
+        $Columnas[1]="Hora";                $Valores[1]=$hora;
+        $Columnas[2]="idUsuario";           $Valores[2]=$this->idUser;
+                
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        $idCierre=$this->ObtenerMAX($tab,"ID", 1,"");
+        $this->update("restaurante_pedidos", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>'AB'");
+        $this->update("restaurante_pedidos_items", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>''");
+        
+        return($idCierre);
+    }
     
     //Fin Clases
 }

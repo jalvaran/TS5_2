@@ -131,8 +131,8 @@ class CssIni{
 	private $Titulo;
 	
 	
-	function __construct($Titulo){
-		
+	function __construct($Titulo,$Headers=1){
+            if($Headers==1){
 		print("
 		<meta http-equiv=Content-Type content=text/html charset='UTF-8' />
 		<title>$Titulo</title>
@@ -176,7 +176,9 @@ class CssIni{
 		
                 <script src="../plugins/ckeditor/ckeditor.js"></script>
                 <script src="../plugins/ckeditor/samples/js/sample.js"></script>
-');
+                ');
+            }   
+            
 	}
 	
 	/////////////////////Inicio una cabecera
