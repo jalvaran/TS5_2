@@ -12,21 +12,19 @@ $obRest=new Restaurante($idUser);
 if(isset($_REQUEST["idPedido"])){
     $idPedido=$obRest->normalizar($_REQUEST["idPedido"]);
     $TotalPedido=$obRest->SumeColumna("restaurante_pedidos_items", "Total", "idPedido", $idPedido);
-    $css->CrearNotificacionVerde("P_$idPedido Total: $".number_format($TotalPedido), 16);
+    
     $DatosPedido=$obRest->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
+    
     $css->CrearTabla();
         $css->FilaTabla(16);
             //$css->ColTabla("Mesa", 1);
-            $css->ColTabla("Departamento", 1);
-            $css->ColTabla("Cantidad", 1);
-            $css->ColTabla("Producto", 1);
-            $css->ColTabla("Observaciones", 1);
             $css->ColTabla("Agregar", 1);
+            
         $css->CierraFilaTabla();    
         $css->FilaTabla(16);
             
-            print("<td>");
-                $css->CrearSelect("idDepartamento", "CargarProductos()", 100);
+            print("<td style='text-align:center'>");
+                $css->CrearSelect("idDepartamento", "CargarProductos()", 300);
                     $Datos=$obRest->ConsultarTabla("prod_departamentos", "");
                     $css->CrearOptionSelect("", "Seleccione", 0);
                     while ($DatosDepartamentos=$obRest->FetchArray($Datos)){
@@ -34,39 +32,39 @@ if(isset($_REQUEST["idPedido"])){
                         
                     }
                 $css->CerrarSelect();
-            print("</td>");
-            print("<td>");
-                $css->CrearInputNumber("Cantidad", "number", "", 1, "Cantidad", "", "", "", 60, 30, 0, 0, 0, '', "any");
-            print("</td>");
-            print("<td>");
-                $css->CrearSelect("idProducto", "", 250);
+                print("<br>");
+                $css->CrearInputNumber("Cantidad", "number", "", 1, "Cantidad", "", "", "", 100, 50, 0, 0, 0, '', "any","font-size:3em;");
+                print("<br>");
+                $css->CrearSelect("idProducto", "", 300);
                     
                     $css->CrearOptionSelect("", "Producto", 0);
                     
                 $css->CerrarSelect();
-            print("</td>");
-            
-            print("<td>");
-                $css->CrearTextArea("Observaciones", "", "", "Observaciones", "", "", "", 100, 60, 0, 0);
-            print("</td>");
-            
-            print("<td>");
-                //$Page="Consultas/Restaurante_pedidos.query.php";
+                print("<br>");
+                $css->CrearTextArea("Observaciones", "", "", "Observaciones", "", "", "", 300, 60, 0, 0);
+                print("<br>");
                 $evento="onClick";
                 //$funcion="EnvieObjetoConsulta2(`$Page`,`Observaciones`,`DivPedidos`,`9`);return false;";
                 $funcion="AgregarItemPedido($idPedido)";
                 $css->CrearBotonEvento("BtnAgregarPedido", "Agregar", 1, $evento, $funcion, "rojo", "");
             print("</td>");
+            
         $css->CierraFilaTabla();
     $css->CerrarTabla();
     
     
-    
+    if($DatosPedido["Estado"]=="AB"){
+        $css->CrearNotificacionVerde("P_$idPedido, Mesa = $DatosPedido[idMesa], Total: $".number_format($TotalPedido), 16);
+    }
+    if($DatosPedido["Estado"]=="DO"){
+        $css->CrearNotificacionRoja("P_$idPedido Total: $".number_format($TotalPedido), 16);
+    }
+    $css->CrearDiv("DivItemsConsultas", "", "", 1, 1);
     $consulta=$obRest->ConsultarTabla("restaurante_pedidos_items", " WHERE idPedido='$idPedido' ORDER BY ID DESC");
     if($obRest->NumRows($consulta)){
         $css->CrearTabla();
         $css->FilaTabla(16);
-            $css->ColTabla("<strong>Cantidad</strong>", 1);
+            $css->ColTabla("<strong>Cant</strong>", 1);
             $css->ColTabla("<strong>Nombre</strong>", 1);
             $css->ColTabla("<strong>Total</strong>", 1);
             $css->ColTabla("<strong>Opciones</strong>", 1);
@@ -75,8 +73,13 @@ if(isset($_REQUEST["idPedido"])){
         while($DatosPedidos=$obRest->FetchArray($consulta)){
             $css->FilaTabla(14);
             $css->ColTabla($DatosPedidos["Cantidad"], 1);
+            print("<td>");
+                print($DatosPedidos["NombreProducto"]);
+                if($DatosPedidos["Observaciones"]<>""){
+                    print("<br><strong>Observaciones:</strong><br>".$DatosPedidos["Observaciones"]);
+                }
+            print("</td>");
             
-            $css->ColTabla($DatosPedidos["NombreProducto"], 1);
             $css->ColTabla(number_format($DatosPedidos["Total"]), 1);
             
             print("<td>");
@@ -90,5 +93,6 @@ if(isset($_REQUEST["idPedido"])){
 
         $css->CerrarTabla();
     }
+    $css->CerrarDiv();
 }
 ?>

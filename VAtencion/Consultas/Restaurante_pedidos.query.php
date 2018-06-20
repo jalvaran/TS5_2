@@ -30,56 +30,47 @@ if(isset($_REQUEST["TipoPedido"])){
         $Titulo="Pedidos";
         $css->CrearNotificacionNaranja($Titulo, 16);
         $css->FilaTabla(16);
-            $css->ColTabla("Mesa", 1);
-            $css->ColTabla("Departamento", 1);
-            $css->ColTabla("Cantidad", 1);
-            $css->ColTabla("Producto", 1);
-            $css->ColTabla("Observaciones", 1);
             $css->ColTabla("Agregar", 1);
+            
         $css->CierraFilaTabla();    
         $css->FilaTabla(16);
-            print("<td>");
-                $css->CrearSelect("idMesa", "", 100);
+            print("<td style='text-align:center'>");
+                $css->CrearSelect("idMesa", "", 300);
                     $Datos=$obRest->ConsultarTabla("restaurante_mesas", "");
-                    $css->CrearOptionSelect("", "Seleccione", 0);
+                    $css->CrearOptionSelect("", "Mesa", 0);
                     while ($DatosMesas=$obRest->FetchArray($Datos)){
                         $css->CrearOptionSelect($DatosMesas["ID"], $DatosMesas["Nombre"], 0);
                         
                     }
                 $css->CerrarSelect();
-            print("</td>");
-            print("<td>");
-                $css->CrearSelect("idDepartamento", "CargarProductos()", 100);
+                print("<br>");
+                $css->CrearSelect("idDepartamento", "CargarProductos()", 300);
                     $Datos=$obRest->ConsultarTabla("prod_departamentos", "");
-                    $css->CrearOptionSelect("", "Seleccione", 0);
+                    $css->CrearOptionSelect("", "Departamento", 0);
                     while ($DatosDepartamentos=$obRest->FetchArray($Datos)){
                         $css->CrearOptionSelect2($DatosDepartamentos["idDepartamentos"], $DatosDepartamentos["Nombre"], "", 0);
                         
                     }
                 $css->CerrarSelect();
-            print("</td>");
-            print("<td>");
-                $css->CrearInputNumber("Cantidad", "number", "", 1, "Cantidad", "", "", "", 60, 30, 0, 0, 0, '', "any");
-            print("</td>");
-            print("<td>");
-                $css->CrearSelect("idProducto", "", 250);
+                
+                print("<br>");
+                $css->CrearInputNumber("Cantidad", "number", "", 1, "Cantidad", "", "", "", 100, 60, 0, 0, 0, '', "any","font-size:3em;");
+                print("<br>");
+                $css->CrearSelect("idProducto", "", 300);
                     
                     $css->CrearOptionSelect("", "Producto", 0);
                     
                 $css->CerrarSelect();
+                print("<br>");
+                    $css->CrearTextArea("Observaciones", "", "", "Observaciones", "", "", "", 300, 60, 0, 0);
+                print("<br>");
+                    $evento="onClick";
+                    //$funcion="EnvieObjetoConsulta2(`$Page`,`Observaciones`,`DivPedidos`,`9`);return false;";
+                    $funcion="AgregarItemPedido()";
+                    $css->CrearBotonEvento("BtnAgregarPedido", "Agregar", 1, $evento, $funcion, "rojo", "");
+                print("<br>");
             print("</td>");
             
-            print("<td>");
-                $css->CrearTextArea("Observaciones", "", "", "Observaciones", "", "", "", 100, 60, 0, 0);
-            print("</td>");
-            
-            print("<td>");
-                //$Page="Consultas/Restaurante_pedidos.query.php";
-                $evento="onClick";
-                //$funcion="EnvieObjetoConsulta2(`$Page`,`Observaciones`,`DivPedidos`,`9`);return false;";
-                $funcion="AgregarItemPedido()";
-                $css->CrearBotonEvento("BtnAgregarPedido", "Agregar", 1, $evento, $funcion, "rojo", "");
-            print("</td>");
         $css->CierraFilaTabla();    
     }
     if($TipoPedido=="DO" and isset($_REQUEST["CuadroAdd"])){

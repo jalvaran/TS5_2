@@ -20,8 +20,8 @@ if( !empty($_REQUEST["idDepartamento"]) and !empty($_REQUEST["Cantidad"]) and !e
         $Cantidad=$obRest->normalizar($_REQUEST["Cantidad"]);
         $idProducto=$obRest->normalizar($_REQUEST["idProducto"]);
         $Observaciones="";
-        if(isset($_REQUEST["Obseraciones"])){
-            $Observaciones=$obRest->normalizar($_REQUEST["Obseraciones"]);
+        if(isset($_REQUEST["Observaciones"])){
+            $Observaciones=$obRest->normalizar($_REQUEST["Observaciones"]);
         }
         $fecha=date("Y-m-d");
         $hora=date("H:i:s");
