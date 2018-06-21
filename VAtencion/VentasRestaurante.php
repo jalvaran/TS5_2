@@ -37,8 +37,8 @@ print("<body>");
         
         $css->CrearBotonEvento("BtnDomicilios", "Domicilios", 1, $evento, $funcion, "rojo", "");
         print(" ");
-        $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=LL&Carry=";
-        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);return false;";
+        $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=LL&CuadroAdd=1&Carry=";
+        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);TimersPedidos(3);";
         
         $css->CrearBotonEvento("BtnLlevar", "<-Llevar->", 1, $evento, $funcion, "verde", "");
         

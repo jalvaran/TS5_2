@@ -362,6 +362,10 @@ class Restaurante extends ProcesoVenta{
      */
     public function CreeDomicilio($fecha,$hora,$idCliente,$Nombre,$DireccionEnvio, $TelefonoConfimacion,$Observaciones,$idUser,$Vector) {
         $FechaHora=$fecha." ".$hora;
+        $Estado="DO";
+        if(isset($Vector["Llevar"])){
+            $Estado="LL";
+        }
         //$DatosCliente=$this->DevuelveValores("clientes", "idClientes", $idCliente);
         if($DireccionEnvio==""){
             $DireccionEnvio=$DatosCliente["Direccion"];
@@ -376,7 +380,7 @@ class Restaurante extends ProcesoVenta{
         $Columnas[1]="Hora";                $Valores[1]=$hora;
         $Columnas[2]="idUsuario";           $Valores[2]=$idUser;
         $Columnas[3]="idMesa";              $Valores[3]="";
-        $Columnas[4]="Estado";              $Valores[4]="DO";
+        $Columnas[4]="Estado";              $Valores[4]=$Estado;
         $Columnas[5]="FechaCreacion";       $Valores[5]=$FechaHora;
         $Columnas[6]="NombreCliente";       $Valores[6]=$Nombre;
         $Columnas[7]="DireccionEnvio";      $Valores[7]=$DireccionEnvio;
@@ -407,6 +411,32 @@ class Restaurante extends ProcesoVenta{
         
         return($idCierre);
     }
-    
+    /**
+     * funcion para eliminar un item de un pedido, tambien registra esta eliminacion
+     * @param type $idItemDel = id del item a eliminar
+     * @param type $idPedido = id del pedido de donde se elimino
+     * @param type $Observaciones = observaciones de la eliminacion
+     * @param type $Vector Futuro
+     */
+    function ElimineItemPedido($idItemDel,$idPedido,$Observaciones,$idUser,$Vector) {
+        $DatosItem=$this->DevuelveValores("restaurante_pedidos_items", "ID", $idItemDel);
+        $fecha=date("Y-m-d");
+        $hora=date("H:i:s");
+        $tab="registra_eliminaciones_pedidos_items_restaurant";
+        $NumRegistros=7; 
+        
+        $Columnas[0]="idProducto";          $Valores[0]=$DatosItem["idProducto"];
+        $Columnas[1]="idPedido";            $Valores[1]=$idPedido;
+        $Columnas[2]="idUser";              $Valores[2]=$idUser;
+        $Columnas[3]="Observaciones";       $Valores[3]=$Observaciones;
+        $Columnas[4]="FechaHora";           $Valores[4]=$fecha." ".$hora;
+        $Columnas[5]="Cantidad";            $Valores[5]=$DatosItem["Cantidad"];
+        $Columnas[6]="Total";               $Valores[6]=$DatosItem["Total"];
+        
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        
+        $this->BorraReg("restaurante_pedidos_items", "ID", $idItemDel);
+        
+    }
     //Fin Clases
 }

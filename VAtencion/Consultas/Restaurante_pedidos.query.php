@@ -8,7 +8,8 @@ $idUser=$_SESSION['idUser'];
 $css =  new CssIni("",0);
 
 $obRest=new Restaurante($idUser);
-//Se crea un domicilio
+//Se crea un domicilio}
+/*
 if(isset($_REQUEST["CrearDomicilio"])){
     $Telefono=$obRest->normalizar($_REQUEST["Telefono"]);
     $Nombre=$obRest->normalizar($_REQUEST["Nombre"]);
@@ -20,6 +21,7 @@ if(isset($_REQUEST["CrearDomicilio"])){
     $obRest->CreeDomicilio($fecha, $hora, 1, $Nombre,$Direccion, $Telefono, $Observaciones,$idUser, "");
 }
 
+*/
 
 if(isset($_REQUEST["TipoPedido"])){
     //Tipo pedido AB= pedidos abiertos, DO=Domicilios abieros, LL=para llevar Abiertos
@@ -77,34 +79,64 @@ if(isset($_REQUEST["TipoPedido"])){
         $Titulo="Domicilios";
         $css->CrearNotificacionRoja($Titulo, 16);
         $css->FilaTabla(16);
-            print("<td>");
+            print("<td style='text-align:center'>");
                 $TxtFuncion="AutocompleteDatos()";
-                $css->CrearInputText("Telefono", "text", "", "", "Telefono", "", "onKeyUp", $TxtFuncion, 110, 50, 0, 1);
+                
+                
+                $css->CrearInputText("Telefono", "text", "", "", "Telefono", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                print("<br>");
+                $css->CrearInputText("Nombre", "text", "", "", "Nombre", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                print("<br>");
+                $css->CrearInputText("Direccion", "text", "", "", "Direccion", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+            
+                print("<br>");
+                $css->CrearTextArea("TxtObservaciones", "", "", "Observaciones", "", "", "", 300, 60, 0, 0);
+                print("<br>");
+                
             print("</td>");
-            print("<td>");
-                $TxtFuncion="";
-                $css->CrearInputText("Nombre", "text", "", "", "Nombre", "", "onKeyUp", $TxtFuncion, 250, 50, 0, 1);
-            print("</td>");
-            print("<td>");
-                $TxtFuncion="";
-                $css->CrearInputText("Direccion", "text", "", "", "Direccion", "", "onKeyUp", $TxtFuncion, 200, 50, 0, 1);
-            print("</td>");
-            print("<td>");
-                $css->CrearTextArea("Observaciones", "", "", "Observaciones", "", "", "", 180, 50, 0, 0);
-            print("</td>");
+            
         $css->CierraFilaTabla();
         $css->FilaTabla(16);
             print("<td colspan=4 style='text-align:center'>");
-                $Page="Consultas/Restaurante_pedidos.query.php";
+                //$Page="Consultas/Restaurante_pedidos.query.php";
                 $evento="onClick";
-                $funcion="EnvieObjetoConsulta2(`$Page`,`Telefono`,`DivPedidos`,`8`);return false;";
+                //$funcion="EnvieObjetoConsulta2(`$Page`,`Telefono`,`DivPedidos`,`8`);return false;";
+                $funcion="CrearDomicilio();";
                 $css->CrearBotonEvento("BtnCrear", "Crear", 1, $evento, $funcion, "rojo", "");
             print("</td>");
         $css->CierraFilaTabla();
     }
-    if($TipoPedido=="LL"){
+    if($TipoPedido=="LL" and isset($_REQUEST["CuadroAdd"])){
         $Titulo="Para Llevar";
         $css->CrearNotificacionVerde($Titulo, 16);
+        
+        $css->FilaTabla(16);
+            print("<td style='text-align:center'>");
+                $TxtFuncion="AutocompleteDatos()";
+                
+                
+                $css->CrearInputText("Telefono", "text", "", "", "Telefono", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                print("<br>");
+                $css->CrearInputText("Nombre", "text", "", "", "Nombre", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                print("<br>");
+                $css->CrearInputText("Direccion", "text", "", "", "Direccion", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+            
+                print("<br>");
+                $css->CrearTextArea("TxtObservaciones", "", "", "Observaciones", "", "", "", 300, 60, 0, 0);
+                print("<br>");
+                
+            print("</td>");
+            
+        $css->CierraFilaTabla();
+        $css->FilaTabla(16);
+            print("<td colspan=4 style='text-align:center'>");
+                //$Page="Consultas/Restaurante_pedidos.query.php";
+                $evento="onClick";
+                //$funcion="EnvieObjetoConsulta2(`$Page`,`Telefono`,`DivPedidos`,`8`);return false;";
+                $funcion="CrearParaLlevar();";
+                $css->CrearBotonEvento("BtnCrear", "Crear", 1, $evento, $funcion, "verde", "");
+            print("</td>");
+        $css->CierraFilaTabla();
     }
     
         
@@ -117,7 +149,7 @@ if(isset($_REQUEST["TipoPedido"])){
 $consulta=$obRest->ConsultarTabla("restaurante_pedidos", " WHERE Estado='$TipoPedido' ORDER BY ID ASC LIMIT 100");
 if($obRest->NumRows($consulta)){
     $css->CrearTabla();
-    if($TipoPedido=="DO"){
+    if($TipoPedido=="DO" or $TipoPedido=="LL"){
         $css->FilaTabla(16);
             $css->ColTabla("<strong>ID</strong>", 1);
             $css->ColTabla("<strong>Fecha y Hora</strong>", 1);
@@ -128,20 +160,22 @@ if($obRest->NumRows($consulta)){
             $css->ColTabla("<strong>Opciones</strong>", 1);
         $css->CierraFilaTabla();
         while($DatosPedidos=$obRest->FetchArray($consulta)){
-            $css->FilaTabla(14);
-            $css->ColTabla($DatosPedidos["ID"], 1);
-            $css->ColTabla($DatosPedidos["Fecha"]." ".$DatosPedidos["Hora"], 1);
-            $css->ColTabla($DatosPedidos["NombreCliente"], 1);
-            $css->ColTabla($DatosPedidos["DireccionEnvio"], 1);
-            $css->ColTabla($DatosPedidos["TelefonoConfirmacion"], 1);
-            $css->ColTabla($DatosPedidos["Observaciones"], 1);
-            print("<td>");
-                $Page="Consultas/Restaurante_pedidos_items.query.php?idPedido=".$DatosPedidos["ID"]."&carry=";
-                $evento="onClick";
-                $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);return false;";
-                $css->CrearBotonEvento("BtnVer", "+", 1, $evento, $funcion, "naranja", "");
-            print("</td>");
-        $css->CierraFilaTabla();
+            
+                $idPedido=$DatosPedidos["ID"];
+                $css->FilaTabla(14);
+                    $css->ColTabla($DatosPedidos["ID"], 1);
+                    $css->ColTabla($DatosPedidos["Fecha"]." ".$DatosPedidos["Hora"], 1);
+                    $css->ColTabla($DatosPedidos["NombreCliente"], 1);
+                    $css->ColTabla($DatosPedidos["DireccionEnvio"], 1);
+                    $css->ColTabla($DatosPedidos["TelefonoConfirmacion"], 1);
+                    $css->ColTabla($DatosPedidos["Observaciones"], 1);
+                    print("<td>");
+                         $evento="onClick";
+                        $funcion="DibujeItemsPedido(`$idPedido`,1);";
+                        $css->CrearBotonEvento("BtnVer".$DatosPedidos["ID"], "+", 1, $evento, $funcion, "naranja", "");
+                    print("</td>");
+                $css->CierraFilaTabla();
+           // }
         }
     }
     
@@ -159,12 +193,12 @@ if($obRest->NumRows($consulta)){
             $css->ColTabla($DatosPedidos["Fecha"]." ".$DatosPedidos["Hora"], 1);
             $css->ColTabla($DatosPedidos["idMesa"], 1);
             $css->ColTabla($DatosPedidos["idUsuario"], 1);
-            
+            $idPedido=$DatosPedidos["ID"];
             print("<td>");
-                $Page="Consultas/Restaurante_pedidos_items.query.php?idPedido=".$DatosPedidos["ID"]."&carry=";
+                
                 $evento="onClick";
-                $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);return false;";
-                $css->CrearBotonEvento("BtnVer", "+", 1, $evento, $funcion, "naranja", "");
+                $funcion="DibujeItemsPedido(`$idPedido`);";
+                $css->CrearBotonEvento("BtnVer".$DatosPedidos["ID"], "+", 1, $evento, $funcion, "naranja", "");
             print("</td>");
         $css->CierraFilaTabla();
         }

@@ -14,7 +14,7 @@ if(isset($_REQUEST["idPedido"])){
     $TotalPedido=$obRest->SumeColumna("restaurante_pedidos_items", "Total", "idPedido", $idPedido);
     
     $DatosPedido=$obRest->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
-    
+    if(!empty($_REQUEST["Opciones"])){
     $css->CrearTabla();
         $css->FilaTabla(16);
             //$css->ColTabla("Mesa", 1);
@@ -23,7 +23,7 @@ if(isset($_REQUEST["idPedido"])){
         $css->CierraFilaTabla();    
         $css->FilaTabla(16);
             
-            print("<td style='text-align:center'>");
+            print("<td colspan=4 style='text-align:center'>");
                 $css->CrearSelect("idDepartamento", "CargarProductos()", 300);
                     $Datos=$obRest->ConsultarTabla("prod_departamentos", "");
                     $css->CrearOptionSelect("", "Seleccione", 0);
@@ -50,16 +50,79 @@ if(isset($_REQUEST["idPedido"])){
             print("</td>");
             
         $css->CierraFilaTabla();
+        $css->FilaTabla(16);
+           $css->ColTabla("<strong>Descartar</strong>", 1);
+           $css->ColTabla("<strong>Pedido</strong>", 1);
+           $css->ColTabla("<strong>Precuenta</strong>", 1);
+           $css->ColTabla("<strong>Facturar</strong>", 1);
+        $css->CierraFilaTabla();
+        $css->FilaTabla(16);
+        
+           print("<td style='text-align:center'>");
+                $ImageAlterna="../images/anular.png";
+                $RutaImage=$ImageAlterna;
+                $Nombre="ImgDescartar".$DatosPedido["ID"];
+                if($DatosPedido["Estado"]=="AB"){
+                    $FuncionJS="onclick='AccionesPedidos(1,`$idPedido`)'";
+                }
+                if($DatosPedido["Estado"]=="DO"){
+                    $FuncionJS="onclick='AccionesPedidos(2,`$idPedido`)'";
+                }
+                if($DatosPedido["Estado"]=="LL"){
+                    $FuncionJS="onclick='AccionesPedidos(3,`$idPedido`)'";
+                }
+                
+                
+                $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
+                print("</td>");
+                print("<td style='text-align:center'>");
+                $ImageAlterna="../images/print.png";
+                $RutaImage=$ImageAlterna;
+                $Nombre="ImgDescartar".$DatosPedido["ID"];
+                
+                if($DatosPedido["Estado"]=="AB"){
+                    $FuncionJS="onclick='AccionesPedidos(4,`$idPedido`)'"; //Imprime pedido
+                }
+                if($DatosPedido["Estado"]=="DO"){
+                    $FuncionJS="onclick='AccionesPedidos(5,`$idPedido`)'"; //imprime domicilio
+                }
+                if($DatosPedido["Estado"]=="LL"){
+                    $FuncionJS="onclick='AccionesPedidos(6,`$idPedido`)'"; //imprime para llevar
+                }
+                
+                $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
+                
+                print("</td>");
+                print("<td style='text-align:center'>");
+                $ImageAlterna="../images/precuenta.png";
+                $RutaImage=$ImageAlterna;
+                $Nombre="ImgDescartar".$DatosPedido["ID"];
+                
+                $FuncionJS="onclick='AccionesPedidos(7,`$idPedido`)'"; //imprime precuenta
+                $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
+                
+                print("</td>");
+                print("<td style='text-align:center'>");
+                $RutaImage="../images/facturar2.png";
+                $Link="?BtnFacturarDomicilio=$DatosPedido[ID]";
+                $css->CrearImageLink($Link, $RutaImage, "_self", 50, 50);
+                print("</td>");
+        $css->CierraFilaTabla();
     $css->CerrarTabla();
     
-    
-    if($DatosPedido["Estado"]=="AB"){
-        $css->CrearNotificacionVerde("P_$idPedido, Mesa = $DatosPedido[idMesa], Total: $".number_format($TotalPedido), 16);
-    }
-    if($DatosPedido["Estado"]=="DO"){
-        $css->CrearNotificacionRoja("P_$idPedido Total: $".number_format($TotalPedido), 16);
     }
     $css->CrearDiv("DivItemsConsultas", "", "", 1, 1);
+   
+    if($DatosPedido["Estado"]=="AB"){
+        $css->CrearNotificacionNaranja("P_$idPedido, Mesa = $DatosPedido[idMesa], Total: $".number_format($TotalPedido), 16);
+    }
+    if($DatosPedido["Estado"]=="DO"){
+        $css->CrearNotificacionRoja("Domicilio: $idPedido, a nombre de:$DatosPedido[NombreCliente], Total: $".number_format($TotalPedido), 16);
+    }
+    if($DatosPedido["Estado"]=="LL"){
+        $css->CrearNotificacionVerde("Para Llevar No: $idPedido, a nombre de:$DatosPedido[NombreCliente], Total: $".number_format($TotalPedido), 16);
+    }
+    
     $consulta=$obRest->ConsultarTabla("restaurante_pedidos_items", " WHERE idPedido='$idPedido' ORDER BY ID DESC");
     if($obRest->NumRows($consulta)){
         $css->CrearTabla();
@@ -83,10 +146,13 @@ if(isset($_REQUEST["idPedido"])){
             $css->ColTabla(number_format($DatosPedidos["Total"]), 1);
             
             print("<td>");
-                $Page="Consultas/Restaurante_pedidos_items.query.php?idPedido=".$DatosPedidos["ID"]."&carry=";
+                $idItem=$DatosPedidos["ID"];
+                
+                //$Page="Consultas/Restaurante_pedidos_items.query.php?idPedido=".$DatosPedidos["ID"]."&carry=";
                 $evento="onClick";
-                $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivItems`,`99`);return false;";
-                $css->CrearBotonEvento("BtnVer", "x", 1, $evento, $funcion, "rojo", "");
+                //$funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivItems`,`99`);return false;";
+                $funcion="EliminarItemPedido(`$idItem`,`$idPedido`);";
+                $css->CrearBotonEvento("BtnEliminar".$idItem, "x", 1, $evento, $funcion, "rojo", "");
             print("</td>");
         $css->CierraFilaTabla();
         }
