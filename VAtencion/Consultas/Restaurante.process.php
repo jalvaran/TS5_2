@@ -186,14 +186,69 @@ if(isset($_REQUEST["Accion"])){
             echo json_encode($Respuesta); 
         break;
     
-    //imrpimir factura
+    //Crear la factura
         case 8:
             $obPrint=new PrintPos($idUser);
-            $idFactura=$obRest->normalizar($_REQUEST["idFactura"]);
-            $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
-            $Respuesta["msg"]="OK";
+            $fecha=date("Y-m-d");
+            $DatosCaja=$obRest->DevuelveValores("cajas", "idUsuario", $idUser);
             
+            $idCliente=$obRest->normalizar($_REQUEST["idCliente"]);
+            $idColaborador=$obRest->normalizar($_REQUEST["CmbColaboradores"]);
+            $idPedido=$obRest->normalizar($_REQUEST["idPedido"]);
+            $DatosPedido=$obRest->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
+            $Efectivo=$obRest->normalizar($_REQUEST["TxtEfectivo"]);
+            $Cheque=$obRest->normalizar($_REQUEST["TxtCheques"]);
+            $Tarjeta=$obRest->normalizar($_REQUEST["TxtTarjetas"]);
+            
+            $OtrosPaga=$obRest->normalizar($_REQUEST["TxtBonos"]);
+            $Devuelta=$obRest->normalizar($_REQUEST["TxtDevuelta"]);
+            $CuentaDestino=$DatosCaja["CuentaPUCEfectivo"];
+            $TipoPago=$obRest->normalizar($_REQUEST["CmbTipoPago"]);
+            $Observaciones="";
+            if(isset($_REQUEST["TxtObservaciones"])){
+                $Observaciones=$obRest->normalizar($_REQUEST["TxtObservaciones"]);
+            }
+            
+            
+            $DatosVentaRapida["PagaCheque"]=$Cheque;
+            $DatosVentaRapida["PagaTarjeta"]=$Tarjeta;
+            $DatosVentaRapida["idTarjeta"]=1;
+            $DatosVentaRapida["PagaOtros"]=$OtrosPaga;
+            
+            $DatosVentaRapida["CentroCostos"]=$DatosCaja["CentroCostos"];
+            $DatosVentaRapida["ResolucionDian"]=$DatosCaja["idResolucionDian"];
+            $DatosVentaRapida["Observaciones"]=$Observaciones;
+            if($TipoPago<>"Contado" AND $idCliente<=1){
+                $Respuesta["msg"]="E";
+                $Respuesta["Error"]="Para poder hacer una venta a credito se ddebe seleccionar un cliente";
+                echo json_encode($Respuesta);
+                exit();
+            }
+            if($TipoPago<>"Contado"){
+                $Efectivo=0;
+                $DatosVentaRapida["PagaCheque"]=0;
+                $DatosVentaRapida["PagaTarjeta"]=0;
+                $DatosVentaRapida["idTarjeta"]=0;
+                $DatosVentaRapida["PagaOtros"]=0;
+            }
+            $idFactura=$obRest->RegistreVentaRestaurante($idPedido, $idCliente, $TipoPago, $Efectivo, $Devuelta, $CuentaDestino,$idUser, $DatosVentaRapida);
+            if($DatosPedido["Estado"]=="DO"){
+                $Estado="FADO";
+            }
+            if($DatosPedido["Estado"]=="AB"){
+                $Estado="FAPE";
+            }
+            if($DatosPedido["Estado"]=="LL"){
+                $Estado="FALL";
+            }
+            
+            $obRest->ActualizaRegistro("restaurante_pedidos", "Estado", $Estado, "ID", $idPedido);
+            $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
+            
+            $Respuesta["msg"]="OK";
+            $Respuesta["TipoPedido"]=$DatosPedido["Estado"];
             echo json_encode($Respuesta); 
         break;
+    
     }
 }

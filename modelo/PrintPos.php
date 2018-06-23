@@ -186,6 +186,10 @@ class PrintPos extends ProcesoVenta{
      */
     public function ImprimeFacturaPOS($idFactura,$COMPrinter,$Copias,$AbreCajon=1){
         $COMPrinter= $this->COMPrinter;
+        $DatosImpresora=$this->DevuelveValores("config_puertos", "ID", 1);   
+        if($DatosImpresora["Habilitado"]<>"SI"){
+            return;
+        }
         if(($handle = @fopen("$COMPrinter", "w")) === FALSE){
             die('ERROR:\nNo se puedo Imprimir, Verifique la conexion de la IMPRESORA');
         }

@@ -110,7 +110,7 @@ class Restaurante extends ProcesoVenta{
      * 
      */
     
-    public function RegistreVentaRestaurante($idPedido, $idCliente, $TipoPago, $Paga, $Devuelta, $CuentaDestino, $DatosVentaRapida){
+    public function RegistreVentaRestaurante($idPedido, $idCliente, $TipoPago, $Paga, $Devuelta, $CuentaDestino,$idUser, $DatosVentaRapida){
   	
                 
         $CentroCostos=$DatosVentaRapida["CentroCostos"];
@@ -196,7 +196,7 @@ class Restaurante extends ProcesoVenta{
                 $Columnas[11]="SaldoFact";                  $Valores[11]="";
                 $Columnas[12]="Cotizaciones_idCotizaciones";$Valores[12]="";
                 $Columnas[13]="EmpresaPro_idEmpresaPro";    $Valores[13]=$EmpresaPro;
-                $Columnas[14]="Usuarios_idUsuarios";        $Valores[14]=$this->idUser;
+                $Columnas[14]="Usuarios_idUsuarios";        $Valores[14]=$idUser;
                 $Columnas[15]="Clientes_idClientes";        $Valores[15]=$idCliente;
                 $Columnas[16]="TotalCostos";                $Valores[16]="";
                 $Columnas[17]="CerradoDiario";              $Valores[17]="";
@@ -232,7 +232,7 @@ class Restaurante extends ProcesoVenta{
                 $Datos["CuentaDestino"]=$CuentaDestino;
                 $Datos["EmpresaPro"]=$EmpresaPro;
                 $Datos["CentroCostos"]=$CentroCostos;
-                $this->InsertarItemsPedidoAItemsFactura($Datos);///Relaciono los items de la factura
+                $this->InsertarItemsPedidoAItemsFactura($Datos,$idUser);///Relaciono los items de la factura
                 
                 $this->InsertarFacturaLibroDiario($Datos);///Inserto Items en el libro diario
                
@@ -260,7 +260,7 @@ class Restaurante extends ProcesoVenta{
  * Funcion Agregar items de un pedido a una factura
  */
     
-    public function InsertarItemsPedidoAItemsFactura($Datos){
+    public function InsertarItemsPedidoAItemsFactura($Datos,$idUser){
         
         $idPedido=$Datos["idPedido"];
         $NumFactura=$Datos["ID"];
@@ -319,7 +319,7 @@ class Restaurante extends ProcesoVenta{
             $Columnas[22]="GeneradoDesde";	$Valores[22]="cotizacionesv5";
             $Columnas[23]="NumeroIdentificador";$Valores[23]="";
             $Columnas[24]="FechaFactura";       $Valores[24]=$FechaFactura;
-            $Columnas[25]="idUsuarios";         $Valores[25]= $this->idUser;
+            $Columnas[25]="idUsuarios";         $Valores[25]= $idUser;
             
             $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
             
@@ -438,5 +438,7 @@ class Restaurante extends ProcesoVenta{
         $this->BorraReg("restaurante_pedidos_items", "ID", $idItemDel);
         
     }
+    
+    
     //Fin Clases
 }

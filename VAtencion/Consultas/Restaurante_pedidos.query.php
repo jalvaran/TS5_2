@@ -8,20 +8,6 @@ $idUser=$_SESSION['idUser'];
 $css =  new CssIni("",0);
 
 $obRest=new Restaurante($idUser);
-//Se crea un domicilio}
-/*
-if(isset($_REQUEST["CrearDomicilio"])){
-    $Telefono=$obRest->normalizar($_REQUEST["Telefono"]);
-    $Nombre=$obRest->normalizar($_REQUEST["Nombre"]);
-    $Direccion=$obRest->normalizar($_REQUEST["Direccion"]);
-    $Observaciones=$obRest->normalizar($_REQUEST["Observaciones"]);
-    $fecha=date("Y-m-d");
-    $hora=date("H:i:s");
-    
-    $obRest->CreeDomicilio($fecha, $hora, 1, $Nombre,$Direccion, $Telefono, $Observaciones,$idUser, "");
-}
-
-*/
 
 if(isset($_REQUEST["TipoPedido"])){
     //Tipo pedido AB= pedidos abiertos, DO=Domicilios abieros, LL=para llevar Abiertos
@@ -205,7 +191,5 @@ if($obRest->NumRows($consulta)){
     }
     $css->CerrarTabla();
 }
-
-    $css->CerrarDiv();
 
 ?>

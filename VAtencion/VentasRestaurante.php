@@ -21,9 +21,16 @@ print("<body>");
     ///////////////Creamos el contenedor
     /////
     /////
-
+    $css->CrearDiv("DivButtons", "", "", 0, 0);
+    $css->CreaBotonDesplegable("DialFacturacion", "Abrir","BtnAbreModalFact");
+    $css->CerrarDiv();
+    $css->CrearModal("DialFacturacion", "Facturar", "");
+    //$css->CrearCuadroDeDialogoAmplio("DialFacturacion", "Facturar");
+        $css->CrearDiv("DivFacturacion", "", "center", 1, 1);
+        $css->CerrarDiv();
     
-    
+    //$css->CerrarCuadroDeDialogoAmplio();
+    $css->CerrarModal();
    //$css->DivGrid("DivOpciones", "", "left", 1, 1, 1, 100, 8,1,"transparent");
     $css->CrearDiv("DivOpciones", "container", "center", 1, 1);
         $evento="onClick";
@@ -57,6 +64,7 @@ print("<body>");
     $css->AgregaSubir();
     $css->Footer();
     print('<script src="jsPages/restaurante_ventas.js"></script>');
+    
     print("</body></html>");
     ob_end_flush();
 ?>

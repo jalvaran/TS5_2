@@ -104,8 +104,10 @@ if(isset($_REQUEST["idPedido"])){
                 print("</td>");
                 print("<td style='text-align:center'>");
                 $RutaImage="../images/facturar2.png";
-                $Link="?BtnFacturarDomicilio=$DatosPedido[ID]";
-                $css->CrearImageLink($Link, $RutaImage, "_self", 50, 50);
+                $Nombre="ImgFacturar".$DatosPedido["ID"];
+                
+                $FuncionJS="onclick='DibujeAreaFacturar(`$idPedido`)'"; //Dibuja las opciones para facturar un pedido
+                $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
                 print("</td>");
         $css->CierraFilaTabla();
     $css->CerrarTabla();

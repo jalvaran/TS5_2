@@ -220,11 +220,11 @@ class CssIni{
 	
 	/////Crea botones con despliegue
 		
-	function CreaBotonDesplegable($NombreBoton,$TituloBoton)
+	function CreaBotonDesplegable($NombreBoton,$TituloBoton,$idBoton="")
   {
 	
 		
-	print('<li><a href="#'.$NombreBoton.'" role="button" class="btn" data-toggle="modal" title="'.$TituloBoton.'">
+	print('<li><a href="#'.$NombreBoton.'" id="'.$idBoton.'"  role="button" class="btn" data-toggle="modal" title="'.$TituloBoton.'">
 			<span class="badge badge-success">'.$TituloBoton.'</span></a></li>');
 
 	}	
@@ -478,6 +478,34 @@ class CssIni{
         ');
 		
 	}
+        
+        /////////////////////Crea un Cuadro de Dialogo
+	
+	function CrearModal($id,$title,$Vector){
+		
+            print('<div id="'.$id.'" class="modal fade" role="dialog">');
+		
+            print('<div class="modal-dialog">');
+            
+            print('<div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">'.$title.'</h4>
+                    </div>
+                    <div class="modal-body">');
+		
+	}
+        
+        function CerrarModal($Nombre="BtnCierreModal") {
+            print('</div>
+                    <div class="modal-footer">
+                      <button type="button" id='.$Nombre.' class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>');
+        }
         
         /////////////////////Cierra un Cuadro de Dialogo
 	
@@ -1407,8 +1435,8 @@ function Footer(){
             print("<div id='DivRespuestasJS' style='position: scroll;bottom:10px; right:10px;width: 300px;'></div>");
         }
         //Imagen que oculta o muestra un div o un objeto
-        public function ImageOcultarMostrar($Nombre,$Leyenda,$idObjeto,$Ancho,$Alto,$Vector,$RutaImage='../images/hidde.png') {
-            print("<strong>$Leyenda</strong><image name='$Nombre' id='$Nombre' src='$RutaImage' style='height:$Ancho"."px".";width:$Alto"."px"."' onclick=MuestraOculta('$idObjeto');>");
+        public function ImageOcultarMostrar($Nombre,$Leyenda,$idObjeto,$Ancho,$Alto,$Vector,$RutaImage='../images/circle.png') {
+            print("<strong>$Leyenda</strong><image name='$Nombre' id='$Nombre' src='$RutaImage' style='cursor: pointer;height:$Ancho"."px".";width:$Alto"."px"."' onclick=MuestraOculta('$idObjeto');>");
         }
         //Div para maquetear
         public function DivGrid($ID, $Class, $Alineacion,$Visible, $Habilitado,$Ubicacion,$Altura,$Ancho,$Border,$BorderColor){

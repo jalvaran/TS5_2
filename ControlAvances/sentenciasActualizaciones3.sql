@@ -169,3 +169,42 @@ ALTER TABLE `inventarios_conteo_selectivo` CHANGE `Referencia` `Referencia` BIGI
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (169, 'Ventas', '30', '3', 'VentasRestaurante.php', '_SELF', b'1', 'vender.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
 
+--
+-- Table structure for table `registra_eliminaciones_pedidos_items_restaurant`
+--
+
+CREATE TABLE `registra_eliminaciones_pedidos_items_restaurant` (
+  `ID` bigint(20) NOT NULL,
+  `idProducto` bigint(20) NOT NULL,
+  `Cantidad` double NOT NULL,
+  `Total` double NOT NULL,
+  `idPedido` bigint(20) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `Observaciones` text COLLATE latin1_spanish_ci NOT NULL,
+  `FechaHora` datetime NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `registra_eliminaciones_pedidos_items_restaurant`
+--
+ALTER TABLE `registra_eliminaciones_pedidos_items_restaurant`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `idPedido` (`idPedido`),
+  ADD KEY `idProducto` (`idProducto`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `registra_eliminaciones_pedidos_items_restaurant`
+--
+ALTER TABLE `registra_eliminaciones_pedidos_items_restaurant`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+COMMIT;

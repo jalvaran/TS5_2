@@ -240,10 +240,12 @@ function DibujePedidos(){
         var DivDestino =  'DivPedidos';
         Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&CuadroAdd=1&Carry=";
     }
-    Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&Carry=";
+    //Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&Carry=";
     EnvieObjetoConsulta(Page,`BtnPedidos`,DivDestino,`99`);return false;
     
 }
+
+
 
 //Funcion para dibujar los domicilios en el div correspondiente
 function DibujeDomicilios(){
@@ -275,6 +277,20 @@ function DibujeLlevar(){
     }
     
     EnvieObjetoConsulta(Page,`BtnPedidos`,DivDestino,`99`);return false;
+}
+
+//Funcion para dibujar el area de facturacion en el div correspondiente
+function DibujeAreaFacturar(idPedido){
+    var Div=VerifiqueObjeto('DivFacturacion');
+    document.getElementById('BtnAbreModalFact').click();
+    if(Div === 1){
+        
+        var DivDestino =  'DivFacturacion';
+        Page="Consultas/Restaurante_facturar.query.php?idPedido="+idPedido+"&Carry=";
+        EnvieObjetoConsulta(Page,`BtnPedidos`,DivDestino,`99`);return false;
+    }
+    
+    
 }
 
 function TimersPedidos(idTimer,idPedido=0){
@@ -359,7 +375,6 @@ function EliminarItemPedido(idItem,idPedido){
 
 ///Realice acciones como descartar un pedido, imprimir la precuenta, el domicilio y el pedido
 
-//Eliminar un item de un pedido
 function AccionesPedidos(idAccion,idPedido,idFactura=''){ 
     var Observaciones = "";
     if(idAccion === 1 || idAccion === 2 || idAccion === 3){
@@ -436,5 +451,78 @@ function AccionesPedidos(idAccion,idPedido,idFactura=''){
       })
   
 }
+//Facturar pedido
+function FacturarPedido(idPedido){
+    //event.preventDefault();
+    //console.log($('#CmbTipoPago').val());   
+    //se crea un objeto con los datos del formulario
+    var form_data = new FormData();
+        form_data.append('Accion', 8)
+        form_data.append('idPedido', idPedido)
+        form_data.append('idCliente', 1)
+        form_data.append('TxtTarjetas', $('#TxtTarjetas').val())
+        form_data.append('TxtCheques', $('#TxtCheques').val()) 
+        form_data.append('TxtBonos', $('#TxtBonos').val())
+        form_data.append('CmbTipoPago', $('#CmbTipoPago').val())
+        form_data.append('CmbColaboradores', $('#CmbColaboradores').val()) 
+        form_data.append('TxtObservaciones', $('#TxtObservacionesFactura').val())
+        form_data.append('TxtEfectivo', $('#TxtEfectivo').val()) 
+        form_data.append('TxtDevuelta', $('#TxtDevuelta').val())
+        document.getElementById('DivFacturacion').innerHTML ='Procesando...<br><img src="../images/process.gif" alt="Cargando" height="100" width="100">';
+   
+        $.ajax({
+        url: 'Consultas/Restaurante.process.php',
+        dataType: "json",
+        cache: false,
+        processData: false,
+        contentType: false,
+        data: form_data,
+        type: 'POST',
+        success: (data) =>{
+            //console.log(data);
+            
+            if(data.msg==='OK'){
+                //console.log("Factura Creada");
+                document.getElementById('DivFacturacion').innerHTML ='Factura Creada';
+                document.getElementById('BtnCierreModal').click();
+                var DivDestino =  'DivPedDom';
+                Page="Consultas/Restaurante_pedidos.query.php?TipoPedido="+data.TipoPedido+"&CuadroAdd=1&Carry=";
+                EnvieObjetoConsulta(Page,`BtnPedidos`,DivDestino,`99`);
+                if(data.TipoPedido=="AB"){
+                    TimersPedidos(1);
+                }
+                if(data.TipoPedido=="DO"){
+                    TimersPedidos(2);
+                }
+                if(data.TipoPedido=="LL"){
+                    TimersPedidos(3);
+                }
+            }
+            
+            if(data.msg==='SD'){
+                alert("Debes completar todos los campos");
+                //DibujePedidos();
+            }
+            
+            if(data.msg==='E'){
+                alert(data.Error);
+                //DibujePedidos();
+            }
+            
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          alert(xhr.status);
+          alert(thrownError);
+        }
+      })
+}
 
-
+//calcular la devuelta
+function CalculeDevueltaRestaurante(Total){
+    var Efectivo=$('#TxtEfectivo').val();
+    var Tarjetas=$('#TxtTarjetas').val();
+    var Cheques=$('#TxtCheques').val();
+    var Bonos=$('#TxtBonos').val();
+    var TotalPagos=parseInt(Efectivo)+parseInt(Tarjetas)+parseInt(Cheques)+parseInt(Bonos);
+    document.getElementById("TxtDevuelta").value = TotalPagos-Total;
+}
