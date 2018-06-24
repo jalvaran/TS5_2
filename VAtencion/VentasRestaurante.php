@@ -16,7 +16,7 @@ print("<body>");
     //////////Creamos el formulario de busqueda de remisiones
     /////
     /////
-    
+    $css->CrearBotonEvento("BtnCerrarTurno", "Cerrar Turno", 1, "onclick", "CerrarTurnoRestaurante()", "rojo", "");
     $css->CabeceraFin(); 
     ///////////////Creamos el contenedor
     /////

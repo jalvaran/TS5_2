@@ -44,7 +44,7 @@ class Restaurante extends ProcesoVenta{
             $DatosProductos=$this->DevuelveValores("productosventa", "idProductosVenta", $idProducto);
             $ValoresProducto=$this->CalculeValoresItem($fecha, $idProducto, "productosventa", $Cantidad, "");
             $tab="restaurante_pedidos_items";
-            $NumRegistros=19; 
+            $NumRegistros=20; 
 
             $Columnas[0]="idProducto";          $Valores[0]=$idProducto;
             $Columnas[1]="NombreProducto";      $Valores[1]=$DatosProductos["Nombre"];
@@ -65,6 +65,7 @@ class Restaurante extends ProcesoVenta{
             $Columnas[16]="Sub3";               $Valores[16]= $DatosProductos["Sub3"];
             $Columnas[17]="Sub4";               $Valores[17]= $DatosProductos["Sub4"];
             $Columnas[18]="Sub5";               $Valores[18]= $DatosProductos["Sub5"];
+            $Columnas[19]="Estado";             $Valores[19]= "AB";
             $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
             
             return($idPedido);
@@ -75,11 +76,11 @@ class Restaurante extends ProcesoVenta{
         public function AgregueProductoADomicilio($idPedido,$fecha,$hora,$Cantidad,$idProducto,$Observaciones,$idUser,$Vector) {
             //$idUser=$this->idUser;
             $FechaHora=$fecha." ".$hora;
-            
+            $DatosPedido= $this->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
             $DatosProductos=$this->DevuelveValores("productosventa", "idProductosVenta", $idProducto);
             $ValoresProducto=$this->CalculeValoresItem($fecha, $idProducto, "productosventa", $Cantidad, "");
             $tab="restaurante_pedidos_items";
-            $NumRegistros=19; 
+            $NumRegistros=20; 
 
             $Columnas[0]="idProducto";          $Valores[0]=$idProducto;
             $Columnas[1]="NombreProducto";      $Valores[1]=$DatosProductos["Nombre"];
@@ -100,6 +101,7 @@ class Restaurante extends ProcesoVenta{
             $Columnas[16]="Sub3";               $Valores[16]= $DatosProductos["Sub3"];
             $Columnas[17]="Sub4";               $Valores[17]= $DatosProductos["Sub4"];
             $Columnas[18]="Sub5";               $Valores[18]= $DatosProductos["Sub5"];
+            $Columnas[19]="Estado";             $Valores[19]= $DatosPedido["Estado"];
             $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
             
             
@@ -394,7 +396,7 @@ class Restaurante extends ProcesoVenta{
     }
     
     //cerrar el turno en restaurante
-    public function CierreTurnoRestaurante($Vector) {
+    public function CierreTurnoRestaurante($Vector,$idUser) {
         $fecha=date("Y-m-d");
         $hora=date("H:i:s");
         $tab="restaurante_cierres";
@@ -402,12 +404,12 @@ class Restaurante extends ProcesoVenta{
         
         $Columnas[0]="Fecha";               $Valores[0]=$fecha;
         $Columnas[1]="Hora";                $Valores[1]=$hora;
-        $Columnas[2]="idUsuario";           $Valores[2]=$this->idUser;
+        $Columnas[2]="idUsuario";           $Valores[2]=$idUser;
                 
         $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
         $idCierre=$this->ObtenerMAX($tab,"ID", 1,"");
-        $this->update("restaurante_pedidos", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>'AB'");
-        $this->update("restaurante_pedidos_items", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>''");
+        $this->update("restaurante_pedidos", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>'AB' AND Estado<>'DO' AND Estado<>'LL'");
+        $this->update("restaurante_pedidos_items", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>'AB' AND Estado<>'DO' AND Estado<>'LL'");
         
         return($idCierre);
     }

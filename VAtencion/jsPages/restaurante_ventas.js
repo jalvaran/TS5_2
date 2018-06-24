@@ -436,6 +436,11 @@ function AccionesPedidos(idAccion,idPedido,idFactura=''){
                     alert("Factura Impresa");                   
                     
                 }
+                if(idAccion===9){
+                    alert("Turno Cerrado");            
+                    TimersPedidos(99);
+                    document.getElementById('DivPedDom').innerHTML ='Turno Cerrado';
+                }
             }
             
             if(data.msg==="SD"){
@@ -525,4 +530,10 @@ function CalculeDevueltaRestaurante(Total){
     var Bonos=$('#TxtBonos').val();
     var TotalPagos=parseInt(Efectivo)+parseInt(Tarjetas)+parseInt(Cheques)+parseInt(Bonos);
     document.getElementById("TxtDevuelta").value = TotalPagos-Total;
+}
+
+//Cerrar Turno
+
+function CerrarTurnoRestaurante(){
+    AccionesPedidos(9,"",'');
 }

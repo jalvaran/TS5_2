@@ -9,6 +9,14 @@ $css =  new CssIni("",0);
 $obRest=new Restaurante($idUser);
 
 if(isset($_REQUEST["idPedido"])){
+    $ConsultaCajas=$obRest->ConsultarTabla("cajas", "WHERE idUsuario='$idUser' AND Estado='ABIERTA'");
+        $DatosCaja=$obRest->FetchArray($ConsultaCajas);
+
+        if($DatosCaja["ID"]<=0){
+           $css->CrearNotificacionRoja("No tiene asignada una Caja, por favor Asignese a una Caja, <a href='HabilitarUser.php' target='_blank'>Vamos</a>", 16);
+           exit();
+        }  
+        
     //Tipo pedido AB= pedidos abiertos, DO=Domicilios abieros, LL=para llevar Abiertos
     $idPedido=$obRest->normalizar($_REQUEST["idPedido"]);
     $sql="SELECT SUM(Subtotal) as Subtotal,SUM(IVA) AS IVA, SUM(Total) AS Total FROM restaurante_pedidos_items WHERE idPedido='$idPedido'";

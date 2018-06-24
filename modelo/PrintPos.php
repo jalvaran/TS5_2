@@ -1683,6 +1683,14 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
                 fwrite($handle,"DOMICILIOS DESCARTADOS: ".number_format($TotalesPedidos[$idUser]["DEDO"]));
                 fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             }
+            if(isset($TotalesPedidos[$idUser]["FALL"])){
+                fwrite($handle,"PARA LLEVAR FACTURADOS: ".number_format($TotalesPedidos[$idUser]["FALL"]));
+                fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+            }
+            if(isset($TotalesPedidos[$idUser]["DELL"])){
+                fwrite($handle,"PARA LLEVAR DESCARTADOS: ".number_format($TotalesPedidos[$idUser]["DELL"]));
+                fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+            }
             
         }
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea

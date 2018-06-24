@@ -243,11 +243,21 @@ if(isset($_REQUEST["Accion"])){
             }
             
             $obRest->ActualizaRegistro("restaurante_pedidos", "Estado", $Estado, "ID", $idPedido);
+            $obRest->ActualizaRegistro("restaurante_pedidos_items", "Estado", $Estado, "idPedido", $idPedido);
             $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
             
             $Respuesta["msg"]="OK";
             $Respuesta["TipoPedido"]=$DatosPedido["Estado"];
             echo json_encode($Respuesta); 
+        break;
+        
+        case 9:
+            $obPrint=new PrintPos($idUser);
+            $idCierre=$obRest->CierreTurnoRestaurante("",$idUser);
+            $obPrint->ImprimirCierreRestaurante($idCierre,"",1,"");
+            $Respuesta["msg"]="OK";
+            $Respuesta["idCierre"]=$idCierre;
+            echo json_encode($Respuesta);
         break;
     
     }
