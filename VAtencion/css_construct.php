@@ -951,7 +951,7 @@ class CssIni{
         
         /////////////////////Crear un DIV
 	
-	function CrearDiv($ID, $Class, $Alineacion,$Visible, $Habilitado){
+	function CrearDiv($ID, $Class, $Alineacion,$Visible, $Habilitado,$Styles=""){
             if($Visible==1)
                 $V="block";
             else
@@ -961,7 +961,7 @@ class CssIni{
                 $H="true";
             else
                 $H="false";
-            print("<div id='$ID' class='$Class' align='$Alineacion' style='display:$V;' >");
+            print("<div id='$ID' class='$Class' align='$Alineacion' style='display:$V;$Styles' >");
 		
 	}
         

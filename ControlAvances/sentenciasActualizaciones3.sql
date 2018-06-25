@@ -208,3 +208,10 @@ ALTER TABLE `registra_eliminaciones_pedidos_items_restaurant`
 ALTER TABLE `registra_eliminaciones_pedidos_items_restaurant`
   MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
 COMMIT;
+
+UPDATE `menu_submenus` SET `Estado` = b'0' WHERE `menu_submenus`.`ID` = 83;
+UPDATE `menu_submenus` SET `Estado` = b'0' WHERE `menu_submenus`.`ID` = 84;
+UPDATE `menu_submenus` SET `Estado` = b'0' WHERE `menu_submenus`.`ID` = 85;
+
+ALTER TABLE `restaurante_pedidos_items` ADD INDEX(`Estado`);
+

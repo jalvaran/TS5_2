@@ -141,3 +141,25 @@ SELECT idProductosVenta,`Referencia`,`Nombre`,`Existencias` as ExistenciaAnterio
   FROM `productosventa` 
 WHERE (SELECT IFNULL((SELECT Cantidad FROM inventarios_conteo_selectivo WHERE productosventa.idProductosVenta = inventarios_conteo_selectivo.Referencia),0))>0;
 
+DROP VIEW IF EXISTS `vista_pedidos_restaurante`;
+CREATE VIEW vista_pedidos_restaurante AS
+SELECT ID,`Fecha`,`Hora`,`Estado`,idMesa , idCliente,NombreCliente, DireccionEnvio,TelefonoConfirmacion, Observaciones,idCierre,
+(SELECT SUM(Subtotal) as Subtotal FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idPedido=restaurante_pedidos.ID) as Subtotal,
+(SELECT SUM(IVA) as IVA FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idPedido=restaurante_pedidos.ID) as IVA,
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idPedido=restaurante_pedidos.ID) as Total,
+idUsuario
+FROM `restaurante_pedidos`;
+
+
+DROP VIEW IF EXISTS `vista_cierres_restaurante`;
+CREATE VIEW vista_cierres_restaurante AS
+SELECT ID,`Fecha`,`Hora`,`idUsuario`,
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='FAPE') as PedidosFacturados,
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='DEPE') as PedidosDescartados,
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='FADO') as DomiciliosFacturados,
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='DEDO') as DomiciliosDescartados,
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='FALL') as ParaLlevarFacturado,
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='DELL') as ParaLlevarDescartado
+
+FROM `restaurante_cierres`;
+

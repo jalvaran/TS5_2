@@ -1,6 +1,6 @@
 <?php
 
-$myTabla="restaurante_cierres";
+$myTabla="vista_cierres_restaurante";
 $MyID="ID";
 $myPage="restaurante_cierres.php";
 $myTitulo="Historial de Cierres";
@@ -15,7 +15,7 @@ $Vector["Tabla"]=$myTabla;          //Tabla
 $Vector["Titulo"]=$myTitulo;        //Titulo
 $Vector["VerDesde"]=$startpoint;    //Punto desde donde empieza
 $Vector["Limit"]=$limit;            //Numero de Registros a mostrar
-
+$Vector["MyPage"]=$myPage;
 /*
  * Deshabilito Acciones
  * 

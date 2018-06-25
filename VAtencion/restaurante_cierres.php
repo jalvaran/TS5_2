@@ -34,7 +34,6 @@ $statement = $obTabla->CreeFiltro($Vector);
 //print($statement);
 $Vector["statement"]=$statement;   //Filtro necesario para la paginacion
 
-
 $obTabla->VerifiqueExport($Vector);
 
 include_once("css_construct.php");
@@ -52,11 +51,14 @@ $css->CabeceraFin();
     /////
     /////
 $css->CrearDiv("principal", "container", "center",1,1);
-//print($statement);
-///////////////Creamos la imagen representativa de la pagina
-    /////
-    /////	
-$css->CrearImageLink("../VMenu/Menu.php", "../images/cierres_caja.jpg", "_self",200,200);
+$sql="SELECT SUM(PedidosFacturados) as PedidosFacturados,SUM(PedidosDescartados) as PedidosDescartados,SUM(DomiciliosFacturados) as DomiciliosFacturados,"
+        . "SUM(DomiciliosDescartados) as DomiciliosDescartados, SUM(ParaLlevarFacturado) as ParaLlevarFacturado,"
+        . "SUM(ParaLlevarDescartado) as ParaLlevarDescartado FROM $statement ";
+$consulta=$obVenta->Query($sql);
+$DatosPedidos=$obVenta->FetchArray($consulta);
+$css->CrearNotificacionNaranja("Total Pedidos Facturados= ".number_format($DatosPedidos["PedidosFacturados"]).", Total Pedidos Descartados= ".number_format($DatosPedidos["PedidosDescartados"]), 16);
+$css->CrearNotificacionRoja("Total Domicilios Facturados= ".number_format($DatosPedidos["DomiciliosFacturados"]).", Total Domicilios Descartados= ".number_format($DatosPedidos["DomiciliosDescartados"]), 16);
+$css->CrearNotificacionVerde("Total Para Llevar Facturados= ".number_format($DatosPedidos["ParaLlevarFacturado"]).", Total Pedidos Descartados= ".number_format($DatosPedidos["ParaLlevarDescartado"]), 16);
 
 
 ////Paginacion

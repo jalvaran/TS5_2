@@ -24,8 +24,20 @@ if(isset($_REQUEST["idPedido"])){
         $css->FilaTabla(16);
             
             print("<td colspan=4 style='text-align:center'>");
+                /*  Para busqueda de items
+                $css->CrearDiv("DivText","","center",1,0);
+                $css->CrearInputText("TxtBusquedaItems", "text", "", "", "Buscar", "", "onkeyup", "BuscarItemsRestaurante()", 300, 30, 0, 0);
+                print("<br>");
+                $Styles="max-height:100px;width:300px;overflow: auto;";
+                $css->CrearDiv("DivBusquedaItems", "", "center", 0, 0,$Styles);
+               
+                $css->CerrarDiv();
+                $css->CerrarDiv();
+                 * 
+                 */
+                print("<br>");
                 $css->CrearSelect("idDepartamento", "CargarProductos()", 300);
-                    $Datos=$obRest->ConsultarTabla("prod_departamentos", "");
+                    $Datos=$obRest->ConsultarTabla("prod_departamentos", " ORDER BY Nombre");
                     $css->CrearOptionSelect("", "Seleccione", 0);
                     while ($DatosDepartamentos=$obRest->FetchArray($Datos)){
                         $css->CrearOptionSelect2($DatosDepartamentos["idDepartamentos"], $DatosDepartamentos["Nombre"], "", 0);

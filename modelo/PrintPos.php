@@ -1369,7 +1369,7 @@ class PrintPos extends ProcesoVenta{
         fwrite($handle,"$DatosPedido[FechaCreacion]");
         
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-        fwrite($handle,"CLIENTE:  $DatosPedido[NombreCliente]");
+        fwrite($handle,"CL:  $DatosPedido[NombreCliente]");
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         $DireccionEnvio=$DatosPedido["DireccionEnvio"];
         $TelefonoConfirmacion=$DatosPedido["TelefonoConfirmacion"];
@@ -1379,9 +1379,9 @@ class PrintPos extends ProcesoVenta{
         if($TelefonoConfirmacion==''){
             $TelefonoConfirmacion=$DatosCliente["Telefono"];
         }
-        fwrite($handle,"DIRECCION: $DireccionEnvio ");
+        fwrite($handle,"DIR: $DireccionEnvio ");
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-        fwrite($handle,"TELEFONO:  $TelefonoConfirmacion");
+        fwrite($handle,"TEL:  $TelefonoConfirmacion");
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         
         
@@ -1395,8 +1395,8 @@ class PrintPos extends ProcesoVenta{
 	while($DatosPedido=$this->FetchArray($consulta)){
             $Total=$Total+$DatosPedido["Total"];
             fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-            fwrite($handle,$DatosPedido["Cantidad"]."/ ");
-            fwrite($handle,substr($DatosPedido["idProducto"]." ".$DatosPedido["NombreProducto"],0,50)."   ");
+            fwrite($handle,$DatosPedido["Cantidad"]."  ");
+            fwrite($handle,substr($DatosPedido["NombreProducto"],0,50)."   ");
             fwrite($handle, number_format($DatosPedido["Total"]));
             fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
             if($DatosPedido["Observaciones"]<>""){
@@ -1462,11 +1462,11 @@ class PrintPos extends ProcesoVenta{
         //fwrite($handle, chr(27). chr(112). chr(48));//ABRIR EL CAJON
         fwrite($handle, chr(27). chr(100). chr(0));// SALTO DE CARRO VACIO
         //fwrite($handle, chr(27). chr(33). chr(8));// NEGRITA
-        fwrite($handle, chr(27). chr(33). chr(32));// DOBLE ANCHO
+        
         //fwrite($handle, chr(27). chr(33). chr(48));// DOBLE ALTO
         
         fwrite($handle, chr(27). chr(97). chr(1));// CENTRADO
-        fwrite($handle,"*************************************");
+        fwrite($handle,"****************");
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
@@ -1476,7 +1476,7 @@ class PrintPos extends ProcesoVenta{
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         fwrite($handle,"ORDEN DE PEDIDO No $idPedido"); // Titulo
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-        fwrite($handle,"*************************************");
+        fwrite($handle,"****************");
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         
@@ -1489,7 +1489,8 @@ class PrintPos extends ProcesoVenta{
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         
         
-        fwrite($handle,"*************************************");
+        fwrite($handle,"****************");
+        fwrite($handle, chr(27). chr(33). chr(32));// DOBLE ANCHO
         /////////////////////////////FECHA Y NUM FACTURA
 
         $sql = "SELECT * FROM restaurante_pedidos_items WHERE idPedido='$idPedido'";
@@ -1499,14 +1500,14 @@ class PrintPos extends ProcesoVenta{
 	while($DatosPedido=$this->FetchArray($consulta)){
 		
             fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-            fwrite($handle,$DatosPedido["Cantidad"]."/ ");
-            fwrite($handle,substr($DatosPedido["idProducto"]." ".$DatosPedido["NombreProducto"],0,50)."   ");
+            fwrite($handle,$DatosPedido["Cantidad"]."  ");
+            fwrite($handle,substr($DatosPedido["NombreProducto"],0,50)."   ");
             fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
             if($DatosPedido["Observaciones"]<>""){
                 fwrite($handle,$DatosPedido["Observaciones"]);
                 fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
             }
-            fwrite($handle,"____________________________________________");
+            fwrite($handle,"_________________");
 
         }
 
@@ -1550,7 +1551,7 @@ class PrintPos extends ProcesoVenta{
         fwrite($handle, chr(27). chr(100). chr(0));// SALTO DE CARRO VACIO
         fwrite($handle, chr(27). chr(33). chr(8));// NEGRITA
         fwrite($handle, chr(27). chr(97). chr(1));// CENTRADO
-        fwrite($handle,"*************************************");
+        fwrite($handle,"****************");
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         fwrite($handle,"PRECUENTA No. $idPedido"); // ESCRIBO RAZON SOCIAL
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
@@ -1559,7 +1560,7 @@ class PrintPos extends ProcesoVenta{
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
 	fwrite($handle,"Atiende: $DatosUsuario[Nombre] $DatosUsuario[Apellido]");	
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-        fwrite($handle,"*************************************");
+        fwrite($handle,"****************");
         
         //fwrite($handle, chr(27). chr(97). chr(0));// CENTRADO
         /////////////////////////////ITEMS VENDIDOS
@@ -1591,7 +1592,7 @@ class PrintPos extends ProcesoVenta{
 fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
     /////////////////////////////TOTALES
 
-    fwrite($handle,"_____________________________________");
+    fwrite($handle,"________________");
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
     fwrite($handle, chr(27). chr(97). chr(0));// IZQUIERDA
     
@@ -1599,7 +1600,7 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
     fwrite($handle,"TOTAL A PAGAR    ".str_pad("$".number_format($Total),20," ",STR_PAD_LEFT));
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
 
-    fwrite($handle,"_____________________________________");
+    fwrite($handle,"_________________");
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
 
     
@@ -1607,7 +1608,7 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
     fwrite($handle, chr(27). chr(97). chr(1));// CENTRO
-    fwrite($handle,"***NO VALIDO COMO FACTURA***");
+    fwrite($handle,"NO VALIDO COMO FACTURA");
     
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
     fwrite($handle, chr(27). chr(100). chr(1));

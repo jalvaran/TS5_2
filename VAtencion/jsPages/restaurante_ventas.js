@@ -537,3 +537,14 @@ function CalculeDevueltaRestaurante(Total){
 function CerrarTurnoRestaurante(){
     AccionesPedidos(9,"",'');
 }
+
+//Buscar un item
+
+function BuscarItemsRestaurante(){
+    
+    var Busqueda=document.getElementById('TxtBusquedaItems').value;
+    Page="Consultas/Restaurante_buscar_items.query.php?Busqueda="+Busqueda+"&Carry=";
+    EnvieObjetoConsulta(Page,`BtnPedidos`,'DivBusquedaItems',`99`);
+    document.getElementById("DivBusquedaItems").style.display="block";
+    
+}
