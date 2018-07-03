@@ -1,5 +1,5 @@
 <?php
-$myPage="MnuPedidos.php";
+$myPage="MnuRestaurante.php";
 include_once("../sesiones/php_control.php");
 ?>
 <!DOCTYPE html>

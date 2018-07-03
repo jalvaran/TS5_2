@@ -106,6 +106,13 @@ if(isset($_REQUEST["Accion"])){
             
             echo json_encode($Respuesta); 
         break;
+        case 'Alertas':
+            $DatosAlertas=$obRest->ConsulteAlertasPedidos("");
+            if($DatosAlertas<>""){
+                echo json_encode($DatosAlertas); 
+            }
+            
+        break;
     
         //Descartar pedido 
         case 1:
@@ -160,7 +167,7 @@ if(isset($_REQUEST["Accion"])){
         case 5:
             $obPrint=new PrintPos($idUser);
             $idPedido=$obRest->normalizar($_REQUEST["idPedido"]);
-            $obPrint->ImprimeDomicilioRestaurante($idPedido,"",1,"");
+            $obPrint->ImprimeDomicilioRestaurante($idPedido,"",2,"");
             $Respuesta["msg"]="OK";
             
             echo json_encode($Respuesta); 
@@ -249,6 +256,7 @@ if(isset($_REQUEST["Accion"])){
             $Respuesta["msg"]="OK";
             $Respuesta["TipoPedido"]=$DatosPedido["Estado"];
             echo json_encode($Respuesta); 
+            
         break;
         
         case 9:

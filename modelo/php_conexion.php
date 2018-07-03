@@ -6475,7 +6475,19 @@ public function VerificaPermisos($VectorPermisos) {
         $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
     }
     
-    
+    public function RegistraAlerta($TablaOrigen,$idTabla,$Tipo,$Mensaje,$Vector) {
+        $idAlerta='';
+        $Consulta=$this->ConsultarTabla("alertas", "WHERE Mensaje='$Mensaje' and TablaOrigen='$TablaOrigen' and idTabla='$idTabla'");
+        $DatosAlarma=$this->FetchAssoc($Consulta);
+        if($DatosAlarma["ID"]==''){
+            $sql="INSERT INTO alertas (AlertaTipo,Mensaje,TablaOrigen,idTabla) "
+                    . " VALUES ('$Tipo','$Mensaje','$TablaOrigen','$idTabla')";
+            $this->Query($sql);
+            $idAlerta=$this->ObtenerMAX("alertas","ID", 1,"");
+        }
+        
+        return($idAlerta);
+    }
 //////////////////////////////Fin	
 }
 	

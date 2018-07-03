@@ -1,3 +1,16 @@
+function reset () {
+    $("#toggleCSS").attr("href", "alertify/themes/alertify.default.css");
+    alertify.set({
+            labels : {
+                    ok     : "OK",
+                    cancel : "Cancel"
+            },
+            delay : 5000,
+            buttonReverse : false,
+            buttonFocus   : "ok"
+    });
+}
+
 var TimerPedidos;
 var TimerDomicilios;
 var TimerItems;
@@ -100,7 +113,8 @@ function AgregarItemPedido(idPedido=''){
             }
             
             if(data.msg==='SD'){
-                alert("Debes completar todos los campos");
+                alertify.alert("Debes completar todos los campos");   
+                //alert("Debes completar todos los campos");
                 //DibujePedidos();
             }
             
@@ -118,7 +132,7 @@ function CrearDomicilio(){
     
     //e.preventDefault();
     if($('#Telefono').val()=='' || $('#Nombre').val()=='' || $('#Direccion').val()==''){
-        alert("Debes completar todos los campos");
+        alertify.alert("Debes completar todos los campos");        
         return;
     }
     //se crea un objeto con los datos del formulario
@@ -148,7 +162,7 @@ function CrearDomicilio(){
             }
             
             if(data.msg==='SD'){
-                alert("Debes completar todos los campos");
+                alertify.alert("Debes completar todos los campos");
                 //DibujePedidos();
             }
             
@@ -166,7 +180,7 @@ function CrearParaLlevar(){
     
     //e.preventDefault();
     if($('#Telefono').val()=='' || $('#Nombre').val()=='' || $('#Direccion').val()==''){
-        alert("Debes completar todos los campos");
+        alertify.alert("Debes completar todos los campos");
         return;
     }
     //se crea un objeto con los datos del formulario
@@ -196,7 +210,7 @@ function CrearParaLlevar(){
             }
             
             if(data.msg==='SD'){
-                alert("Debes completar todos los campos");
+                alertify.alert("Debes completar todos los campos");
                 //DibujePedidos();
             }
             
@@ -211,6 +225,10 @@ function CrearParaLlevar(){
 
 //Funcion para dibujar los items de los pedidos en el div correspondiente
 function DibujeItemsPedido(idPedido,Opciones=1,Div='DivPedidos'){
+    if(Opciones==1){
+        document.getElementById('DivPedidos').innerHTML ='<br><img src="../images/cargando.gif" alt="Cargando" height="100" width="100">';
+    
+    }
     clearInterval(TimerItems);
     
     function TimerItemsPedido(){
@@ -230,6 +248,7 @@ function DibujeItemsPedido(idPedido,Opciones=1,Div='DivPedidos'){
 
 //Funcion para dibujar los pedidos en el div correspondiente
 function DibujePedidos(){
+       
     var Div=VerifiqueObjeto('DivPedDom');
     
     if(Div === 1){
@@ -237,6 +256,7 @@ function DibujePedidos(){
         Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&Carry=";
     }
     if(Div === 0){
+        
         var DivDestino =  'DivPedidos';
         Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&CuadroAdd=1&Carry=";
     }
@@ -337,11 +357,25 @@ function VerifiqueObjeto(id){
     }
     return (Existe);
 }
-
+function ObservacionesEliminarItemPedido(idItem,idPedido){
+    alertify.prompt("Escriba el por qué eliminará este item", function (e, str) {
+            if (e) {
+                    if (str != '') {
+                    EliminarItemPedido(idItem,idPedido,str)
+                    }else{
+                       alertify.alert("Debes Escribir una observacion"); 
+                    }
+                    //alertify.success("You've clicked OK and typed: " + str);
+            } else {
+                    alertify.error("haz cancelado la accion");
+            }
+    }, "");
+    return false;
+}
 //Eliminar un item de un pedido
-function EliminarItemPedido(idItem,idPedido){
-    var Observaciones = prompt("por favor indicar el por qué se eliminará el item", "");
-    if (Observaciones != null) {
+function EliminarItemPedido(idItem,idPedido,Observaciones){
+    //var Observaciones = prompt("por favor indicar el por qué se eliminará el item", "");
+    if (Observaciones != '') {
     var form_data = new FormData();
         form_data.append('Accion', "DEL")
         form_data.append('idItem', idItem)
@@ -359,7 +393,7 @@ function EliminarItemPedido(idItem,idPedido){
             //console.log(data);
             
             if(data.msg==='OK'){
-                alert("Se ha eliminado el item "+data.idItem+", del pedido "+data.idPedido+", por: "+data.Observaciones)
+                alertify.success("Se ha eliminado el item "+data.idItem+", del pedido "+data.idPedido+", por: "+data.Observaciones)
             }
                        
         },
@@ -369,18 +403,29 @@ function EliminarItemPedido(idItem,idPedido){
         }
       })
   }else{
-      alert("Debes Escribir una observacion");
+      alertify.alert("Debes Escribir una observacion");
   }
 }
 
+function DescartarPedido(idAccion,idPedido){
+    alertify.prompt("Escriba por qué descartará el pedido", function (e, str) {
+            if (e) {
+                     AccionesPedidos(idAccion,idPedido,'',str);
+            } else {
+                    alertify.error("You've clicked Cancel");
+            }
+    }, "");
+    return false;
+}
 ///Realice acciones como descartar un pedido, imprimir la precuenta, el domicilio y el pedido
 
-function AccionesPedidos(idAccion,idPedido,idFactura=''){ 
-    var Observaciones = "";
+function AccionesPedidos(idAccion,idPedido,idFactura='',Observaciones=''){ 
+    
     if(idAccion === 1 || idAccion === 2 || idAccion === 3){
-        Observaciones = prompt("por favor indicar el por qué se eliminará el item", "");
+        //Observaciones=CapturarObservaciones("Por favor escriba por qué eliminará el pedido");
+        //Observaciones = prompt("por favor indicar el por qué se eliminará el item", "");
         if(Observaciones === '' || Observaciones === null || Observaciones === undefined){
-            alert("Debe escribir el por que se descarta el pedido");
+            alertify.alert("Debe escribir el por que se descarta el pedido");
             return;
         }
             
@@ -405,46 +450,46 @@ function AccionesPedidos(idAccion,idPedido,idFactura=''){
             
             if(data.msg==='OK'){
                 if(idAccion===1){
-                    alert("Se ha descartado el pedido "+idPedido+", por: "+Observaciones);                    
+                    alertify.success("Se ha descartado el pedido "+idPedido+", por: "+Observaciones);                    
                     TimersPedidos(1);
                 }
                 if(idAccion===2){
-                    alert("Se ha descartado el Domicilio "+idPedido+", por: "+Observaciones);                    
+                    alertify.success("Se ha descartado el Domicilio "+idPedido+", por: "+Observaciones);                    
                     TimersPedidos(2);
                 }
                 if(idAccion===3){
-                    alert("Se ha descartado el servicio para llevar "+idPedido+", por: "+Observaciones);                    
+                    alertify.success("Se ha descartado el servicio para llevar "+idPedido+", por: "+Observaciones);                    
                     TimersPedidos(3);
                 }
                 if(idAccion===4){
-                    alert("Se ha impreso el pedido "+idPedido);                    
+                    alertify.success("Se ha impreso el pedido "+idPedido);                    
                     
                 }
                 if(idAccion===5){
-                    alert("Se ha impreso el domicilio "+idPedido);                   
+                    alertify.success("Se ha impreso el domicilio "+idPedido);                   
                     
                 }
                 if(idAccion===6){
-                    alert("Se ha impreso el servicio para llevar "+idPedido);                   
+                    alertify.success("Se ha impreso el servicio para llevar "+idPedido);                   
                     
                 }
                 if(idAccion===7){
-                    alert("Precuenta del pedido "+idPedido+" impresa");                    
+                    alertify.success("Precuenta del pedido "+idPedido+" impresa");                    
                     
                 }
                 if(idAccion===8){
-                    alert("Factura Impresa");                   
+                   alertify.success("Factura Impresa");                   
                     
                 }
                 if(idAccion===9){
-                    alert("Turno Cerrado");            
+                    alertify.alert("Turno Cerrado");            
                     TimersPedidos(99);
                     document.getElementById('DivPedDom').innerHTML ='Turno Cerrado';
                 }
             }
             
             if(data.msg==="SD"){
-                alert("No se recibiron todos los datos");
+                alertify.alert("No se recibiron todos los datos");
             }
             
                        
@@ -487,8 +532,8 @@ function FacturarPedido(idPedido){
             //console.log(data);
             
             if(data.msg==='OK'){
-                //console.log("Factura Creada");
-                document.getElementById('DivFacturacion').innerHTML ='Factura Creada';
+                alertify.success("Factura creada");
+                //document.getElementById('DivFacturacion').innerHTML ='Factura Creada';
                 document.getElementById('BtnCierreModal').click();
                 var DivDestino =  'DivPedDom';
                 Page="Consultas/Restaurante_pedidos.query.php?TipoPedido="+data.TipoPedido+"&CuadroAdd=1&Carry=";
@@ -505,12 +550,12 @@ function FacturarPedido(idPedido){
             }
             
             if(data.msg==='SD'){
-                alert("Debes completar todos los campos");
+                alertify.alert("Debes completar todos los campos");
                 //DibujePedidos();
             }
             
             if(data.msg==='E'){
-                alert(data.Error);
+                alertify.alert(data.Error);
                 //DibujePedidos();
             }
             
@@ -535,7 +580,9 @@ function CalculeDevueltaRestaurante(Total){
 //Cerrar Turno
 
 function CerrarTurnoRestaurante(){
+    
     AccionesPedidos(9,"",'');
+    
 }
 
 //Buscar un item
@@ -548,3 +595,46 @@ function BuscarItemsRestaurante(){
     document.getElementById("DivBusquedaItems").style.display="block";
     
 }
+var workerAlertas;
+
+function AlertasTS5(){
+    
+    
+    if(typeof(Worker) !== "undefined") {
+        if(typeof(workerAlertas) == "undefined") {
+            
+            workerAlertas = new Worker("./js/workers/alertasTS51.js");
+            //console.log(workerAlertas);
+        }
+        workerAlertas.onmessage = function(event) {
+            var DatosAlertas = JSON.parse(event.data);
+            
+            console.log(DatosAlertas);
+            if(DatosAlertas["msg"]=="OK"){
+                var NumAlertas=parseInt(DatosAlertas.NumItems)+parseInt(1);
+                var html="";
+                for(i=0;i<=DatosAlertas.NumItems;i++){
+                    html=html+DatosAlertas[i].ID+"/";
+                }
+               
+                document.getElementById("TS5_Alertas").innerHTML = NumAlertas;
+                if(NumAlertas>0){
+                    alertify.error("Tienes notificaciones sin leer");
+                    var audio = document.getElementById("audio");                    
+                    audio.play();
+                }
+            }else{
+                document.getElementById("TS5_Alertas").innerHTML = "0";
+            }
+        };
+    }else{
+        document.getElementById("DivAlertasTS5").innerHTML = "Sorry, your browser does not support Web Workers...";
+    }
+    
+}
+
+function MostrarNotificaciones(){
+    console.log(document.getElementById('spanAlertasTS5').attributes.data.count.notificacion);
+    
+}
+AlertasTS5();

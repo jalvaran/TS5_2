@@ -215,3 +215,28 @@ UPDATE `menu_submenus` SET `Estado` = b'0' WHERE `menu_submenus`.`ID` = 85;
 
 ALTER TABLE `restaurante_pedidos_items` ADD INDEX(`Estado`);
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES
+(169, 'Ventas', 30, 3, 'VentasRestaurante.php', '_SELF', b'1', 'vender.png', 1, '2017-10-13 19:16:57', '2017-10-13 14:16:57');
+
+DROP TABLE IF EXISTS `alertas`;
+CREATE TABLE `alertas` (
+  `ID` bigint(20) NOT NULL,
+  `AlertaTipo` varchar(45) NOT NULL,
+  `Mensaje` text NOT NULL,
+  `Estado` int(11) NOT NULL,
+  `TablaOrigen` varchar(100) NOT NULL,
+  `idTabla` bigint(20) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `alertas`
+--
+ALTER TABLE `alertas`
+  ADD PRIMARY KEY (`ID`);
+

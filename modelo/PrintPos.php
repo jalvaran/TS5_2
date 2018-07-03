@@ -34,12 +34,12 @@ class PrintPos extends ProcesoVenta{
     public function Footer($handle){
         
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
-        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        //fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(97). chr(1));// CENTRO
 
-        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+       // fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
 
-        fwrite($handle, chr(27). chr(100). chr(1));
+        //fwrite($handle, chr(27). chr(100). chr(1));
         fwrite($handle, chr(27). chr(100). chr(1));
         fwrite($handle,"***Documento impreso por TS5***");
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
@@ -60,7 +60,7 @@ class PrintPos extends ProcesoVenta{
     //Separador Horizontal
     public function SeparadorHorizontal($handle,$Caracter,$Cantidad){
         
-        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        //fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         $Line=str_pad($Caracter,  $Cantidad, $Caracter);
         fwrite($handle,$Line); //
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
@@ -1466,7 +1466,15 @@ class PrintPos extends ProcesoVenta{
         //fwrite($handle, chr(27). chr(33). chr(48));// DOBLE ALTO
         
         fwrite($handle, chr(27). chr(97). chr(1));// CENTRADO
-        fwrite($handle,"****************");
+        
+        if($i==1){
+            fwrite($handle,"---ORIGINAL---");
+        }else{
+            fwrite($handle,"---COPIA---");
+        }
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
@@ -1479,14 +1487,8 @@ class PrintPos extends ProcesoVenta{
         fwrite($handle,"****************");
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-        
-        fwrite($handle,"$DatosPedido[FechaCreacion]");
-        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-        fwrite($handle,"$DatosMesa[Nombre]");
-        
-        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
-        fwrite($handle,"SOLICITA:  $DatosUsuario[Nombre] $DatosUsuario[Apellido]");
-        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        //fwrite($handle,"SOLICITA:  $DatosUsuario[Nombre] $DatosUsuario[Apellido]");
+        //fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         
         
         fwrite($handle,"****************");
@@ -1512,6 +1514,11 @@ class PrintPos extends ProcesoVenta{
         }
 
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle,$Fecha." ".$Hora);
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        fwrite($handle,"$DatosMesa[Nombre]");
+        
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
@@ -1637,14 +1644,16 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         $Hora=$DatosCierre["Hora"];
         $idUsuario=$DatosCierre["idUsuario"];
         $Usuarios[]="";
-        $sql="SELECT Estado,sum(`Total`) as Total, idUsuario FROM `restaurante_pedidos_items` "
+        $TotalesPedidos[]="";
+        $sql="SELECT count(DISTINCT idPedido) as NumPedidos,Estado,sum(`Total`) as Total, idUsuario FROM `restaurante_pedidos_items` "
                 . "WHERE `idCierre`='$idCierre' GROUP BY `Estado`,`idUsuario` ";
         $Consulta=$this->Query($sql);
         while($DatosCierre=$this->FetchArray($Consulta)){
             $Estado=$DatosCierre["Estado"];
             $idUsuario=$DatosCierre["idUsuario"];
             $Usuarios[$idUsuario]=$DatosCierre["idUsuario"];
-            $TotalesPedidos[$idUsuario][$Estado]=$DatosCierre["Total"];            
+            $TotalesPedidos[$idUsuario][$Estado]=$DatosCierre["Total"];
+            $TotalesPedidos[$idUsuario]["NumPedidos"]=$DatosCierre["NumPedidos"];  
         }
         for($i=1; $i<=$Copias;$i++){
         fwrite($handle,chr(27). chr(64));//REINICIO
@@ -1668,33 +1677,45 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
             $DatosUsuario=$this->DevuelveValores("usuarios", "idUsuarios", $idUser);
             fwrite($handle,"USUARIO $DatosUsuario[Nombre] $DatosUsuario[Apellido]:");
             fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+            $NumPedidos="";
+            if(isset($TotalesPedidos[$idUsuario]["NumPedidos"])){
+                $NumPedidos=$TotalesPedidos[$idUsuario]["NumPedidos"];
+            }
+            $GranTotal=0;
             if(isset($TotalesPedidos[$idUser]["FAPE"])){
-                fwrite($handle,"PEDIDOS FACTURADOS: ".number_format($TotalesPedidos[$idUser]["FAPE"]));
+                $GranTotal=$GranTotal+$TotalesPedidos[$idUser]["FAPE"];
+                fwrite($handle,"PEDIDOS FACTURADOS: $NumPedidos X $".number_format($TotalesPedidos[$idUser]["FAPE"]));
                 fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+                //fwrite($handle,"NUM PEDIDOS FACTURADOS: ".number_format($TotalesPedidos[$idUsuario][$Estado]["NumPedidos"]));
+                //fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             }
             if(isset($TotalesPedidos[$idUser]["DEPE"])){
-                fwrite($handle,"PEDIDOS DESCARTADOS: ".number_format($TotalesPedidos[$idUser]["DEPE"]));
+                fwrite($handle,"PEDIDOS DESCARTADOS: $NumPedidos X $".number_format($TotalesPedidos[$idUser]["DEPE"]));
                 fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             }
             if(isset($TotalesPedidos[$idUser]["FADO"])){
-                fwrite($handle,"DOMICILIOS FACTURADOS: ".number_format($TotalesPedidos[$idUser]["FADO"]));
+                $GranTotal=$GranTotal+$TotalesPedidos[$idUser]["FADO"];
+                fwrite($handle,"DOMICILIOS FACTURADOS: $NumPedidos X $".number_format($TotalesPedidos[$idUser]["FADO"]));
                 fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             }
             if(isset($TotalesPedidos[$idUser]["DEDO"])){
-                fwrite($handle,"DOMICILIOS DESCARTADOS: ".number_format($TotalesPedidos[$idUser]["DEDO"]));
+                fwrite($handle,"DOMICILIOS DESCARTADOS: $NumPedidos X $".number_format($TotalesPedidos[$idUser]["DEDO"]));
                 fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             }
             if(isset($TotalesPedidos[$idUser]["FALL"])){
-                fwrite($handle,"PARA LLEVAR FACTURADOS: ".number_format($TotalesPedidos[$idUser]["FALL"]));
+                $GranTotal=$GranTotal+$TotalesPedidos[$idUser]["FALL"];
+                fwrite($handle,"PARA LLEVAR FACTURADOS: $NumPedidos X $".number_format($TotalesPedidos[$idUser]["FALL"]));
                 fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             }
             if(isset($TotalesPedidos[$idUser]["DELL"])){
-                fwrite($handle,"PARA LLEVAR DESCARTADOS: ".number_format($TotalesPedidos[$idUser]["DELL"]));
+                fwrite($handle,"PARA LLEVAR DESCARTADOS: $NumPedidos X $".number_format($TotalesPedidos[$idUser]["DELL"]));
                 fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             }
             
         }
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle,"TOTAL: $".number_format($GranTotal));
+                
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea

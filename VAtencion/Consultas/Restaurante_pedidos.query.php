@@ -9,6 +9,63 @@ $css =  new CssIni("",0);
 
 $obRest=new Restaurante($idUser);
 
+if(isset($_REQUEST["DatosTurnoActual"])){
+    print("<br>");
+    $css->CrearNotificacionAzul("Resumen de este Turno", 16);
+    $sql="SELECT count(DISTINCT idPedido) as NumPedidos,Estado,sum(`Total`) as Total FROM `restaurante_pedidos_items` "
+                . "WHERE `idCierre`=0 GROUP BY Estado";
+    $Datos=$obRest->Query($sql);
+    
+    $css->CrearTabla();
+        $css->FilaTabla(16);
+            $css->ColTabla("<strong>Tipo de Pedido</strong>", 1);
+            $css->ColTabla("<strong>Cantidad</strong>", 1);
+            $css->ColTabla("<strong>Valor</strong>", 1);
+        $css->CierraFilaTabla();
+        while($DatosPedidos=$obRest->FetchAssoc($Datos)){
+            if($DatosPedidos["Estado"]=="AB"){
+                 $TipoPedido="Pedidos Abiertos";       
+            }
+            if($DatosPedidos["Estado"]=="FAPE"){
+                 $TipoPedido="Pedidos Facturados";       
+            }
+            if($DatosPedidos["Estado"]=="DO"){
+                 $TipoPedido="Domicilios Abiertos";       
+            }
+            if($DatosPedidos["Estado"]=="LL"){
+                 $TipoPedido="Para Llevar Abiertos";       
+            }
+            if($DatosPedidos["Estado"]=="DEPE"){
+                 $TipoPedido="Pedidos Descartados";       
+            }
+            if($DatosPedidos["Estado"]=="DEDO"){
+                 $TipoPedido="Domicilios Descartados";       
+            }
+            if($DatosPedidos["Estado"]=="DELL"){
+                 $TipoPedido="Para Llevar Descartados";       
+            }
+            if($DatosPedidos["Estado"]=="FADO"){
+                 $TipoPedido="Domicilios Facturados";       
+            }
+            if($DatosPedidos["Estado"]=="FALL"){
+                 $TipoPedido="Para llevar Facturados";       
+            }
+            $css->FilaTabla(16);
+                
+                    
+                
+                $css->ColTabla($TipoPedido, 1);
+                $css->ColTabla($DatosPedidos["NumPedidos"], 1);
+                print("<td style='text-align:right'>");
+                    print(number_format($DatosPedidos["Total"]));
+                print("</td>");    
+            $css->CierraFilaTabla();
+        }
+    
+    $css->CerrarTabla();
+    exit();
+}
+
 if(isset($_REQUEST["TipoPedido"])){
     //Tipo pedido AB= pedidos abiertos, DO=Domicilios abieros, LL=para llevar Abiertos
     $TipoPedido=$obRest->normalizar($_REQUEST["TipoPedido"]);
@@ -139,6 +196,7 @@ if($obRest->NumRows($consulta)){
         $css->FilaTabla(16);
             $css->ColTabla("<strong>ID</strong>", 1);
             $css->ColTabla("<strong>Fecha y Hora</strong>", 1);
+            $css->ColTabla("<strong>Tiempo</strong>", 1);
             $css->ColTabla("<strong>Cliente</strong>", 1);
             $css->ColTabla("<strong>Direccion</strong>", 1);
             $css->ColTabla("<strong>Telefono</strong>", 1);
@@ -146,11 +204,30 @@ if($obRest->NumRows($consulta)){
             $css->ColTabla("<strong>Opciones</strong>", 1);
         $css->CierraFilaTabla();
         while($DatosPedidos=$obRest->FetchArray($consulta)){
-            
+                $fecha1 = date_create($DatosPedidos["FechaCreacion"]);
+                $fecha2 = date_create(date("Y-m-d H:i:s"));
+                $DatosDiferencias= date_diff($fecha1, $fecha2);
+                $Dias=$DatosDiferencias->d;
+                $Horas=$DatosDiferencias->h;
+                $Minutos=$DatosDiferencias->i;
+                $Segundos=$DatosDiferencias->s;
+                $TotalTranscurrido=($Dias*1140)+($Horas*60)+$Minutos;
                 $idPedido=$DatosPedidos["ID"];
+                
                 $css->FilaTabla(14);
                     $css->ColTabla($DatosPedidos["ID"], 1);
-                    $css->ColTabla($DatosPedidos["Fecha"]." ".$DatosPedidos["Hora"], 1);
+                    $css->ColTabla($DatosPedidos["FechaCreacion"], 1);
+                    $style="";
+                    if($TotalTranscurrido>=15){
+                        
+                        $style="style='background-color: #ffab0d;'";
+                        $Mensaje="Retraso en pedido $DatosPedidos[ID]";
+                        $obRest->RegistraAlerta("restaurante_pedidos", $DatosPedidos["ID"], "Normal", $Mensaje, "");
+                    }
+                    print("<td $style>");
+                        
+                        print("<strong>$TotalTranscurrido</strong>");
+                    print("</td>");
                     $css->ColTabla($DatosPedidos["NombreCliente"], 1);
                     $css->ColTabla($DatosPedidos["DireccionEnvio"], 1);
                     $css->ColTabla($DatosPedidos["TelefonoConfirmacion"], 1);
@@ -169,15 +246,35 @@ if($obRest->NumRows($consulta)){
         $css->FilaTabla(16);
             $css->ColTabla("<strong>ID</strong>", 1);
             $css->ColTabla("<strong>Fecha y Hora</strong>", 1);
+            $css->ColTabla("<strong>Tiempo</strong>", 1);
             $css->ColTabla("<strong>Mesa</strong>", 1);
             $css->ColTabla("<strong>Usuario</strong>", 1);
             $css->ColTabla("<strong>Opciones</strong>", 1);
         $css->CierraFilaTabla();
         while($DatosPedidos=$obRest->FetchArray($consulta)){
+            $fecha1 = date_create($DatosPedidos["FechaCreacion"]);
+            $fecha2 = date_create(date("Y-m-d H:i:s"));
+            $DatosDiferencias= date_diff($fecha1, $fecha2);
+            $Dias=$DatosDiferencias->d;
+            $Horas=$DatosDiferencias->h;
+            $Minutos=$DatosDiferencias->i;
+            $Segundos=$DatosDiferencias->s;
+            $TotalTranscurrido=($Dias*1140)+($Horas*60)+$Minutos;
             $css->FilaTabla(14);
             $css->ColTabla($DatosPedidos["ID"], 1);
-            $css->ColTabla($DatosPedidos["Fecha"]." ".$DatosPedidos["Hora"], 1);
-            $css->ColTabla($DatosPedidos["idMesa"], 1);
+            $css->ColTabla($DatosPedidos["FechaCreacion"], 1);
+            $style="";
+                if($TotalTranscurrido>=15){
+                    $style="style='background-color: #ffab0d;'";
+                    $Mensaje="Retraso en mesa $DatosPedidos[idMesa]";
+                    $obRest->RegistraAlerta("restaurante_pedidos", $DatosPedidos["ID"], "Normal", $Mensaje, "");
+                }
+                print("<td $style>");
+                    
+                print("<strong>$TotalTranscurrido</strong>");
+            print("</td>");
+            $DatosMesa=$obRest->DevuelveValores("restaurante_mesas", "ID", $DatosPedidos["idMesa"]);
+            $css->ColTabla($DatosMesa["Nombre"], 1);
             $css->ColTabla($DatosPedidos["idUsuario"], 1);
             $idPedido=$DatosPedidos["ID"];
             print("<td>");

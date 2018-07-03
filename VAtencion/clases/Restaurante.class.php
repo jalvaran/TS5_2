@@ -441,6 +441,30 @@ class Restaurante extends ProcesoVenta{
         
     }
     
+    public function ConsulteAlertasPedidos($Vector) {
+        $consulta=$this->ConsultarTabla("restaurante_pedidos", " WHERE Estado='DO' or  Estado='AB' or  Estado='LL' ORDER BY ID ASC LIMIT 200");
+        $Respuesta["msg"]="SD";
+        $i=0;
+        while($DatosPedidos=$this->FetchAssoc($consulta)){
+                        
+            $fecha1 = date_create($DatosPedidos["FechaCreacion"]);
+            $fecha2 = date_create(date("Y-m-d H:i:s"));
+            $DatosDiferencias= date_diff($fecha1, $fecha2);
+            $Dias=$DatosDiferencias->d;
+            $Horas=$DatosDiferencias->h;
+            $Minutos=$DatosDiferencias->i;
+            $Segundos=$DatosDiferencias->s;
+            $TotalTranscurrido=($Dias*1140)+($Horas*60)+$Minutos;
+            if($TotalTranscurrido>15){
+                $Respuesta["msg"]="OK";
+                $Respuesta["NumItems"]=$i;
+                $Respuesta[$i]=$DatosPedidos;
+                $Respuesta[$i]["Tiempo"]=$TotalTranscurrido;
+                $i++;
+            }
+        }
+        return($Respuesta);
+    }
     
     //Fin Clases
 }

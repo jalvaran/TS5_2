@@ -5,6 +5,7 @@ include_once("../clases/Restaurante.class.php");
 
 session_start();
 $idUser=$_SESSION['idUser'];
+$TipoUser=$_SESSION['tipouser'];
 $css =  new CssIni("",0);
 
 $obRest=new Restaurante($idUser);
@@ -63,7 +64,9 @@ if(isset($_REQUEST["idPedido"])){
             
         $css->CierraFilaTabla();
         $css->FilaTabla(16);
-           $css->ColTabla("<strong>Descartar</strong>", 1);
+            if($TipoUser=="administrador"){
+                $css->ColTabla("<strong>Descartar</strong>", 1);
+            }
            $css->ColTabla("<strong>Pedido</strong>", 1);
            $css->ColTabla("<strong>Precuenta</strong>", 1);
            $css->ColTabla("<strong>Facturar</strong>", 1);
@@ -75,17 +78,18 @@ if(isset($_REQUEST["idPedido"])){
                 $RutaImage=$ImageAlterna;
                 $Nombre="ImgDescartar".$DatosPedido["ID"];
                 if($DatosPedido["Estado"]=="AB"){
-                    $FuncionJS="onclick='AccionesPedidos(1,`$idPedido`)'";
+                    $FuncionJS="onclick='DescartarPedido(1,`$idPedido`)'";
                 }
                 if($DatosPedido["Estado"]=="DO"){
-                    $FuncionJS="onclick='AccionesPedidos(2,`$idPedido`)'";
+                    $FuncionJS="onclick='DescartarPedido(2,`$idPedido`)'";
                 }
                 if($DatosPedido["Estado"]=="LL"){
-                    $FuncionJS="onclick='AccionesPedidos(3,`$idPedido`)'";
+                    $FuncionJS="onclick='DescartarPedido(3,`$idPedido`)'";
                 }
                 
-                
-                $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
+                if($TipoUser=="administrador"){
+                    $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
+                }
                 print("</td>");
                 print("<td style='text-align:center'>");
                 $ImageAlterna="../images/print.png";
@@ -165,8 +169,10 @@ if(isset($_REQUEST["idPedido"])){
                 //$Page="Consultas/Restaurante_pedidos_items.query.php?idPedido=".$DatosPedidos["ID"]."&carry=";
                 $evento="onClick";
                 //$funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivItems`,`99`);return false;";
-                $funcion="EliminarItemPedido(`$idItem`,`$idPedido`);";
-                $css->CrearBotonEvento("BtnEliminar".$idItem, "x", 1, $evento, $funcion, "rojo", "");
+                $funcion="ObservacionesEliminarItemPedido(`$idItem`,`$idPedido`);";
+                if($TipoUser=="administrador"){
+                    $css->CrearBotonEvento("BtnEliminar".$idItem, "x", 1, $evento, $funcion, "rojo", "");
+                }
             print("</td>");
         $css->CierraFilaTabla();
         }

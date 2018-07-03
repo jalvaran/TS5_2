@@ -7,7 +7,6 @@ $obRest=new Restaurante($idUser);
 print("<html>");
 print("<head>");
 $css =  new CssIni("Ventas Restaurante");
-
 print("</head>");
 print("<body>");
      
@@ -17,11 +16,17 @@ print("<body>");
     /////
     /////
     $css->CrearBotonEvento("BtnCerrarTurno", "Cerrar Turno", 1, "onclick", "CerrarTurnoRestaurante()", "rojo", "");
+    
     $css->CabeceraFin(); 
+    $css->BotonNotificaciones("");
     ///////////////Creamos el contenedor
     /////
     /////
+   // print("<div id='DivAlertasTS5' style='position: absolute;left: 10px;'>");
+    $css->CrearDiv('DivAlertasTS5', "container", "center", 1, 1);    
+    $css->CerrarDiv();
     $css->CrearDiv("DivButtons", "", "", 0, 0);
+    
     $css->CreaBotonDesplegable("DialFacturacion", "Abrir","BtnAbreModalFact");
     $css->CerrarDiv();
     $css->CrearModal("DialFacturacion", "Facturar", "");
@@ -49,6 +54,12 @@ print("<body>");
         
         $css->CrearBotonEvento("BtnLlevar", "<-Llevar->", 1, $evento, $funcion, "verde", "");
         
+        print(" ");
+        $Page="Consultas/Restaurante_pedidos.query.php?DatosTurnoActual=1&Carry=";
+        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);TimersPedidos(99);";
+        if($TipoUser=="administrador"){
+            $css->CrearBotonEvento("BtnVerTotales", "Este Turno", 1, $evento, $funcion, "naranja", "");
+        }
         
         
    $css->CerrarDiv();
@@ -59,7 +70,9 @@ print("<body>");
    //$css->DivGrid("DivItems", "", "center", 1, 1, 2, 100, 30,1,"transparent");
     
    //$css->CerrarDiv();
-    
+    print('<audio id="audio" controls style="display: none">
+        <source type="audio/mp3" src="../sounds/sms-alert-4.mp3">
+        </audio>');
     $css->AgregaJS(); //Agregamos javascripts
     $css->AgregaSubir();
     $css->Footer();

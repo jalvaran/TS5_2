@@ -114,6 +114,25 @@
         }
         .oculto {-webkit-transition:1s;-moz-transition:1s;-o-transition:1s;-ms-transition:1s;opacity:0;-ms-opacity:0;-moz-opacity:0;visibility:hidden;}
 
+.notification-container {
+    display:scroll; position:fixed; top:70px; right:10px;
+    width: 50px;
+    height: 50px;    
+    cursor:pointer;
+}
+
+.notification-counter {   
+    position: absolute;
+    top: -2px;
+    left: 25px;
+    
+    background-color: rgba(212, 19, 13, 1);
+    color: #fff;
+    border-radius: 18px;
+    padding: 1px 3px;
+    font: 14px Verdana;
+}
+
 </style>
 
 <link rel="stylesheet" href="css/cronometro.css">
@@ -170,10 +189,13 @@ class CssIni{
                 <link rel='stylesheet' href='css/calendar.css'>   
                 <link rel='stylesheet' type='text/css' href='css/bootstrap.min.css' />
                 <link rel='stylesheet' type='text/css' href='css/DateTimePicker.css' />
+                <link rel='stylesheet' href='alertify/themes/alertify.core.css' />
+                <link rel='stylesheet' href='alertify/themes/alertify.default.css' id='toggleCSS' />
 		");
 		print('<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap.min.js"></script>	
-		
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+                
+		<script src="alertify/lib/alertify.min.js"></script>
                 <script src="../plugins/ckeditor/ckeditor.js"></script>
                 <script src="../plugins/ckeditor/samples/js/sample.js"></script>
                 ');
@@ -1624,7 +1646,15 @@ function Footer(){
                 $this->CerrarForm();
             $this->CerrarCuadroDeDialogo(); 
         }
-        
+        public function BotonNotificaciones($Vector) {
+            print('<div class="notification-container">        
+                <img src="../images/notificaciones.png" style="height:50px;width:50px" href="#ModalAlertasTS5" data-toggle="modal"></img><span id="TS5_Alertas" class="notification-counter">NC</span></input>
+            </div>');
+            $this->CrearModal("ModalAlertasTS5", "Notificaciones", "");
+                $this->CrearDiv("DivNotificacionesTS5", "", "center", 1, 1);
+                $this->CerrarDiv();
+            $this->CerrarModal();
+        }
         //////////////////////////////////FIN
 }
 	
