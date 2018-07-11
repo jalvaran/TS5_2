@@ -1,7 +1,7 @@
 <?php 
 $myPage="Auxiliares.php";
 include_once("../sesiones/php_control.php");
-
+include_once("clases/ClasesDocumentosExcel.php");
 $obVenta = new ProcesoVenta($idUser);
 $obTabla = new Tabla($db);
 if(isset($_REQUEST["BtnVerInforme"])){
@@ -17,11 +17,11 @@ if(isset($_REQUEST["BtnVerInforme"])){
 }
 // Genera un auxiliar x documento
 if(isset($_REQUEST["BtnVerAuxDoc"])){
-    
+    $obDocExcel = new TS5_Excel($db);
     $FechaInicial=$obVenta->normalizar($_REQUEST["TxtFechaIni"]);
     $FechaFinal=$obVenta->normalizar($_REQUEST["TxtFechaFinal"]);
     
-    $obTabla->ExcelAuxiliarDetallado($TipoReporte,$FechaInicial,$FechaFinal,$FechaCorte,$CuentaPUC,$TipoFiltro,$Tercero,"");
+    $obDocExcel->AuxiliarXDocumento($FechaInicial, $FechaFinal, "");
 }
 
 include_once("css_construct.php");
@@ -159,12 +159,13 @@ print("<body>");
             $css->FilaTabla(14);
                 
                 print("<td>");
-                $css->CrearInputFecha("", "TxtFechaIni", date("Y-m-d"), 150, 30, "");
+                $css->CrearInputText("TxtFechaIni", "date", "", date("Y-m-d"), "Fecha", "", "", "", 150, 30, 0, 1);
+                //$css->CrearInputFecha("", "TxtFechaIni", date("Y-m-d"), 150, 30, "");
                 
                 print("</td>");   
                 print("<td>");
-                $css->CrearInputFecha("", "TxtFechaFinal", date("Y-m-d"), 150, 30, "");
-                //$css->CrearInputText("TxtFechaFinal", "date", "", date("Y-m-d"), "Fecha Inicial", "black", "", "", 150, 30, 0, 1);
+                $css->CrearInputText("TxtFechaFinal", "date", "", date("Y-m-d"), "Fecha", "", "", "", 150, 30, 0, 1);
+                
                 print("</td>"); 
                 
             $css->FilaTabla(16);
