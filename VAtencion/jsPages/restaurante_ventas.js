@@ -502,10 +502,11 @@ function AccionesPedidos(idAccion,idPedido,idFactura='',Observaciones=''){
   
 }
 //Facturar pedido
-function FacturarPedido(idPedido){
+function FacturarPedido(idPedido,Options=0){
     //event.preventDefault();
     //console.log($('#CmbTipoPago').val());   
     //se crea un objeto con los datos del formulario
+    if(Options==0){
     var form_data = new FormData();
         form_data.append('Accion', 8)
         form_data.append('idPedido', idPedido)
@@ -519,7 +520,22 @@ function FacturarPedido(idPedido){
         form_data.append('TxtEfectivo', $('#TxtEfectivo').val()) 
         form_data.append('TxtDevuelta', $('#TxtDevuelta').val())
         document.getElementById('DivFacturacion').innerHTML ='Procesando...<br><img src="../images/process.gif" alt="Cargando" height="100" width="100">';
-   
+    }
+    if(Options==1){
+    var form_data = new FormData();
+        form_data.append('Accion', 8)
+        form_data.append('idPedido', idPedido)
+        form_data.append('idCliente', 1)
+        form_data.append('TxtTarjetas', 0)
+        form_data.append('TxtCheques', 0) 
+        form_data.append('TxtBonos', 0)
+        form_data.append('CmbTipoPago', 'Contado')
+        form_data.append('CmbColaboradores', '') 
+        form_data.append('TxtObservaciones', '')
+        form_data.append('TxtEfectivo', 'NA') 
+        form_data.append('TxtDevuelta', '0')
+        document.getElementById('DivPedidos').innerHTML ='Procesando...<br><img src="../images/process.gif" alt="Cargando" height="100" width="100">';
+    }
         $.ajax({
         url: 'Consultas/Restaurante.process.php',
         dataType: "json",
@@ -628,7 +644,7 @@ function AlertasTS5(){
             }
         };
     }else{
-        document.getElementById("DivAlertasTS5").innerHTML = "Sorry, your browser does not support Web Workers...";
+        document.getElementById("DivAlertasTS5").innerHTML = "Su navegador no soporta Web Workers...";
     }
     
 }
@@ -637,4 +653,4 @@ function MostrarNotificaciones(){
     console.log(document.getElementById('spanAlertasTS5').attributes.data.count.notificacion);
     
 }
-AlertasTS5();
+//AlertasTS5();

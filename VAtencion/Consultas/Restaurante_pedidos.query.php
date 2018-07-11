@@ -23,6 +23,7 @@ if(isset($_REQUEST["DatosTurnoActual"])){
             $css->ColTabla("<strong>Valor</strong>", 1);
         $css->CierraFilaTabla();
         while($DatosPedidos=$obRest->FetchAssoc($Datos)){
+            $TipoPedido="";
             if($DatosPedidos["Estado"]=="AB"){
                  $TipoPedido="Pedidos Abiertos";       
             }
@@ -283,6 +284,7 @@ if($obRest->NumRows($consulta)){
                 $funcion="DibujeItemsPedido(`$idPedido`);";
                 $css->CrearBotonEvento("BtnVer".$DatosPedidos["ID"], "+", 1, $evento, $funcion, "naranja", "");
             print("</td>");
+            
         $css->CierraFilaTabla();
         }
     }

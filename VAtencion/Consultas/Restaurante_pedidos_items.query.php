@@ -70,6 +70,9 @@ if(isset($_REQUEST["idPedido"])){
            $css->ColTabla("<strong>Pedido</strong>", 1);
            $css->ColTabla("<strong>Precuenta</strong>", 1);
            $css->ColTabla("<strong>Facturar</strong>", 1);
+           if($TipoUser=="administrador"){
+                $css->ColTabla("<strong>FSI</strong>", 1);
+           }
         $css->CierraFilaTabla();
         $css->FilaTabla(16);
         
@@ -125,6 +128,15 @@ if(isset($_REQUEST["idPedido"])){
                 $FuncionJS="onclick='DibujeAreaFacturar(`$idPedido`)'"; //Dibuja las opciones para facturar un pedido
                 $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
                 print("</td>");
+                if($TipoUser=="administrador"){
+                    print("<td style='text-align:center'>");
+                    $RutaImage="../images/facturar3.png";
+                    $Nombre="ImgFacturar".$DatosPedido["ID"];
+
+                    $FuncionJS="onclick='FacturarPedido(`$idPedido`,`1`)'"; //Dibuja las opciones para facturar un pedido
+                    $css->CrearImage($Nombre, $RutaImage, $ImageAlterna, 50, 50,$FuncionJS);
+                    print("</td>");
+                }    
         $css->CierraFilaTabla();
     $css->CerrarTabla();
     

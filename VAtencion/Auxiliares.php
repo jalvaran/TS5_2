@@ -15,6 +15,14 @@ if(isset($_REQUEST["BtnVerInforme"])){
     $Tercero=$obVenta->normalizar($_REQUEST["TxtTercero"]);
     $obTabla->ExcelAuxiliarDetallado($TipoReporte,$FechaInicial,$FechaFinal,$FechaCorte,$CuentaPUC,$TipoFiltro,$Tercero,"");
 }
+// Genera un auxiliar x documento
+if(isset($_REQUEST["BtnVerAuxDoc"])){
+    
+    $FechaInicial=$obVenta->normalizar($_REQUEST["TxtFechaIni"]);
+    $FechaFinal=$obVenta->normalizar($_REQUEST["TxtFechaFinal"]);
+    
+    $obTabla->ExcelAuxiliarDetallado($TipoReporte,$FechaInicial,$FechaFinal,$FechaCorte,$CuentaPUC,$TipoFiltro,$Tercero,"");
+}
 
 include_once("css_construct.php");
 function CrearFormularioInformes($VectorInformes) {
@@ -126,7 +134,7 @@ print("<body>");
     /////
     $css->CrearDiv("Secundario", "container", "center",1,1);
     
-    $css->CrearNotificacionNaranja("GENERAR UN AUXILIAR", 16);
+    $css->CrearNotificacionNaranja("GENERAR UN AUXILIAR DETALLADO", 16);
     
     $VectorInformes["FormName"]="FrmInformeAuxiliar";
     $VectorInformes["ActionForm"]=$myPage;
@@ -134,7 +142,38 @@ print("<body>");
     $VectorInformes["Target"]="_self";
     $VectorInformes["Titulo"]="Auxiliar Detallado";
     CrearFormularioInformes($VectorInformes);
-     
+    print("<br>");
+    $css->CrearNotificacionVerde("GENERAR UN AUXILIAR X DOCUMENTO", 16);
+    $css->CrearForm2("FrmAuxDocumento", $myPage, "POST", "_SELF");
+        $css->CrearTabla();
+            $css->FilaTabla(14);
+            $css->ColTabla("<strong>AUXILIAR X DOCUMENTO</strong>", 5);
+
+                $css->CierraFilaTabla();
+            $css->FilaTabla(14);
+                
+                $css->ColTabla("<strong>FECHA INICIAL:</strong>", 1);
+                $css->ColTabla("<strong>FECHA FINAL:</strong>", 1);
+                
+            $css->CierraFilaTabla();
+            $css->FilaTabla(14);
+                
+                print("<td>");
+                $css->CrearInputFecha("", "TxtFechaIni", date("Y-m-d"), 150, 30, "");
+                
+                print("</td>");   
+                print("<td>");
+                $css->CrearInputFecha("", "TxtFechaFinal", date("Y-m-d"), 150, 30, "");
+                //$css->CrearInputText("TxtFechaFinal", "date", "", date("Y-m-d"), "Fecha Inicial", "black", "", "", 150, 30, 0, 1);
+                print("</td>"); 
+                
+            $css->FilaTabla(16);
+            print("<td colspan='5' style='text-align:center'>");
+            $css->CrearBotonNaranja("BtnVerAuxDoc", "Generar");
+            print("</td>");
+            $css->CierraFilaTabla();
+        $css->CerrarTabla();
+    $css->CerrarForm(); 
     $css->CerrarDiv();//Cerramos contenedor Secundario
     $css->CerrarDiv();//Cerramos contenedor Principal
     $css->AgregaJS(); //Agregamos javascripts

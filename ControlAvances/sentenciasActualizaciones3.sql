@@ -240,3 +240,19 @@ CREATE TABLE `alertas` (
 ALTER TABLE `alertas`
   ADD PRIMARY KEY (`ID`);
 
+DROP TABLE IF EXISTS `factura_compra_notas_devolucion`;
+CREATE TABLE `factura_compra_notas_devolucion` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Fecha` date NOT NULL,
+  `Tercero` bigint(20) NOT NULL,
+  `Concepto` text COLLATE latin1_spanish_ci NOT NULL,
+  `idCentroCostos` int(11) NOT NULL,
+  `idSucursal` int(11) NOT NULL,
+  `idUser` bigint(20) NOT NULL,
+  `Estado` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+

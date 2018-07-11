@@ -18,7 +18,7 @@ print("<body>");
     $css->CrearBotonEvento("BtnCerrarTurno", "Cerrar Turno", 1, "onclick", "CerrarTurnoRestaurante()", "rojo", "");
     
     $css->CabeceraFin(); 
-    $css->BotonNotificaciones("");
+    //$css->BotonNotificaciones("");
     ///////////////Creamos el contenedor
     /////
     /////
@@ -69,10 +69,12 @@ print("<body>");
    $css->CerrarDiv();
    //$css->DivGrid("DivItems", "", "center", 1, 1, 2, 100, 30,1,"transparent");
     
-   //$css->CerrarDiv();
+   /*
     print('<audio id="audio" controls style="display: none">
         <source type="audio/mp3" src="../sounds/sms-alert-4.mp3">
         </audio>');
+    * 
+    */
     $css->AgregaJS(); //Agregamos javascripts
     $css->AgregaSubir();
     $css->Footer();

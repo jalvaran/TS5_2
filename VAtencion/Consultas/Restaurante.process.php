@@ -204,6 +204,12 @@ if(isset($_REQUEST["Accion"])){
             $idPedido=$obRest->normalizar($_REQUEST["idPedido"]);
             $DatosPedido=$obRest->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
             $Efectivo=$obRest->normalizar($_REQUEST["TxtEfectivo"]);
+            $Print="S";
+            if($Efectivo=="NA"){
+                $DatosVistaPedido=$obRest->DevuelveValores("vista_pedidos_restaurante", "ID", $idPedido);
+                $Efectivo=$DatosVistaPedido["Total"];
+                $Print="N";
+            }
             $Cheque=$obRest->normalizar($_REQUEST["TxtCheques"]);
             $Tarjeta=$obRest->normalizar($_REQUEST["TxtTarjetas"]);
             
@@ -251,8 +257,9 @@ if(isset($_REQUEST["Accion"])){
             
             $obRest->ActualizaRegistro("restaurante_pedidos", "Estado", $Estado, "ID", $idPedido);
             $obRest->ActualizaRegistro("restaurante_pedidos_items", "Estado", $Estado, "idPedido", $idPedido);
-            $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
-            
+            if($Print=="S"){
+                $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
+            }
             $Respuesta["msg"]="OK";
             $Respuesta["TipoPedido"]=$DatosPedido["Estado"];
             echo json_encode($Respuesta); 

@@ -1344,6 +1344,7 @@ class PrintPos extends ProcesoVenta{
         $consulta=$this->Query($sql);
         $DatosUsuario=$this->FetchArray($consulta);
         for($i=1; $i<=$Copias;$i++){
+        $DatosPedido=$this->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
         fwrite($handle,chr(27). chr(64));//REINICIO
         //fwrite($handle, chr(27). chr(112). chr(48));//ABRIR EL CAJON
         fwrite($handle, chr(27). chr(100). chr(0));// SALTO DE CARRO VACIO
@@ -1354,6 +1355,11 @@ class PrintPos extends ProcesoVenta{
         fwrite($handle, chr(27). chr(97). chr(1));// CENTRADO
         fwrite($handle,"********************");
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        if($i==1){
+            fwrite($handle,"---ORIGINAL---");
+        }else{
+            fwrite($handle,"---COPIA---");
+        }
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
@@ -1673,6 +1679,7 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
         fwrite($handle,"*************************************");
         fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        $GranTotal=0;
         foreach($Usuarios as $idUser){
             $DatosUsuario=$this->DevuelveValores("usuarios", "idUsuarios", $idUser);
             fwrite($handle,"USUARIO $DatosUsuario[Nombre] $DatosUsuario[Apellido]:");
@@ -1681,7 +1688,7 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
             if(isset($TotalesPedidos[$idUsuario]["NumPedidos"])){
                 $NumPedidos=$TotalesPedidos[$idUsuario]["NumPedidos"];
             }
-            $GranTotal=0;
+            
             if(isset($TotalesPedidos[$idUser]["FAPE"])){
                 $GranTotal=$GranTotal+$TotalesPedidos[$idUser]["FAPE"];
                 fwrite($handle,"PEDIDOS FACTURADOS: $NumPedidos X $".number_format($TotalesPedidos[$idUser]["FAPE"]));
