@@ -256,3 +256,6 @@ CREATE TABLE `factura_compra_notas_devolucion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (170, 'Historial de Notas de Devolucion', '13', '3', 'factura_compra_notas_devolucion.php', '_SELF', b'1', 'historial4.png', '8', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+
+
