@@ -33,9 +33,16 @@ if(!empty($_REQUEST["BtnCrearPV"])){
         $CodigoBarras=$obVenta->normalizar($_REQUEST["TxtCodigoBarras"]);
         
     }
+    
     if (isset($_POST["Sub5"])){
+        $RefAutomatica=0;
         foreach ( $_POST["Sub5"] as $Sub5 ) {
             $DatosSub5=$obVenta->DevuelveValores("prod_sub5", "idSub5", $Sub5);
+            if($Referencia=="" or $RefAutomatica==1){
+               $idMax= $obVenta->ObtenerMAX("productosventa", "idProductosVenta", 1, "");
+               $Referencia=$idMax+1;
+               $RefAutomatica=1;
+            }
             $ReferenciaTalla=$Referencia."-".$DatosSub5["NombreSub5"];
             $NombreTalla=$Nombre." ".$DatosSub5["NombreSub5"];
             $idProducto=$obVenta->CrearProductoVenta($NombreTalla,"",$ReferenciaTalla,$PrecioVenta,$PrecioMayor,$Existencias,$CostoUnitario,$IVA,$idDepartamento,$Sub1,$Sub2,$Sub3,$Sub4,$Sub5,$CuentaPUC,"");
