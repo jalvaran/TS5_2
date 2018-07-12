@@ -695,9 +695,9 @@ class TS5_Excel extends Tabla{
     
     /**
      * Genera el excel para un auxiliar por documento
-     * @param type $FechaInicial
-     * @param type $FechaFinal
-     * @param type $Vector
+     * @param type $FechaInicial Fecha inicial del reporte
+     * @param type $FechaFinal Fecha final del reporte
+     * @param type $Vector uso futuro
      */
     public function AuxiliarXDocumento($FechaInicial,$FechaFinal,$Vector) {
         
@@ -848,6 +848,156 @@ class TS5_Excel extends Tabla{
  
     header('Content-Type: application/vnd.ms-excel');
     header('Content-Disposition: attachment;filename="'."AuxiliarXDocumento".'.xls"');
+    header('Cache-Control: max-age=0');
+    $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
+    $objWriter->save('php://output');
+    exit; 
+        
+    }
+    
+     /**
+     * Genera el excel para un auxiliar por terceros
+     * @param type $FechaInicial Fecha inicial del reporte
+     * @param type $FechaFinal Fecha final del reporte
+     * @param type $Vector uso futuro
+     */
+    public function AuxiliarXTercero($FechaInicial,$FechaFinal,$Vector) {
+        
+        require_once '../librerias/Excel/PHPExcel.php';
+        $objPHPExcel = new PHPExcel();  
+        
+        $objPHPExcel->getActiveSheet()->getStyle('C:H')->getNumberFormat()->setFormatCode('#');
+        
+        $objPHPExcel->getActiveSheet()->getStyle("A:H")->getFont()->setSize(10);
+        
+        $f=1;
+        $Rango="DE $FechaInicial A $FechaFinal";
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue($this->Campos[1].$f,"AUXILIAR POR TERCERO $Rango")
+                        
+            ;
+        $f=2;
+        
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue($this->Campos[0].$f,"CUENTA")
+            ->setCellValue($this->Campos[1].$f,"NOMBRE")
+            ->setCellValue($this->Campos[2].$f,"TERCERO")
+            ->setCellValue($this->Campos[3].$f,"RAZON SOCIAL")
+            ->setCellValue($this->Campos[4].$f,"SALDO ANTERIOR")
+            ->setCellValue($this->Campos[5].$f,"DEBITOS")
+            ->setCellValue($this->Campos[6].$f,"CREDITOS") 
+            ->setCellValue($this->Campos[7].$f,"NUEVO SALDO")
+            ;
+        
+        $sql="SELECT SUBSTRING(`CuentaPUC`,1,4) AS Cuenta,`CuentaPUC` AS CuentaPUC,`NombreCuenta`,
+            SUM(`Debito`) AS Debitos,SUM(`Credito`) AS Creditos, `Tercero_Identificacion` AS NIT,
+            `Tercero_Razon_Social`, (SELECT SUM(Neto) FROM librodiario WHERE CuentaPUC=(SELECT CuentaPUC)
+            AND Tercero_Identificacion=(SELECT NIT) AND `Fecha`<'$FechaInicial') AS SaldoAnterior 
+            FROM `librodiario` WHERE `Fecha`>='$FechaInicial' AND `Fecha`<='$FechaFinal' 
+            GROUP BY `Tercero_Identificacion` ORDER BY SUBSTRING(`CuentaPUC`,1,4), LENGTH(`CuentaPUC`),`CuentaPUC`;";
+                
+        $Consulta=$this->obCon->Query($sql);
+        $f=3;
+        $TotalCreditos=0;
+        $TotalDebitos=0;
+        $TotalDebitosCuenta=0;
+        $TotalCreditosCuenta=0;    
+        $TotalSaldoAnterior=0;
+        $TotalNuevoSaldo=0;
+        $TotalSaldoAnteriorCuenta=0;
+        $TotalNuevoSaldoCuenta=0;
+        $Cuenta="";
+        
+        while($DatosLibro= $this->obCon->FetchArray($Consulta)){
+            
+            if($Cuenta<>'' and $Cuenta<>$DatosLibro["CuentaPUC"]){
+                $Color='0080e9fa';
+                
+                $objPHPExcel->getActiveSheet()->getStyle("A$f:H$f")->getFill() ->setFillType(PHPExcel_Style_Fill::FILL_SOLID) ->getStartColor()->setARGB($Color);
+                $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue($this->Campos[0].$f,"")
+                ->setCellValue($this->Campos[1].$f,"TOTALES CUENTA $Cuenta")
+                ->setCellValue($this->Campos[2].$f,"")
+                ->setCellValue($this->Campos[3].$f,"")
+                ->setCellValue($this->Campos[4].$f,$TotalSaldoAnterior) 
+                ->setCellValue($this->Campos[5].$f,$TotalDebitosCuenta)
+                ->setCellValue($this->Campos[6].$f,$TotalCreditosCuenta)
+                ->setCellValue($this->Campos[7].$f,$TotalNuevoSaldo)      
+                ;
+                $TotalDebitosCuenta=0;
+                $TotalCreditosCuenta=0;
+                $TotalSaldoAnterior=0;
+                $TotalNuevoSaldo=0;
+                $f++;
+            }
+            
+            
+            $Cuenta=$DatosLibro["CuentaPUC"];
+            $TotalSaldoAnterior=$TotalSaldoAnterior+$DatosLibro["SaldoAnterior"];
+            $TotalDebitos=$TotalDebitos+$DatosLibro["Debitos"];
+            $TotalCreditos=$TotalCreditos+$DatosLibro["Creditos"];
+            $TotalNuevoSaldo=$TotalNuevoSaldo+($TotalSaldoAnterior+$TotalDebitos-$TotalCreditos);
+            $TotalDebitosCuenta=$TotalDebitosCuenta+$DatosLibro["Debitos"];
+            $TotalCreditosCuenta=$TotalCreditosCuenta+$DatosLibro["Creditos"];
+            
+            $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue($this->Campos[0].$f,$DatosLibro["CuentaPUC"])
+            ->setCellValue($this->Campos[1].$f,$DatosLibro["NombreCuenta"])
+            ->setCellValue($this->Campos[2].$f,$DatosLibro["NIT"])
+            ->setCellValue($this->Campos[3].$f,$DatosLibro["Tercero_Razon_Social"])
+            ->setCellValue($this->Campos[4].$f,$DatosLibro["SaldoAnterior"])
+            ->setCellValue($this->Campos[5].$f,$DatosLibro["Debitos"])  
+            ->setCellValue($this->Campos[6].$f,$DatosLibro["Creditos"])
+            ->setCellValue($this->Campos[7].$f,$DatosLibro["SaldoAnterior"]+$DatosLibro["Debitos"]-$DatosLibro["Creditos"])
+               
+            ;
+            $f++;
+        }
+       
+        $Color='0080e9fa';
+                
+        $objPHPExcel->getActiveSheet()->getStyle("A$f:H$f")->getFill() ->setFillType(PHPExcel_Style_Fill::FILL_SOLID) ->getStartColor()->setARGB($Color);
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue($this->Campos[0].$f,"")
+            ->setCellValue($this->Campos[1].$f,"TOTALES CUENTA $Cuenta")
+            ->setCellValue($this->Campos[2].$f,"")
+            ->setCellValue($this->Campos[3].$f,"")
+            ->setCellValue($this->Campos[4].$f,$TotalSaldoAnterior) 
+            ->setCellValue($this->Campos[5].$f,$TotalDebitosCuenta)
+            ->setCellValue($this->Campos[6].$f,$TotalCreditosCuenta)
+            ->setCellValue($this->Campos[7].$f,$TotalNuevoSaldo)      
+            ;
+        $TotalDebitosCuenta=0;
+        $TotalCreditosCuenta=0;
+        $TotalSaldoAnterior=0;
+        $TotalNuevoSaldo=0;
+        $f++;
+        
+        $objPHPExcel->getActiveSheet()->getStyle("A$f:H$f")->getFill() ->setFillType(PHPExcel_Style_Fill::FILL_SOLID) ->getStartColor()->setARGB('00defa80');
+                
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue($this->Campos[0].$f,"")
+            ->setCellValue($this->Campos[1].$f,"")
+            ->setCellValue($this->Campos[2].$f,"")
+            ->setCellValue($this->Campos[3].$f,"")
+            ->setCellValue($this->Campos[4].$f,"TOTALES")
+            ->setCellValue($this->Campos[5].$f,$TotalDebitos)
+            ->setCellValue($this->Campos[6].$f,$TotalCreditos)
+               
+            ;
+        //Informacion del excel
+   $objPHPExcel->
+    getProperties()
+        ->setCreator("www.technosoluciones.com.co")
+        ->setLastModifiedBy("www.technosoluciones.com.co")
+        ->setTitle("Auxiliar por Documento")
+        ->setSubject("Informe")
+        ->setDescription("Documento generado con PHPExcel")
+        ->setKeywords("techno soluciones sas")
+        ->setCategory("Informes Ventas");    
+ 
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'."AuxiliarXTercero".'.xls"');
     header('Cache-Control: max-age=0');
     $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
     $objWriter->save('php://output');

@@ -171,5 +171,8 @@ SELECT `idLibroDiario`,`Fecha`,`Tipo_Documento_Intero`,(select if((`librodiario`
 `Tercero_Segundo_Apellido`,`Tercero_Primer_Nombre`,`Tercero_Otros_Nombres`,
 `Tercero_Razon_Social`,`Tercero_Direccion`,`Tercero_Cod_Dpto`,`Tercero_Cod_Mcipio`,`Tercero_Pais_Domicilio`,
 `Concepto`,`CuentaPUC`,`NombreCuenta`,`Detalle`,`Debito`,`Credito`,`Neto`,`idCentroCosto`,
-`idEmpresa`,`idSucursal`,`Estado`,`idUsuario` FROM `librodiario` 
+`idEmpresa`,`idSucursal`,`Estado`,`idUsuario` FROM `librodiario`;
+
+
+
 

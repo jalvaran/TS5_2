@@ -24,6 +24,15 @@ if(isset($_REQUEST["BtnVerAuxDoc"])){
     $obDocExcel->AuxiliarXDocumento($FechaInicial, $FechaFinal, "");
 }
 
+// Genera un auxiliar x documento
+if(isset($_REQUEST["BtnVerAuxTer"])){
+    $obDocExcel = new TS5_Excel($db);
+    $FechaInicial=$obVenta->normalizar($_REQUEST["TxtFechaIni"]);
+    $FechaFinal=$obVenta->normalizar($_REQUEST["TxtFechaFinal"]);
+    
+    $obDocExcel->AuxiliarXTercero($FechaInicial, $FechaFinal, "");
+}
+
 include_once("css_construct.php");
 function CrearFormularioInformes($VectorInformes) {
    
@@ -171,6 +180,40 @@ print("<body>");
             $css->FilaTabla(16);
             print("<td colspan='5' style='text-align:center'>");
             $css->CrearBotonNaranja("BtnVerAuxDoc", "Generar");
+            print("</td>");
+            $css->CierraFilaTabla();
+        $css->CerrarTabla();
+    $css->CerrarForm(); 
+    
+    print("<br>");
+    $css->CrearNotificacionAzul("GENERAR UN AUXILIAR X TERCERO", 16);
+    $css->CrearForm2("FrmAuxTercero", $myPage, "POST", "_SELF");
+        $css->CrearTabla();
+            $css->FilaTabla(14);
+            $css->ColTabla("<strong>AUXILIAR X TERCERO</strong>", 5);
+
+                $css->CierraFilaTabla();
+            $css->FilaTabla(14);
+                
+                $css->ColTabla("<strong>FECHA INICIAL:</strong>", 1);
+                $css->ColTabla("<strong>FECHA FINAL:</strong>", 1);
+                
+            $css->CierraFilaTabla();
+            $css->FilaTabla(14);
+                
+                print("<td>");
+                $css->CrearInputText("TxtFechaIni", "date", "", date("Y-m-d"), "Fecha", "", "", "", 150, 30, 0, 1);
+                //$css->CrearInputFecha("", "TxtFechaIni", date("Y-m-d"), 150, 30, "");
+                
+                print("</td>");   
+                print("<td>");
+                $css->CrearInputText("TxtFechaFinal", "date", "", date("Y-m-d"), "Fecha", "", "", "", 150, 30, 0, 1);
+                
+                print("</td>"); 
+                
+            $css->FilaTabla(16);
+            print("<td colspan='5' style='text-align:center'>");
+            $css->CrearBotonNaranja("BtnVerAuxTer", "Generar");
             print("</td>");
             $css->CierraFilaTabla();
         $css->CerrarTabla();
