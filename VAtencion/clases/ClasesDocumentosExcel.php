@@ -730,7 +730,7 @@ class TS5_Excel extends Tabla{
         
         $sql="SELECT `Fecha`,`Tipo_Documento_Intero`,`NumDocumento`,`Tercero_Identificacion`,`Tercero_Razon_Social`,"
                . "`CuentaPUC`,`NombreCuenta`,`Debito`,`Credito` FROM `vista_libro_diario`  "
-               . "WHERE Fecha>='$FechaInicial' AND Fecha<='$FechaFinal' ORDER BY `Tipo_Documento_Intero`,`Fecha` ";
+               . "WHERE Fecha>='$FechaInicial' AND Fecha<='$FechaFinal' ORDER BY `Tipo_Documento_Intero`,`NumDocumento`,`Fecha` ";
                 
         $Consulta=$this->obCon->Query($sql);
         $f=3;

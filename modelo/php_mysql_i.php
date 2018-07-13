@@ -63,6 +63,18 @@ public function Query($sql)
     $this->CerrarCon();
     return($Consul);
 }
+
+public function QueryExterno($sql,$ip,$User,$Pass,$db,$VectorCon){
+    
+    $this->mysqli = new mysqli($ip, $User, $Pass, $db);
+    if ($this->mysqli->connect_errno) {
+        $Mensaje="No se pudo conectar al servidor en la ip: $ip ".$this->mysqli->connect_errno;
+        exit();
+    }   
+    $Consul=$this->mysqli->query($sql) or die ($this->mysqli->error);			
+    $this->CerrarCon();
+    return($Consul);
+}
     ////////////////////////////////////////////////////////////////////
 //////////////////////Funcion Obtener vaciar una tabla
 ///////////////////////////////////////////////////////////////////
