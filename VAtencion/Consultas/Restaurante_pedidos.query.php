@@ -129,9 +129,9 @@ if(isset($_REQUEST["TipoPedido"])){
                 
                 $css->CrearInputText("Telefono", "text", "", "", "Telefono", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
                 print("<br>");
-                $css->CrearInputText("Nombre", "text", "", "", "Nombre", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                $css->CrearInputText("Nombre", "text", "", "", "Nombre", "", "", "", 300, 50, 0, 1);
                 print("<br>");
-                $css->CrearInputText("Direccion", "text", "", "", "Direccion", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                $css->CrearInputText("Direccion", "text", "", "", "Direccion", "", "", "", 300, 50, 0, 1);
             
                 print("<br>");
                 $css->CrearTextArea("TxtObservaciones", "", "", "Observaciones", "", "", "", 300, 60, 0, 0);
@@ -161,9 +161,9 @@ if(isset($_REQUEST["TipoPedido"])){
                 
                 $css->CrearInputText("Telefono", "text", "", "", "Telefono", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
                 print("<br>");
-                $css->CrearInputText("Nombre", "text", "", "", "Nombre", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                $css->CrearInputText("Nombre", "text", "", "", "Nombre", "", "", "", 300, 50, 0, 1);
                 print("<br>");
-                $css->CrearInputText("Direccion", "text", "", "", "Direccion", "", "onKeyUp", $TxtFuncion, 300, 50, 0, 1);
+                $css->CrearInputText("Direccion", "text", "", "", "Direccion", "", "", "", 300, 50, 0, 1);
             
                 print("<br>");
                 $css->CrearTextArea("TxtObservaciones", "", "", "Observaciones", "", "", "", 300, 60, 0, 0);
