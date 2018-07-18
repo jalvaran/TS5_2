@@ -68,6 +68,10 @@ if(isset($_REQUEST["idPedido"])){
                     $css->CerrarSelect();
                     
                     print("<br>");
+                    $css->CrearInputNumber("TxtPropinaEfectivo", "number", "Propina Efectivo:<br>", 0, "P Efectivo", "", "", "", 200, 30, 0, 0, 0, "", 1);
+                    print("<br>");
+                    $css->CrearInputNumber("TxtPropinaTarjetas", "number", "Propina Tarjetas:<br>", 0, "P Tarjeta", "", "", "", 200, 30, 0, 0, 0, "", 1);
+                    print("<br>");
                     $css->CrearTextArea("TxtObservacionesFactura", "", "", "Observaciones", "", "", "", 200, 50, 0, 0);
                 $css->CerrarDiv();
             print("</td>");

@@ -204,6 +204,9 @@ if(isset($_REQUEST["Accion"])){
             $idPedido=$obRest->normalizar($_REQUEST["idPedido"]);
             $DatosPedido=$obRest->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
             $Efectivo=$obRest->normalizar($_REQUEST["TxtEfectivo"]);
+            $PropinaEfectivo=$obRest->normalizar($_REQUEST["TxtPropinaEfectivo"]);
+            $PropinaTarjetas=$obRest->normalizar($_REQUEST["TxtPropinaTarjetas"]);
+            
             $Print="S";
             if($Efectivo=="NA"){
                 $DatosVistaPedido=$obRest->DevuelveValores("vista_pedidos_restaurante", "ID", $idPedido);
@@ -260,6 +263,11 @@ if(isset($_REQUEST["Accion"])){
             if($Print=="S"){
                 $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
             }
+            
+            if($PropinaEfectivo>0 or $PropinaTarjetas>0){
+                $obRest->PropinasRegistro($CuentaDestino,$idFactura,$idColaborador,$PropinaEfectivo,$PropinaTarjetas,"");
+            }
+            
             $Respuesta["msg"]="OK";
             $Respuesta["TipoPedido"]=$DatosPedido["Estado"];
             echo json_encode($Respuesta); 

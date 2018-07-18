@@ -73,3 +73,11 @@ t1.`fecha_factura`, t1.`fecha_radicado`,t1.`numero_radicado`,t1.`cod_enti_admini
 FROM salud_archivo_facturacion_mov_generados t1 WHERE (t1.estado != 'PAGADA' AND t1.estado != 'DEVUELTA'  AND t1.estado != ''); 
 
 
+DROP VIEW IF EXISTS `vista_af_duplicados`;
+CREATE VIEW vista_af_duplicados AS 
+SELECT t2.`id_fac_mov_generados` as ID,t1.`num_factura`,t1.`fecha_factura`,t1.`LineaArchivo`,t2.CuentaGlobal, t2.CuentaRIPS,
+t2.EstadoGlosa,t2.fecha_cargue FROM `salud_rips_facturas_generadas_temp` t1 
+INNER JOIN salud_archivo_facturacion_mov_generados t2 ON t1.`num_factura`=t2.`num_factura` 
+WHERE t2.`EstadoGlosa`<>9;
+
+

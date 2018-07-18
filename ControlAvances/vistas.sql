@@ -151,6 +151,7 @@ idUsuario
 FROM `restaurante_pedidos`;
 
 
+
 DROP VIEW IF EXISTS `vista_cierres_restaurante`;
 CREATE VIEW vista_cierres_restaurante AS
 SELECT ID,`Fecha`,`Hora`,`idUsuario`,
@@ -159,10 +160,11 @@ SELECT ID,`Fecha`,`Hora`,`idUsuario`,
 (SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='FADO') as DomiciliosFacturados,
 (SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='DEDO') as DomiciliosDescartados,
 (SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='FALL') as ParaLlevarFacturado,
-(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='DELL') as ParaLlevarDescartado
+(SELECT SUM(Total) as Total FROM restaurante_pedidos_items WHERE restaurante_pedidos_items.idCierre=restaurante_cierres.ID and restaurante_pedidos_items.Estado='DELL') as ParaLlevarDescartado,
+(SELECT SUM(Efectivo) as Total FROM restaurante_registro_propinas WHERE restaurante_registro_propinas.idCierre=restaurante_cierres.ID) as PropinasEfectivo,
+(SELECT SUM(Tarjetas) as Total FROM restaurante_registro_propinas WHERE restaurante_registro_propinas.idCierre=restaurante_cierres.ID) as PropinasTarjetas
 
 FROM `restaurante_cierres`;
-
 
 DROP VIEW IF EXISTS `vista_libro_diario`;
 CREATE VIEW vista_libro_diario AS

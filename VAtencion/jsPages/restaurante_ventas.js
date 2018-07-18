@@ -519,6 +519,8 @@ function FacturarPedido(idPedido,Options=0){
         form_data.append('TxtObservaciones', $('#TxtObservacionesFactura').val())
         form_data.append('TxtEfectivo', $('#TxtEfectivo').val()) 
         form_data.append('TxtDevuelta', $('#TxtDevuelta').val())
+        form_data.append('TxtPropinaEfectivo', $('#TxtPropinaEfectivo').val()) 
+        form_data.append('TxtPropinaTarjetas', $('#TxtPropinaTarjetas').val())
         document.getElementById('DivFacturacion').innerHTML ='Procesando...<br><img src="../images/process.gif" alt="Cargando" height="100" width="100">';
     }
     if(Options==1){
@@ -534,6 +536,8 @@ function FacturarPedido(idPedido,Options=0){
         form_data.append('TxtObservaciones', '')
         form_data.append('TxtEfectivo', 'NA') 
         form_data.append('TxtDevuelta', '0')
+        form_data.append('TxtPropinaEfectivo', 0) 
+        form_data.append('TxtPropinaTarjetas', 0)
         document.getElementById('DivPedidos').innerHTML ='Procesando...<br><img src="../images/process.gif" alt="Cargando" height="100" width="100">';
     }
         $.ajax({

@@ -410,6 +410,7 @@ class Restaurante extends ProcesoVenta{
         $idCierre=$this->ObtenerMAX($tab,"ID", 1,"");
         $this->update("restaurante_pedidos", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>'AB' AND Estado<>'DO' AND Estado<>'LL'");
         $this->update("restaurante_pedidos_items", "idCierre", $idCierre, " WHERE idCierre=0 AND Estado<>'AB' AND Estado<>'DO' AND Estado<>'LL'");
+        $this->update("restaurante_registro_propinas", "idCierre", $idCierre, " WHERE idCierre=0;");
         
         return($idCierre);
     }
@@ -466,5 +467,33 @@ class Restaurante extends ProcesoVenta{
         return($Respuesta);
     }
     
+    public function PropinasRegistro($CuentaDestino,$idFactura,$idColaborador,$Efectivo,$Tarjetas,$Vector) {
+        $fecha=date("Y-m-d");
+        $hora=date("H:i:s");
+        $tab="restaurante_registro_propinas";
+        $NumRegistros=6; 
+        
+        $Columnas[0]="Fecha";          $Valores[0]=$fecha;
+        $Columnas[1]="Hora";           $Valores[1]=$hora;
+        $Columnas[2]="idFactura";      $Valores[2]=$idFactura;
+        $Columnas[3]="idColaborador";  $Valores[3]=$idColaborador;
+        $Columnas[4]="Efectivo";       $Valores[4]=$Efectivo;
+        $Columnas[5]="Tarjetas";       $Valores[5]=$Tarjetas;
+        
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        if($Efectivo>0){
+            $this->IngreseMovimientoLibroDiario($fecha, "FACTURA", $idFactura, "", 1, $CuentaDestino, "CAJA GENERAL", "PROPINA", "DB", $Efectivo, "PROPINA", 1, 1, "");
+            $this->IngreseMovimientoLibroDiario($fecha, "FACTURA", $idFactura, "", 1, $CuentaDestino, "CAJA GENERAL", "PROPINA", "CR", $Efectivo, "PROPINA", 1, 1, "");
+                    
+        }
+        
+        if($Tarjetas>0){
+            $this->IngreseMovimientoLibroDiario($fecha, "FACTURA", $idFactura, "", 1, 11100502, "BANCOS PROPINAS", "PROPINA", "DB", $Tarjetas, "PROPINA", 1, 1, "");
+            $this->IngreseMovimientoLibroDiario($fecha, "FACTURA", $idFactura, "", 1, $CuentaDestino, "CAJA GENERAL", "PROPINA", "CR", $Tarjetas, "PROPINA", 1, 1, "");
+                    
+        }
+        
+        
+    }
     //Fin Clases
 }

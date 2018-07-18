@@ -123,3 +123,8 @@ ALTER TABLE `salud_archivo_facturacion_mov_generados` ADD `Arma030Anterior` ENUM
 ALTER TABLE `salud_archivo_facturacion_mov_pagados` ADD `Arma030Anterior` ENUM('S','N') NOT NULL DEFAULT 'N' AFTER `idUser`;
 
 ALTER TABLE `salud_archivo_facturacion_mov_generados` CHANGE `nom_enti_administradora` `nom_enti_administradora` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT 'Nombre entidad administradora \" Ver Alineamientos tecnicos para ips ver pag 13\" ';
+
+ALTER TABLE `empresapro` ADD `CodigoPrestadora` bigint(20) NOT NULL AFTER `NIT`;
+
+ALTER TABLE `salud_rips_facturas_generadas_temp` ADD `LineaArchivo` INT NOT NULL AFTER `idUser`;
+

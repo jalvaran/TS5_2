@@ -258,4 +258,37 @@ CREATE TABLE `factura_compra_notas_devolucion` (
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (170, 'Historial de Notas de Devolucion', '13', '3', 'factura_compra_notas_devolucion.php', '_SELF', b'1', 'historial4.png', '8', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
 
+CREATE TABLE `restaurante_registro_propinas` (
+  `ID` bigint(20) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
+  `idFactura` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
+  `idColaborador` int(11) NOT NULL,
+  `Efectivo` double NOT NULL,
+  `Tarjetas` double NOT NULL,
+  `idCierre` bigint(20) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `restaurante_registro_propinas`
+--
+ALTER TABLE `restaurante_registro_propinas`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `restaurante_registro_propinas`
+--
+ALTER TABLE `restaurante_registro_propinas`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+COMMIT;
 
