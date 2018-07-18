@@ -304,10 +304,49 @@ function DibujeAreaFacturar(idPedido){
     var Div=VerifiqueObjeto('DivFacturacion');
     document.getElementById('BtnAbreModalFact').click();
     if(Div === 1){
-        
+        /*
         var DivDestino =  'DivFacturacion';
         Page="Consultas/Restaurante_facturar.query.php?idPedido="+idPedido+"&Carry=";
         EnvieObjetoConsulta(Page,`BtnPedidos`,DivDestino,`99`);return false;
+        */
+        
+        var form_data = new FormData();
+        form_data.append('idPedido', idPedido);
+        
+        $.ajax({
+        url: './Consultas/Restaurante_facturar.query.php',
+        //dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        type: 'post',
+        success: function(data){
+            console.log(data)
+          if (data != "") { 
+              document.getElementById('DivFacturacion').innerHTML=data;
+              var config = {
+              '.chosen-select'           : {},
+              '.chosen-select-deselect'  : {allow_single_deselect:true},
+              '.chosen-select-no-single' : {disable_search_threshold:10},
+              '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+              '.chosen-select-width'     : {width:"200px"}
+            }
+            for (var selector in config) {
+              $(selector).chosen(config[selector]);
+            }
+            document.getElementById("idCliente_chosen").style.width = "200px";  
+          }else {
+            alert("No hay resultados para la consulta");
+          }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+          }
+      })     
+        
+        
     }
     
     
@@ -510,7 +549,7 @@ function FacturarPedido(idPedido,Options=0){
     var form_data = new FormData();
         form_data.append('Accion', 8)
         form_data.append('idPedido', idPedido)
-        form_data.append('idCliente', 1)
+        form_data.append('idCliente', $('#idCliente').val())
         form_data.append('TxtTarjetas', $('#TxtTarjetas').val())
         form_data.append('TxtCheques', $('#TxtCheques').val()) 
         form_data.append('TxtBonos', $('#TxtBonos').val())
@@ -656,5 +695,87 @@ function AlertasTS5(){
 function MostrarNotificaciones(){
     console.log(document.getElementById('spanAlertasTS5').attributes.data.count.notificacion);
     
+}
+
+
+function ModalCliente(){
+    document.getElementById('BtnAbreModalFact').click();
+    var form_data = new FormData();
+        form_data.append('idAccion', 1);
+        
+        $.ajax({
+        url: './Consultas/CuadroDialogoCrearCliente.php',
+        //dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        type: 'post',
+        success: function(data){
+            
+          if (data != "") { 
+              document.getElementById('DivFacturacion').innerHTML=data;
+              var config = {
+              '.chosen-select'           : {},
+              '.chosen-select-deselect'  : {allow_single_deselect:true},
+              '.chosen-select-no-single' : {disable_search_threshold:10},
+              '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+              '.chosen-select-width'     : {width:"200px"}
+            }
+            for (var selector in config) {
+              $(selector).chosen(config[selector]);
+            }
+            document.getElementById("CmbCodMunicipio_chosen").style.width = "200px"; 
+          }else {
+            alert("No hay resultados para la consulta");
+          }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+          }
+      })     
+}
+
+function CrearTercero(){
+    
+    var form_data = new FormData();
+        form_data.append('CmbTipoDocumento', $('#CmbTipoDocumento').val())
+        form_data.append('TxtNIT', $('#TxtNIT').val())
+        form_data.append('TxtPA', $('#TxtPA').val()) 
+        form_data.append('TxtSA', $('#TxtSA').val())
+        form_data.append('TxtPN', $('#TxtPN').val())
+        form_data.append('TxtON', $('#TxtON').val())
+        form_data.append('TxtRazonSocial', $('#TxtRazonSocial').val()) 
+        form_data.append('TxtDireccion', $('#TxtDireccion').val())
+        form_data.append('TxtTelefono', $('#TxtTelefono').val()) 
+        form_data.append('TxtEmail', $('#TxtEmail').val())
+        form_data.append('TxtCupo', $('#TxtCupo').val()) 
+        form_data.append('CmbCodMunicipio', $('#CmbCodMunicipio').val())
+        TxtPN
+        $.ajax({
+        url: './Consultas/CrearTercero.process.php',
+        //dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        type: 'post',
+        success: function(data){
+            
+          if (data !== "") { 
+              
+              //document.getElementById('DivFacturacion').innerHTML="";
+              //document.getElementById('BtnAbreModalFact').click();
+              alertify.alert(data);
+          }else {
+              alertify.error("No hay resultados para la consulta");
+          }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+          }
+      })     
 }
 //AlertasTS5();

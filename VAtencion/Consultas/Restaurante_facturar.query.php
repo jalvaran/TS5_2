@@ -42,6 +42,8 @@ if(isset($_REQUEST["idPedido"])){
             print("<td colspan=3 style='text-align:center'>");
                 $css->ImageOcultarMostrar("ImgOcultar", "", "DivOpcionesPago", 40, 40, "");
                 $css->CrearDiv("DivOpcionesPago", "", "center", 0, 1);
+                    $css->CrearTableChosen("idCliente", "clientes", "", "RazonSocial", "Num_Identificacion", "Telefono", "idClientes", 200, 0, "Clientes", "Clientes<br>");
+                    print("<br>");
                     $css->CrearInputNumber("TxtTarjetas", "number", "Tarjetas:<br>", 0, "Tarjetas", "", "onKeyUp", "CalculeDevueltaRestaurante($Totales[Total])", 200, 30, 0, 0, 0, "", 1);
                     print("<br>");
                     $css->CrearInputNumber("TxtCheques", "number", "Cheques:<br>", 0, "Tarjetas", "", "onKeyUp", "CalculeDevueltaRestaurante($Totales[Total])", 200, 30, 0, 0, 0, "", 1);
@@ -96,6 +98,8 @@ if(isset($_REQUEST["idPedido"])){
         print("</td>");
         $css->CierraFilaTabla();  
     $css->CerrarTabla();
+}else{
+    print("No se recibieron parametros");
 }
 
 ?>

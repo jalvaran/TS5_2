@@ -15,6 +15,8 @@ print("<body>");
     //////////Creamos el formulario de busqueda de remisiones
     /////
     /////
+    $css->CrearBotonEvento("BtnCrearCliente", "Cerrar Cliente", 1, "onclick", "ModalCliente()", "verde", "");
+    print(" ");
     $css->CrearBotonEvento("BtnCerrarTurno", "Cerrar Turno", 1, "onclick", "CerrarTurnoRestaurante()", "rojo", "");
     
     $css->CabeceraFin(); 
@@ -29,7 +31,7 @@ print("<body>");
     
     $css->CreaBotonDesplegable("DialFacturacion", "Abrir","BtnAbreModalFact");
     $css->CerrarDiv();
-    $css->CrearModal("DialFacturacion", "Facturar", "");
+    $css->CrearModal("DialFacturacion", "TS5", "");
     //$css->CrearCuadroDeDialogoAmplio("DialFacturacion", "Facturar");
         $css->CrearDiv("DivFacturacion", "", "center", 1, 1);
         $css->CerrarDiv();

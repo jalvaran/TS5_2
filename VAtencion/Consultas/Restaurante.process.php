@@ -200,6 +200,9 @@ if(isset($_REQUEST["Accion"])){
             $DatosCaja=$obRest->DevuelveValores("cajas", "idUsuario", $idUser);
             
             $idCliente=$obRest->normalizar($_REQUEST["idCliente"]);
+            if($idCliente==""){
+                $idCliente=1;
+            }
             $idColaborador=$obRest->normalizar($_REQUEST["CmbColaboradores"]);
             $idPedido=$obRest->normalizar($_REQUEST["idPedido"]);
             $DatosPedido=$obRest->DevuelveValores("restaurante_pedidos", "ID", $idPedido);
