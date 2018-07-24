@@ -1732,7 +1732,7 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
     }
     fclose($handle); // cierra el fichero PRN
     $salida = shell_exec('lpr $COMPrinter');
-    $this->RelacionItemsXFecha($Fecha, $Copias, "");
+    $this->RelacionItemsXFecha($idCierre,$Fecha, $Copias, "");
     }
     //Abrir cajon
     
@@ -1843,7 +1843,7 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
     $salida = shell_exec('lpr $COMPrinter');
     }
     //Imprime Relacion de items vendidos
-    public function RelacionItemsXFecha($Fecha,$Copias,$Vector) {
+    public function RelacionItemsXFecha($idCierre,$Fecha,$Copias,$Vector) {
         
         
         $DatosImpresora=$this->DevuelveValores("config_puertos", "ID", 1);   
@@ -1874,8 +1874,9 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
             fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
             fwrite($handle,"*************************************");
             fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
-            $sql="SELECT `FechaFactura`,`Referencia`,`Nombre`, SUM(`TotalItem`) as Total,COUNT(`ID`) AS NumItems "
-                . "FROM `facturas_items` WHERE `FechaFactura`='$Fecha' GROUP BY `FechaFactura`,`Referencia` ";
+            $sql="SELECT NombreProducto as Nombre, SUM(`Total`) as Total,SUM(`Cantidad`) AS NumItems "
+                    . "FROM `restaurante_pedidos_items`  "
+                    . "WHERE idCierre='$idCierre' and (Estado='FAPE' or Estado='FADO' or Estado='FALL') GROUP BY `idProducto`";
             $Consulta= $this->Query($sql);
             
             $Total=0;
@@ -1886,7 +1887,7 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
                 
                 fwrite($handle,str_pad($DatosItems["NumItems"],4," ",STR_PAD_RIGHT));
 
-                fwrite($handle,str_pad(substr($DatosItems["Referencia"]." ".$DatosItems["Nombre"],0,24),24," ",STR_PAD_BOTH)."   ");
+                fwrite($handle,str_pad(substr($DatosItems["Nombre"],0,24),24," ",STR_PAD_BOTH)."   ");
 
                 fwrite($handle,str_pad("$".number_format($DatosItems["Total"]),10," ",STR_PAD_LEFT));
 
