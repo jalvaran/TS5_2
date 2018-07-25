@@ -2,14 +2,17 @@
 $myPage="VentasRestaurante.php";
 include_once("../sesiones/php_control.php");
 include_once("clases/Restaurante.class.php");
+
 include_once("css_construct.php");
 $obRest=new Restaurante($idUser);	
 print("<html>");
 print("<head>");
+
 $css =  new CssIni("Ventas Restaurante");
+
 print("</head>");
 print("<body>");
-     
+
     $css->CabeceraIni("Ventas Restaurante"); //Inicia la cabecera de la pagina
     
     //////////Creamos el formulario de busqueda de remisiones
@@ -27,8 +30,8 @@ print("<body>");
    // print("<div id='DivAlertasTS5' style='position: absolute;left: 10px;'>");
     $css->CrearDiv('DivAlertasTS5', "container", "center", 1, 1);    
     $css->CerrarDiv();
-    $css->CrearDiv("DivButtons", "", "", 0, 0);
     
+    $css->CrearDiv("DivButtons", "", "", 0, 0);
     $css->CreaBotonDesplegable("DialFacturacion", "Abrir","BtnAbreModalFact");
     $css->CerrarDiv();
     $css->CrearModal("DialFacturacion", "TS5", "");
@@ -42,7 +45,7 @@ print("<body>");
     $css->CrearDiv("DivOpciones", "container", "center", 1, 1);
         $evento="onClick";
         $Page="Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&CuadroAdd=1&Carry=";
-        $funcion="EnvieObjetoConsulta(`$Page`,`BtnPedidos`,`DivPedidos`,`99`);TimersPedidos(1);";
+        $funcion="MostrarPedidos()";
         
         $css->CrearBotonEvento("BtnPedidos", "-Pedidos-", 1, $evento, $funcion, "naranja", "");
         print(" ");
@@ -78,6 +81,7 @@ print("<body>");
     * 
     */
     $css->AgregaJS(); //Agregamos javascripts
+    $css->AgregaCssJSSelect2(); //Agregamos CSS y JS de Select2
     $css->AgregaSubir();
     $css->Footer();
     print('<script src="jsPages/restaurante_ventas.js"></script>');

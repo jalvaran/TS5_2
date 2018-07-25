@@ -191,6 +191,7 @@ class CssIni{
                 <link rel='stylesheet' type='text/css' href='css/DateTimePicker.css' />
                 <link rel='stylesheet' href='alertify/themes/alertify.core.css' />
                 <link rel='stylesheet' href='alertify/themes/alertify.default.css' id='toggleCSS' />
+                
 		");
 		print('<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -1654,6 +1655,12 @@ function Footer(){
                 $this->CrearDiv("DivNotificacionesTS5", "", "center", 1, 1);
                 $this->CerrarDiv();
             $this->CerrarModal();
+        }
+        public function AgregaCssJSSelect2() {
+            print("<link rel='stylesheet' type='text/css' href='select2\dist\css/select2.min.css' />");
+            print('<script src="select2\vendor\jquery-2.1.0.js"></script>');
+            print('<script src="select2\dist\js/select2.min.js"></script>');     
+    
         }
         //////////////////////////////////FIN
 }

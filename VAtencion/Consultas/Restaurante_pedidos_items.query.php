@@ -39,7 +39,7 @@ if(isset($_REQUEST["idPedido"])){
                 print("<br>");
                 $css->CrearSelect("idDepartamento", "CargarProductos()", 300);
                     $Datos=$obRest->ConsultarTabla("prod_departamentos", " ORDER BY Nombre");
-                    $css->CrearOptionSelect("", "Seleccione", 0);
+                    $css->CrearOptionSelect("", "Departamento", 0);
                     while ($DatosDepartamentos=$obRest->FetchArray($Datos)){
                         $css->CrearOptionSelect2($DatosDepartamentos["idDepartamentos"], $DatosDepartamentos["Nombre"], "", 0);
                         
@@ -53,6 +53,8 @@ if(isset($_REQUEST["idPedido"])){
                     $css->CrearOptionSelect("", "Producto", 0);
                     
                 $css->CerrarSelect();
+                
+                
                 print("<br>");
                 $css->CrearTextArea("Observaciones", "", "", "Observaciones", "", "", "", 300, 60, 0, 0);
                 print("<br>");

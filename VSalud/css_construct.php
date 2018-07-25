@@ -170,13 +170,16 @@ class CssIni{
                 <link rel='stylesheet' href='css/calendar.css'>   
                 <link rel='stylesheet' type='text/css' href='css/bootstrap.min.css' />
                 <link rel='stylesheet' type='text/css' href='css/DateTimePicker.css' />
+                
 		");
+               
 		print('<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>	
 		<script type="text/javascript" src="js/DateTimePicker.js"></script>
                 <script src="../plugins/ckeditor/ckeditor.js"></script>
-                <script src="../plugins/ckeditor/samples/js/sample.js"></script>
-');
+                <script src="../plugins/ckeditor/samples/js/sample.js"></script>                
+                ');
+                 
 	}
 	
 	/////////////////////Inicio una cabecera
@@ -884,12 +887,11 @@ class CssIni{
             <script src="js/bootstrap-typeahead.js"></script>
             <script src="js/funciones.js"></script>
             <script src="js/shortcuts.js"></script>
-            <script src="chousen/source/jquery.min.js" type="text/javascript"></script>
-            <script src="chousen/source/chosen.jquery.js" type="text/javascript"></script>
-            <script src="chousen/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
+            
             <script src="js/calendar.js"></script>
             <script src="js/cronometro.js"></script>
-            
+            <script src="select2\vendor\jquery-2.1.0.js"></script>
+            <script src="select2\dist\js/select2.min.js"></script>
              ');
             
             ?>
@@ -1466,6 +1468,14 @@ function Footer(){
                 
             $this->CrearImage($Nombre, $imagerute, $Alterno, 60, 100, $JavaScript);
         }
+        
+        public function AgregaCssJSSelect2() {
+            print("<link rel='stylesheet' type='text/css' href='select2\dist\css/select2.min.css' />");
+            print('<script src="select2\vendor\jquery-2.1.0.js"></script>');
+            print('<script src="select2\dist\js/select2.min.js"></script>');     
+    
+        }
+        
         //////////////////////////////////FIN
 }
 	

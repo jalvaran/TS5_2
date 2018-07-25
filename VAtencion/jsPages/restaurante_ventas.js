@@ -104,10 +104,11 @@ function AgregarItemPedido(idPedido=''){
             //console.log(data);
             
             if(data.msg==='OK'){
-                console.log("ItemAgregado");
+                alertify.success("Se agregó un producto");   
                 document.getElementById("Observaciones").value="";
                 if(idPedido==""){
                     DibujeItemsPedido(data.idPedido,1);
+                    
                 }
                 
             }
@@ -230,12 +231,41 @@ function DibujeItemsPedido(idPedido,Opciones=1,Div='DivPedidos'){
     
     }
     clearInterval(TimerItems);
+   // Page="Consultas/Restaurante_pedidos_items.query.php?idPedido="+idPedido+"&Opciones="+Opciones+"&Carry=";
+   // EnvieObjetoConsulta(Page,`BtnPedidos`,Div,`99`);
     
     function TimerItemsPedido(){
-        Page="Consultas/Restaurante_pedidos_items.query.php?idPedido="+idPedido+"&Opciones="+Opciones+"&Carry=";
-        EnvieObjetoConsulta(Page,`BtnPedidos`,Div,`99`);
-        Div="DivItemsConsultas";
-        Opciones=0;
+        
+        var form_data = new FormData();
+            form_data.append('idPedido', idPedido);
+            form_data.append('Opciones', Opciones);
+           
+        $.ajax({
+        url: 'Consultas/Restaurante_pedidos_items.query.php',
+        async:false,
+        //dataType: "json",
+        cache: false,
+        processData: false,
+        contentType: false,
+        data: form_data,
+        type: 'POST',
+        success: (data) =>{            
+            document.getElementById(Div).innerHTML =data;
+           
+                if(Opciones==1){
+                    Div="DivItemsConsultas";
+                    $('#idProducto').select2();
+                    $('#idDepartamento').select2(); 
+                }
+                
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          alert(xhr.status);
+          alert(thrownError);
+        }
+      })
+      
+      Opciones=0;
         
     }
     
@@ -325,17 +355,21 @@ function DibujeAreaFacturar(idPedido){
             console.log(data)
           if (data != "") { 
               document.getElementById('DivFacturacion').innerHTML=data;
-              var config = {
-              '.chosen-select'           : {},
-              '.chosen-select-deselect'  : {allow_single_deselect:true},
-              '.chosen-select-no-single' : {disable_search_threshold:10},
-              '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-              '.chosen-select-width'     : {width:"200px"}
-            }
-            for (var selector in config) {
-              $(selector).chosen(config[selector]);
-            }
-            document.getElementById("idCliente_chosen").style.width = "200px";  
+              $('#idCliente').select2({
+		  
+                placeholder: 'Selecciona un Cliente',
+                ajax: {
+                  url: './buscadores/clientes.php',
+                  dataType: 'json',
+                  delay: 250,
+                  processResults: function (data) {
+                    return {
+                      results: data
+                    };
+                  },
+                  cache: true
+                }
+              });
           }else {
             alert("No hay resultados para la consulta");
           }
@@ -542,7 +576,8 @@ function AccionesPedidos(idAccion,idPedido,idFactura='',Observaciones=''){
 }
 //Facturar pedido
 function FacturarPedido(idPedido,Options=0){
-    //event.preventDefault();
+    //document.getElementById('BtnAbreModalFact').click();
+//event.preventDefault();
     //console.log($('#CmbTipoPago').val());   
     //se crea un objeto con los datos del formulario
     if(Options==0){
@@ -594,17 +629,17 @@ function FacturarPedido(idPedido,Options=0){
                 alertify.success("Factura creada");
                 //document.getElementById('DivFacturacion').innerHTML ='Factura Creada';
                 document.getElementById('BtnCierreModal').click();
-                var DivDestino =  'DivPedDom';
-                Page="Consultas/Restaurante_pedidos.query.php?TipoPedido="+data.TipoPedido+"&CuadroAdd=1&Carry=";
-                EnvieObjetoConsulta(Page,`BtnPedidos`,DivDestino,`99`);
+                //var DivDestino =  'DivPedDom';
+                //Page="Consultas/Restaurante_pedidos.query.php?TipoPedido="+data.TipoPedido+"&CuadroAdd=1&Carry=";
+                //EnvieObjetoConsulta(Page,`BtnPedidos`,DivDestino,`99`);
                 if(data.TipoPedido=="AB"){
-                    TimersPedidos(1);
+                    document.getElementById('BtnPedidos').click();
                 }
                 if(data.TipoPedido=="DO"){
-                    TimersPedidos(2);
+                    document.getElementById('BtnDomicilios').click();
                 }
                 if(data.TipoPedido=="LL"){
-                    TimersPedidos(3);
+                    document.getElementById('BtnLlevar').click();
                 }
             }
             
@@ -777,5 +812,41 @@ function CrearTercero(){
             alert(thrownError);
           }
       })     
+}
+
+function MostrarPedidos(){
+    var Page='Consultas/Restaurante_pedidos.query.php?TipoPedido=AB&CuadroAdd=1&Carry=';
+    var form_data = new FormData();       
+        
+        form_data.append('TipoPedido', 'AB');
+        form_data.append('CuadroAdd', 1);
+        $.ajax({
+        async:false,
+        url: 'Consultas/Restaurante_pedidos.query.php',
+        //dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        type: 'post',
+        success: function(data){
+            
+            if (data != "") { 
+            document.getElementById("DivPedidos").innerHTML=data;
+            $('#idProducto').select2(); 
+            $('#idDepartamento').select2(); 
+        }
+            
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alertify.error("Error al tratar de recuperar los datos de los pedidos",0);
+            alert(xhr.status);
+            alert(thrownError);
+          }
+      })
+      
+    //EnvieObjetoConsulta(Page,`BtnPedidos`,`DivPedidos`,`99`);
+    TimersPedidos(1);
+    
 }
 //AlertasTS5();
