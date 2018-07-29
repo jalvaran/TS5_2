@@ -255,7 +255,7 @@ function DibujeItemsPedido(idPedido,Opciones=1,Div='DivPedidos'){
                 if(Opciones==1){
                     Div="DivItemsConsultas";
                     $('#idProducto').select2();
-                    $('#idDepartamento').select2(); 
+                    //$('#idDepartamento').select2(); 
                 }
                 
         },
@@ -834,7 +834,7 @@ function MostrarPedidos(){
             if (data != "") { 
             document.getElementById("DivPedidos").innerHTML=data;
             $('#idProducto').select2(); 
-            $('#idDepartamento').select2(); 
+            //$('#idDepartamento').select2(); 
         }
             
         },

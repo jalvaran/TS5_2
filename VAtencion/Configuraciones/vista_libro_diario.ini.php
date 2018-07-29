@@ -1,6 +1,6 @@
 <?php
 
-$myTabla="librodiario";
+$myTabla="vista_libro_diario";
 $idTabla="idLibroDiario";
 $myPage="librodiario.php";
 $myTitulo="Libro Diario";

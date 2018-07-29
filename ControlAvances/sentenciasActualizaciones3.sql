@@ -292,3 +292,4 @@ ALTER TABLE `restaurante_registro_propinas`
   MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (171, 'Vista Libro Diario ', '6', '3', 'vista_libro_diario.php', '_SELF', b'1', 'anexos2.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
