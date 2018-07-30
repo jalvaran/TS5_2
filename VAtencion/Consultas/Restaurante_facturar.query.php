@@ -73,9 +73,9 @@ if(isset($_REQUEST["idPedido"])){
                     $css->CerrarSelect();
                     
                     print("<br>");
-                    $css->CrearInputNumber("TxtPropinaEfectivo", "number", "Propina Efectivo:<br>", 0, "P Efectivo", "", "", "", 200, 30, 0, 0, 0, "", 1);
+                    $css->CrearInputNumber("TxtPropinaEfectivo", "number", "Propina Efectivo:<br>", 0, "P Efectivo", "", "onKeyUp", "CalculeDevueltaRestaurante($Totales[Total])", 200, 30, 0, 0, 0, "", 1);
                     print("<br>");
-                    $css->CrearInputNumber("TxtPropinaTarjetas", "number", "Propina Tarjetas:<br>", 0, "P Tarjeta", "", "", "", 200, 30, 0, 0, 0, "", 1);
+                    $css->CrearInputNumber("TxtPropinaTarjetas", "number", "Propina Tarjetas:<br>", 0, "P Tarjeta", "", "onKeyUp", "CalculeDevueltaRestaurante($Totales[Total])", 200, 30, 0, 0, 0, "", 1);
                     print("<br>");
                     $css->CrearTextArea("TxtObservacionesFactura", "", "", "Observaciones", "", "", "", 200, 50, 0, 0);
                 $css->CerrarDiv();
@@ -84,8 +84,12 @@ if(isset($_REQUEST["idPedido"])){
         $css->FilaTabla(16);
             print("<td colspan=3 style='text-align:center'>");
                 $css->CrearInputNumber("TxtEfectivo", "number", "",$Totales["Total"] , "Efectivo", "", "onKeyUp", "CalculeDevueltaRestaurante($Totales[Total])", 200, 60, 0, 1, 1, "", 1,"font-size:2em;");
+                $css->CrearInputNumber("GranTotalPropinas", "hidden", "",0 , "Efectivo", "", "onKeyUp", "CalculeDevueltaRestaurante($Totales[Total])", 200, 60, 0, 1, 1, "", 1,"font-size:2em;");
+            
             print("</td>");
-        $css->CierraFilaTabla();    
+        $css->CierraFilaTabla();   
+        
+                
         $css->FilaTabla(16);
             print("<td colspan=3 style='text-align:center'>");
                 $css->CrearInputNumber("TxtDevuelta", "number", "",0 , "Devuelta", "", "", "", 200, 60, 0, 1, 1, "", 1,"font-size:2em;");

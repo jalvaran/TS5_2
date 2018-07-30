@@ -667,8 +667,12 @@ function CalculeDevueltaRestaurante(Total){
     var Tarjetas=$('#TxtTarjetas').val();
     var Cheques=$('#TxtCheques').val();
     var Bonos=$('#TxtBonos').val();
+    var PropinaEfectivo=$('#TxtPropinaEfectivo').val();
+    var PropinaTarjetas=$('#TxtPropinaTarjetas').val();
     var TotalPagos=parseInt(Efectivo)+parseInt(Tarjetas)+parseInt(Cheques)+parseInt(Bonos);
-    document.getElementById("TxtDevuelta").value = TotalPagos-Total;
+    var TotalPropinas=parseInt(PropinaEfectivo)+parseInt(PropinaTarjetas);
+    document.getElementById("GranTotalPropinas").value = TotalPropinas;
+    document.getElementById("TxtDevuelta").value = TotalPagos-(parseInt(Total)+parseInt(TotalPropinas));
 }
 
 //Cerrar Turno
