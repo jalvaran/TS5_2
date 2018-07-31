@@ -257,4 +257,7 @@ $Vector[$TablaConfig]["TipoItem"]["TablaVinculo"]="respuestas_tipo_item";  //tab
 $Vector[$TablaConfig]["TipoItem"]["IDTabla"]="Valor"; //id de la tabla que se vincula
 $Vector[$TablaConfig]["TipoItem"]["Display"]="Valor"; 
 $Vector[$TablaConfig]["TipoItem"]["Predeterminado"]=1;
+
+$TablaConfig="documentos_contables_control";
+$Vector[$TablaConfig]["Excluir"]["Consecutivo"]=1;
 ?>

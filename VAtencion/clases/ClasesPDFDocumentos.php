@@ -644,6 +644,88 @@ $tbl.= "</table>";
 
     }
     
+    public function PDF_DocumentoContable($idDocumento,$Vector) {
+        $DatosDocumento=$this->obCon->DevuelveValores("documentos_contables_control", "ID", $idDocumento);
+        $DescripcionDocumento=$this->obCon->DevuelveValores("documentos_contables", "ID", $DatosDocumento["idDocumento"]);
+        $Documento=$DescripcionDocumento["Nombre"]." ".$DatosDocumento["Consecutivo"];
+        $NombreDocumento=$DescripcionDocumento["Nombre"];
+        $Consecutivo=$DatosDocumento["Consecutivo"];
+        $this->PDF_Ini($Documento, 8, "");
+        $idFormato=32;
+        $this->PDF_Encabezado($DatosDocumento["Fecha"],1, $idFormato, "",$Documento);
+        $this->PDF_Encabezado_Documento_Contable($DatosDocumento, $DescripcionDocumento, "");
+        
+        
+        $Position=$this->PDF->SetY(60);
+        
+        
+        $sql="SELECT Tercero_Identificacion,NombreCuenta,Tercero_Razon_Social ,CuentaPUC,Debito,Credito FROM librodiario "
+                . "WHERE Tipo_Documento_Intero='$NombreDocumento' AND Num_Documento_Interno='$Consecutivo'";
+        $html=$this->HTML_Movimientos_Resumen($sql, $Vector);
+        $this->PDF_Write("<BR><BR><BR><strong>MOVIMIENTOS CONTABLES:</strong><BR>".$html);
+                
+        $this->PDF_Output("$Documento");
+    }
+    
+    
+    public function PDF_Encabezado_Documento_Contable($DatosDocumento,$DescripcionDocumento,$Vector) {
+        
+        $DatosUsuario=$this->obCon->DevuelveValores("usuarios", "idUsuarios", $DatosDocumento["idUser"]);
+        $Usuario=$DatosUsuario["Nombre"]." ".$DatosUsuario["Apellido"];
+        $tbl = <<<EOD
+<table cellspacing="0" cellpadding="2" border="1">
+    <tr>
+        <td><strong>Fecha:</strong></td>
+        <td colspan="3">$DatosDocumento[Fecha]</td>
+        
+    </tr>
+    <tr>
+    	<td><strong>Documento:</strong></td>
+        <td colspan="3">$DescripcionDocumento[Nombre]</td>
+    </tr>
+    <tr>
+        <td><strong>Numero:</strong></td>
+        <td colspan="3">$DatosDocumento[Consecutivo]</td>
+    </tr>
+    
+    
+</table>
+        
+EOD;
+
+
+$this->PDF->MultiCell(93, 25, $tbl, 0, 'L', 1, 0, '', '', true,0, true, true, 10, 'M');
+
+
+////Concepto
+////
+////
+
+$tbl = <<<EOD
+<table cellspacing="0" cellpadding="2" border="1">
+    <tr>
+        <td align="left" >$DatosDocumento[Descripcion]</td> 
+    </tr>
+     
+</table>
+<table cellspacing="0" cellpadding="2" border="1">
+    <tr>
+        <td align="center" ><strong>Realizó: </strong></td>
+        
+    </tr>
+    <tr>
+        <td align="center" >$Usuario</td>
+        
+    </tr>
+     
+</table>
+<br>  <br><br><br>      
+EOD;
+
+$this->PDF->MultiCell(93, 25, $tbl, 0, 'R', 1, 0, '', '', true,0, true, true, 10, 'M');
+
+    
+    }
     
    //Fin Clases
 }

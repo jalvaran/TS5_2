@@ -4,10 +4,11 @@ include_once("../sesiones/php_control.php");
 include_once("css_construct.php");
 
 $obTabla = new Tabla($db);
+$obVenta=new ProcesoVenta($idUser);
 $idComprobante=0;
 $ImprimeCC=0;
-if(isset($_REQUEST["idComprobante"])){
-    $idComprobante=$_REQUEST["idComprobante"];
+if(isset($_REQUEST["CmbDocumentoActual"])){
+    $idComprobante=$_REQUEST["CmbDocumentoActual"];
     
 }
 
@@ -42,9 +43,9 @@ print("<body>");
          
          
     if($ImprimeCC>0){
-        $RutaPrintCot="../tcpdf/examples/comprobantecontable.php?idComprobante=$ImprimeCC";			
+        $RutaPrintCot="PDF_Documentos.php?idDocumento=32&idDocumentoContable=$ImprimeCC";			
        
-        $css->CrearNotificacionNaranja("Comprobante Creado, <a href='$RutaPrintCot' target='_blank'>Imprimir Comprobante No. $ImprimeCC</a>",16);
+        $css->CrearNotificacionNaranja("Documento Contable Creado, <a href='$RutaPrintCot' target='_blank'>Imprimir Documento</a>",16);
         
     }
     
@@ -77,12 +78,12 @@ print("<body>");
                 $css->CrearTextArea("TxtConceptoComprobante","","","Escriba el detalle","black","","",300,100,0,1);
             print("</td>");
             print("<td>");
-                $css->CrearBotonConfirmado("BtnCrearComC", "Crear");
+                $css->CrearBotonConfirmado("BtnCrearDocumento", "Crear");
             print("</td>");   
         $css->CierraFilaTabla();
     $css->CerrarTabla();
     $css->CerrarCuadroDeDialogo(); 
-    $css->CrearNotificacionAzul("Agregar Conceptos al Comprobante", 18);
+    $css->CrearNotificacionAzul("Agregar Conceptos al Documento", 18);
     $css->CerrarForm();
     $css->CrearForm2("FrmSeleccionaCom", $myPage, "post", "_self");
     
@@ -90,26 +91,28 @@ print("<body>");
     $css->FilaTabla(16);
     print("<td style='text-align:center'>");
     
-        $css->CrearSelect("CmbComprobante", "EnviaForm('FrmSeleccionaCom')");
+        $css->CrearSelect("CmbDocumentoActual", "EnviaForm('FrmSeleccionaCom')",400);
         
-            $css->CrearOptionSelect("","Selecciona un Comprobante",0);
+            $css->CrearOptionSelect("","Selecciona un Documento",0);
             
-            $consulta = $obVenta->ConsultarTabla("comprobantes_pre","WHERE Estado<>'C'");
-            while($DatosPreEgreso=$obVenta->FetchArray($consulta)){
-                if($idComprobante==$DatosPreEgreso['idComprobanteContabilidad']){
+            $consulta = $obVenta->ConsultarTabla("documentos_contables_control","WHERE Estado<>'Cerrado'");
+            while($DatosDocumento=$obVenta->FetchArray($consulta)){
+                $DescripcionDocumento=$obVenta->DevuelveValores("documentos_contables", "ID", $DatosDocumento['idDocumento']);
+                if($idComprobante==$DatosDocumento['ID']){
                     $Sel=1;
                     
                 }else{
                     
                     $Sel=0;
                 }
-                $css->CrearOptionSelect($DatosPreEgreso['idComprobanteContabilidad'],$DatosPreEgreso['idComprobanteContabilidad']." ".$DatosPreEgreso['Concepto'],$Sel);							
+                $css->CrearOptionSelect($DatosDocumento['ID'],$DescripcionDocumento["Nombre"]." ".$DatosDocumento["Consecutivo"]." ".$DatosDocumento['Descripcion']." ".$DatosDocumento['idDocumento'],$Sel);							
             }
         $css->CerrarSelect();
     print("</td>");
     $css->CierraFilaTabla();
     $css->CerrarTabla();
     $css->CerrarForm();
+    /*
     $css->CrearForm2("FrmImportarMovimientos", $myPage, "post", "_self");
     $css->CrearInputText("idComprobante", "hidden", "", $idComprobante, "", "", "", "", 0, 0, 1, 1);
     $css->CrearTabla();
@@ -120,6 +123,8 @@ print("<body>");
     print("</td>");
     $css->CerrarTabla();
     $css->CerrarForm();
+     * 
+     */
     $css->CrearForm2("FrmAgregaItemE", $myPage, "post", "_self");
     $Visible=0;
     if($idComprobante>0){
@@ -128,9 +133,9 @@ print("<body>");
     $css->CrearDiv("DivDatosItemEgreso", "", "center", $Visible, 1);
     $css->CrearTabla();
     $css->FilaTabla(16);
-    $css->ColTabla("<strong>Comprobante:</strong>", 1);
+    $css->ColTabla("<strong>Registrar:</strong>", 1);
     print("<td>");
-       $css->CrearInputText("TxtIdCC", "text", "", $idComprobante, "idEgreso", "black", "", "", 100, 30, 1, 1);
+       $css->CrearInputText("TxtIdCC", "hidden", "", $idComprobante, "idEgreso", "black", "", "", 100, 30, 1, 1);
     print("</td>");  
     $css->CierraFilaTabla();   
     $css->FilaTabla(16);
@@ -179,7 +184,7 @@ print("<body>");
            
             
             //En subcuentas se debera cargar todo el PUC
-            $sql="SELECT * FROM subcuentas";
+            $sql="SELECT * FROM subcuentas WHERE LENGTH(PUC)>4";
             $Consulta=$obVenta->Query($sql);
             
                while($DatosProveedores=$obVenta->FetchArray($Consulta)){
@@ -222,7 +227,7 @@ print("<body>");
     
     $css->CerrarTabla();
     $css->CerrarForm();
-    $sql="SELECT SUM(Debito) as Debito, SUM(Credito) as Credito FROM comprobantes_contabilidad_items WHERE idComprobante='$idComprobante'";
+    $sql="SELECT SUM(Debito) as Debito, SUM(Credito) as Credito FROM documentos_contables_items WHERE idDocumento='$idComprobante'";
     $consulta=$obVenta->Query($sql);
     $DatosSumas=$obVenta->FetchArray($consulta);    
     $Debitos=$DatosSumas["Debito"];
@@ -238,9 +243,9 @@ print("<body>");
     }
     $css->CrearForm2("FrmCerrarCompC", $myPage, "post", "_self");
     $css->CrearInputText("TxtIdComprobanteContable","hidden",'',$idComprobante,'',"","","",300,30,0,0);
-    $css->CrearBotonConfirmado2("BtnGuardarMovimiento", "Guardar y Cerrar Comprobante",$H,"");
+    $css->CrearBotonConfirmado2("BtnGuardarMovimiento", "Guardar y Cerrar Documento",$H,"");
     
-    print("<br><br><br>");
+    print("<br>");
     $css->CerrarForm();
     ////Se dibujan los items del movimiento
     $css->CrearSelect("CmbMostrarItems", "MuestraOculta('DivItems')");
@@ -248,7 +253,7 @@ print("<body>");
         $css->CrearOptionSelect("NO", "Ocultar Movimientos", 0);
     $css->CerrarSelect();
     $css->CrearDiv("DivItems", "", "center", 1, 1);
-    $Vector["Tabla"]="comprobantes_contabilidad_items";
+    $Vector["Tabla"]="documentos_contables_items";
     $Columnas=$obTabla->ColumnasInfo($Vector);
     $css->CrearTabla();
     $css->FilaTabla(12);
@@ -266,13 +271,13 @@ print("<body>");
     $css->CierraFilaTabla();
     
     $i=0;
-    $sql="SELECT * FROM comprobantes_contabilidad_items WHERE idComprobante='$idComprobante'";
+    $sql="SELECT * FROM documentos_contables_items WHERE idDocumento='$idComprobante'";
     $consulta=$obVenta->Query($sql);
     
     while($DatosItems=$obVenta->FetchArray($consulta)){
         
         $css->FilaTabla(12);
-        $css->ColTablaDel($myPage,"comprobantes_contabilidad_items","ID",$DatosItems['ID'],$idComprobante);
+        $css->ColTablaDel($myPage,"documentos_contables_items","ID",$DatosItems['ID'],$idComprobante);
         for($z=0;$z<=$NumCols;$z++){
             $NombreCol=$ColNames[$z];
             print("<td>");

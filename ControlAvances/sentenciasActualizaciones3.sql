@@ -298,7 +298,9 @@ INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`,
 INSERT INTO `menu` (`ID`, `Nombre`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (31, 'Documentos Contables', '1', 'MnuDocumentosContables.php', '_BLANK', '1', 'documentos_contables.png', '8', '2017-10-13 14:16:49', '2017-10-13 14:16:49');
 INSERT INTO `menu_pestanas` (`ID`, `Nombre`, `idMenu`, `Orden`, `Estado`, `Updated`, `Sync`) VALUES (46, 'Documentos', '31', '1', b'1', '2017-10-13 14:16:55', '2017-10-13 14:16:55');
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (172, 'Crear un Documento Contable', '46', '3', 'documentos_contables.php', '_SELF', b'1', '030.jpg', '3', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
-INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (173, 'Registrar Documento Contable', '46', '3', 'CrearDocumentoContable.php', '_SELF', b'1', 'ordenessalida.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (173, 'Registrar Documento Contable', '46', '3', 'CrearDocumentoContable.php', '_SELF', b'1', 'ordenessalida.png', '2', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
 
 
+INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `CuerpoFormato`, `NotasPiePagina`, `Updated`, `Sync`) VALUES (32, 'DOCUMENTO CONTABLE', '001', 'F-GC-004', '2018-05-15', '', '', '2017-10-20 10:30:00', '2017-10-20 10:30:00');
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (174, 'Historial Documentos Contables', '46', '3', 'documentos_contables_control.php', '_SELF', b'1', 'historial.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');

@@ -29,6 +29,10 @@ if(isset($_REQUEST["idDocumento"])){
             $idNota=$obVenta->normalizar($_REQUEST["idNotaDevolucion"]);
             $obDoc->PDF_NotaDevolucion($idNota,"");            
             break;
+        case 32: //PDF de un documento contable
+            $idDocumento=$obVenta->normalizar($_REQUEST["idDocumentoContable"]);
+            $obDoc->PDF_DocumentoContable($idDocumento,"");            
+            break;
     }
 }else{
     print("No se recibió parametro de documento");

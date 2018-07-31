@@ -203,5 +203,103 @@ class Contabilidad extends ProcesoVenta{
             $idComprobante=$this->ObtenerMAX($tab, "ID", 1, "");
             return $idComprobante;
         }
+        
+        public function CrearDocumentoContable($idDocumento,$Fecha, $Descripcion,$idUser,$Vector ) {
+        
+            $Consecutivo=$this->ObtenerMAX("documentos_contables_control", "Consecutivo", "idDocumento", $idDocumento);   
+            $Consecutivo=$Consecutivo+1;
+
+            $tab="documentos_contables_control";        
+            $NumRegistros=6; 
+
+            $Columnas[0]="idDocumento";     $Valores[0]=$idDocumento;
+            $Columnas[1]="Fecha";           $Valores[1]=$Fecha;
+            $Columnas[2]="Consecutivo";     $Valores[2]=$Consecutivo;
+            $Columnas[3]="Descripcion";     $Valores[3]=$Descripcion;
+            $Columnas[4]="Estado";          $Valores[4]="Abierto";
+            $Columnas[5]="idUser";          $Valores[5]=$idUser;
+
+            $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+            $idComprobante=$this->ObtenerMAX($tab, "ID", 1, "");
+            return $idComprobante;
+        }
+        
+        public function IngreseMovimientoDocumentoContable($Fecha,$idComprobante,$NombreDocumento, $Consecutivo,$CentroCosto,$Tercero, $CuentaPUC,$Debito,$Credito,$Concepto,$NumDocSoporte,$destino,$NombreCuenta,$Vector ) {
+        
+            $tab="documentos_contables_items";
+            $NumRegistros=13;
+
+            $Columnas[0]="Fecha";			$Valores[0]=$Fecha;
+            $Columnas[1]="CentroCostos";		$Valores[1]=$CentroCosto;
+            $Columnas[2]="Tercero";			$Valores[2]=$Tercero;
+            $Columnas[3]="CuentaPUC";		$Valores[3]=$CuentaPUC;
+            $Columnas[4]="Debito";			$Valores[4]=$Debito;
+            $Columnas[5]="Credito";                 $Valores[5]=$Credito;
+            $Columnas[6]="Concepto";                $Valores[6]=$Concepto;
+            $Columnas[7]="NumDocSoporte";		$Valores[7]=$NumDocSoporte;
+            $Columnas[8]="Soporte";			$Valores[8]=$destino;
+            $Columnas[9]="idDocumento";		$Valores[9]=$idComprobante;
+            $Columnas[10]="NombreCuenta";		$Valores[10]=$NombreCuenta;
+            $Columnas[11]="Numero_Documento";	$Valores[11]=$Consecutivo;
+            $Columnas[12]="Nombre_Documento";	$Valores[12]=$NombreDocumento;
+
+            $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        }
+        
+        //Registra un comprobante contable
+    public function GuardeDocumentoContable($idComprobante){
+        
+        $DatosSucursal=  $this->DevuelveValores("empresa_pro_sucursales", "Actual", 1); 
+        $DatosGenerales=$this->DevuelveValores("documentos_contables_control","ID",$idComprobante);
+        $Consulta=$this->ConsultarTabla("documentos_contables_items", "WHERE idDocumento=$idComprobante");
+        while($DatosComprobante=$this->FetchArray($Consulta)){
+            $Fecha=$DatosComprobante["Fecha"];
+            
+            $tab="librodiario";
+            $NumRegistros=28;
+            $CuentaPUC=$DatosComprobante["CuentaPUC"];
+            $NombreCuenta=$DatosComprobante["NombreCuenta"];
+            $DatosCliente=$this->DevuelveValores("proveedores", "Num_Identificacion", $DatosComprobante["Tercero"]);
+            if($DatosCliente["Num_Identificacion"]==''){
+                $DatosCliente=$this->DevuelveValores("clientes", "Num_Identificacion", $DatosComprobante["Tercero"]);
+            
+            }
+            $DatosCentro=$this->DevuelveValores("centrocosto", "ID", $DatosComprobante["CentroCostos"]);
+            
+            $Columnas[0]="Fecha";			$Valores[0]=$Fecha;
+            $Columnas[1]="Tipo_Documento_Intero";	$Valores[1]=$DatosComprobante["Nombre_Documento"];
+            $Columnas[2]="Num_Documento_Interno";	$Valores[2]=$DatosComprobante["Numero_Documento"];
+            $Columnas[3]="Tercero_Tipo_Documento";	$Valores[3]=$DatosCliente['Tipo_Documento'];
+            $Columnas[4]="Tercero_Identificacion";	$Valores[4]=$DatosCliente['Num_Identificacion'];
+            $Columnas[5]="Tercero_DV";                  $Valores[5]=$DatosCliente['DV'];
+            $Columnas[6]="Tercero_Primer_Apellido";	$Valores[6]=$DatosCliente['Primer_Apellido'];
+            $Columnas[7]="Tercero_Segundo_Apellido";    $Valores[7]=$DatosCliente['Segundo_Apellido'];
+            $Columnas[8]="Tercero_Primer_Nombre";	$Valores[8]=$DatosCliente['Primer_Nombre'];
+            $Columnas[9]="Tercero_Otros_Nombres";	$Valores[9]=$DatosCliente['Otros_Nombres'];
+            $Columnas[10]="Tercero_Razon_Social";	$Valores[10]=$DatosCliente['RazonSocial'];
+            $Columnas[11]="Tercero_Direccion";          $Valores[11]=$DatosCliente['Direccion'];
+            $Columnas[12]="Tercero_Cod_Dpto";           $Valores[12]=$DatosCliente['Cod_Dpto'];
+            $Columnas[13]="Tercero_Cod_Mcipio";         $Valores[13]=$DatosCliente['Cod_Mcipio'];
+            $Columnas[14]="Tercero_Pais_Domicilio";     $Valores[14]=$DatosCliente['Pais_Domicilio'];
+
+            $Columnas[15]="CuentaPUC";                  $Valores[15]=$CuentaPUC;
+            $Columnas[16]="NombreCuenta";		$Valores[16]=$NombreCuenta;
+            $Columnas[17]="Detalle";                    $Valores[17]=$DatosGenerales["Concepto"];
+            $Columnas[18]="Debito";			$Valores[18]=$DatosComprobante["Debito"];
+            $Columnas[19]="Credito";                    $Valores[19]=$DatosComprobante["Credito"];
+            $Columnas[20]="Neto";			$Valores[20]=$Valores[18]-$Valores[19];
+            $Columnas[21]="Mayor";			$Valores[21]="NO";
+            $Columnas[22]="Esp";			$Valores[22]="NO";
+            $Columnas[23]="Concepto";                   $Valores[23]=$DatosComprobante["Concepto"];
+            $Columnas[24]="idCentroCosto";		$Valores[24]=$DatosComprobante["CentroCostos"];
+            $Columnas[25]="idEmpresa";                  $Valores[25]=$DatosCentro["EmpresaPro"];
+            $Columnas[26]="idSucursal";                 $Valores[26]=$DatosSucursal["ID"];
+            $Columnas[27]="Num_Documento_Externo";      $Valores[27]=$DatosComprobante["NumDocSoporte"];
+            $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+            
+            
+        }
+        $this->ActualizaRegistro("documentos_contables_control", "Estado", "Cerrado", "ID", $idComprobante);
+    }
     //Fin Clases
 }

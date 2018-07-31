@@ -3,50 +3,20 @@ include_once 'clases/ClasesMovimientosContables.php';
 $obVenta=new ProcesoVenta($idUser);
 $obContable=new Contabilidad($idUser);
 if(!empty($_REQUEST['del'])){
-    $id=$_REQUEST['del'];
-    $Tabla=$_REQUEST['TxtTabla'];
-    $IdTabla=$_REQUEST['TxtIdTabla'];
-    $IdPre=$_REQUEST['TxtIdPre'];
-    $DatosItem=$obVenta->DevuelveValores($Tabla, $IdTabla, $id);
-    $obVenta->ActualizaRegistro("librodiario", "Estado", "", "idLibroDiario", $DatosItem["idLibroDiario"]);
-    $obVenta->Query("DELETE FROM $Tabla WHERE $IdTabla='$id'");
-    header("location:CreaComprobanteCont.php?idComprobante=$IdPre");
+    $id=$obVenta->normalizar($_REQUEST['del']);
+    $IdPre=$obVenta->normalizar($_REQUEST['TxtIdPre']);
+    $obVenta->Query("DELETE FROM documentos_contables_items WHERE ID='$id'");
+    header("location:$myPage?CmbDocumentoActual=$IdPre");
 }
 
-if(!empty($_REQUEST["BtnCrearComC"])){
+if(!empty($_REQUEST["BtnCrearDocumento"])){
     
-    $fecha=$obContable->normalizar($_REQUEST["TxtFecha"]);
-    $hora=date("H:i");
-    $Concepto=$obContable->normalizar($_REQUEST["TxtConceptoComprobante"]);
-    $idComprobante=$obContable->CrearComprobanteContable($fecha, $Concepto, $hora, $idUser, "");
-     ////////////////Creo el comprobante
-    /////
-    ////
-    /*
-    $tab="comprobantes_contabilidad";
-    $NumRegistros=4; 
-
-    $Columnas[0]="Fecha";                  $Valores[0]=$fecha;
-    $Columnas[1]="Concepto";                $Valores[1]=$Concepto;
-    $Columnas[2]="Hora";                $Valores[2]=$hora;
-    $Columnas[3]="Usuarios_idUsuarios"; $Valores[3]=$idUser;
+    $Fecha=$obContable->normalizar($_REQUEST["TxtFecha"]);
+    $idDocumento=$obContable->normalizar($_REQUEST["CmbDocumento"]);
+    $Descripcion=$obContable->normalizar($_REQUEST["TxtConceptoComprobante"]);
+    $idComprobante=$obContable->CrearDocumentoContable($idDocumento, $Fecha, $Descripcion, $idUser, "");
     
-    $obVenta->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
-    $idComprobante=$obVenta->ObtenerMAX($tab, "ID", 1, "");
-    */
-    ////////////////Creo el pre movimiento
-    /////
-    ////
-    
-    $tab="comprobantes_pre";
-    $NumRegistros=3; 
-
-    $Columnas[0]="Fecha";                       $Valores[0]=$fecha;
-    $Columnas[1]="Concepto";                    $Valores[1]=$Concepto;
-    $Columnas[2]="idComprobanteContabilidad";   $Valores[2]=$idComprobante;
-    
-    $obVenta->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
-    header("location:$myPage");
+    header("location:$myPage?CmbDocumentoActual=$idComprobante");
 }
 
 		
@@ -58,7 +28,7 @@ if(!empty($_REQUEST["BtnAgregarItemMov"])){
     //echo "<script>alert ('entra')</script>";
     if(!empty($_FILES['foto']['name'])){
         
-        $carpeta="../SoportesEgresos/";
+        $carpeta="../SoportesTS5/DocumentosContables/";
         opendir($carpeta);
         $Name=str_replace(' ','_',$_FILES['foto']['name']);  
         $destino=$carpeta.$Name;
@@ -66,9 +36,10 @@ if(!empty($_REQUEST["BtnAgregarItemMov"])){
     }
     
     $idComprobante=$obContable->normalizar($_REQUEST["TxtIdCC"]);
-    $DatosComprobante=$obVenta->DevuelveValores("comprobantes_contabilidad", "ID", $idComprobante);
-    $fecha=$DatosComprobante["Fecha"];
-    
+    $DatosComprobante=$obContable->DevuelveValores("documentos_contables_control", "ID", $idComprobante);
+    $DescripcionDocumento=$obContable->DevuelveValores("documentos_contables", "ID", $DatosComprobante["idDocumento"]);
+    $Fecha=$DatosComprobante["Fecha"];
+    $Consecutivo=$DatosComprobante["Consecutivo"];
     $Concepto=$obContable->normalizar($_REQUEST["TxtConceptoEgreso"]);
     $CentroCosto=$obContable->normalizar($_REQUEST["CmbCentroCosto"]);
     $Tercero=$obContable->normalizar($_REQUEST["CmbTerceroItem"]);
@@ -87,29 +58,8 @@ if(!empty($_REQUEST["BtnAgregarItemMov"])){
        $Debito=$Valor;
        $Credito=0; 
     }
-    $obContable->IngreseMovimientoComprobanteContable($fecha, $CentroCosto, $Tercero, $CuentaPUC, $Debito, $Credito, $Concepto, $NumDocSoporte, $destino, $idComprobante, $NombreCuenta, "");
-     ////////////////Ingreso el Item
-    /////
-    ////
-    /*
-    $tab="comprobantes_contabilidad_items";
-    $NumRegistros=11;
-
-    $Columnas[0]="Fecha";			$Valores[0]=$fecha;
-    $Columnas[1]="CentroCostos";		$Valores[1]=$CentroCosto;
-    $Columnas[2]="Tercero";			$Valores[2]=$Tercero;
-    $Columnas[3]="CuentaPUC";			$Valores[3]=$CuentaPUC;
-    $Columnas[4]="Debito";			$Valores[4]=$Debito;
-    $Columnas[5]="Credito";                     $Valores[5]=$Credito;
-    $Columnas[6]="Concepto";			$Valores[6]=$Concepto;
-    $Columnas[7]="NumDocSoporte";		$Valores[7]=$NumDocSoporte;
-    $Columnas[8]="Soporte";			$Valores[8]=$destino;
-    $Columnas[9]="idComprobante";		$Valores[9]=$idComprobante;
-    $Columnas[10]="NombreCuenta";		$Valores[10]=$NombreCuenta;
-
-    $obVenta->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
-     * 
-     */
+    $obContable->IngreseMovimientoDocumentoContable($Fecha, $idComprobante, $DescripcionDocumento["Nombre"], $Consecutivo, $CentroCosto, $Tercero, $CuentaPUC, $Debito, $Credito, $Concepto, $NumDocSoporte, $destino, $NombreCuenta, "");
+    
     //header("location:$myPage?idComprobante=$idComprobante");
 }
 
@@ -122,8 +72,8 @@ if(!empty($_REQUEST["CmbComprobante"])){
 // si se requiere guardar y cerrar
 if(!empty($_REQUEST["BtnGuardarMovimiento"])){
     
-    $idComprobante=$_REQUEST["TxtIdComprobanteContable"];    
-    $obContable->RegistreComprobanteContable($idComprobante);    
+    $idComprobante=$obVenta->normalizar($_REQUEST["TxtIdComprobanteContable"]);    
+    $obContable->GuardeDocumentoContable($idComprobante);
     header("location:$myPage?ImprimeCC=$idComprobante");
     
 }
