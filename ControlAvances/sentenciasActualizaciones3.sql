@@ -304,3 +304,80 @@ INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`,
 INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `CuerpoFormato`, `NotasPiePagina`, `Updated`, `Sync`) VALUES (32, 'DOCUMENTO CONTABLE', '001', 'F-GC-004', '2018-05-15', '', '', '2017-10-20 10:30:00', '2017-10-20 10:30:00');
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (174, 'Historial Documentos Contables', '46', '3', 'documentos_contables_control.php', '_SELF', b'1', 'historial.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+
+
+
+DROP TABLE IF EXISTS `documentos_contables`;
+CREATE TABLE `documentos_contables` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
+  `Descripcion` text COLLATE latin1_spanish_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+DROP TABLE IF EXISTS `documentos_contables_control`;
+CREATE TABLE `documentos_contables_control` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idDocumento` int(11) NOT NULL,
+  `Consecutivo` bigint(20) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Descripcion` text COLLATE latin1_spanish_ci NOT NULL,
+  `Estado` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `Consecutivo` (`Consecutivo`),
+  KEY `idDocumento` (`idDocumento`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+DROP TABLE IF EXISTS `documentos_contables_items`;
+CREATE TABLE `documentos_contables_items` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idDocumento` int(11) NOT NULL,
+  `Nombre_Documento` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
+  `Numero_Documento` bigint(20) NOT NULL,
+  `Fecha` date NOT NULL,
+  `CentroCostos` int(11) NOT NULL,
+  `Tercero` bigint(20) NOT NULL,
+  `CuentaPUC` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `NombreCuenta` text CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Debito` int(16) NOT NULL,
+  `Credito` int(16) NOT NULL,
+  `Concepto` text CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `NumDocSoporte` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Soporte` text CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `idLibroDiario` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+
+DROP TABLE IF EXISTS `documentos_contables_items_temp`;
+CREATE TABLE `documentos_contables_items_temp` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idDocumento` int(11) NOT NULL,
+  `Nombre_Documento` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
+  `Numero_Documento` bigint(20) NOT NULL,
+  `Fecha` date NOT NULL,
+  `CentroCostos` int(11) NOT NULL,
+  `Tercero` bigint(20) NOT NULL,
+  `CuentaPUC` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `NombreCuenta` text CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Debito` int(16) NOT NULL,
+  `Credito` int(16) NOT NULL,
+  `Concepto` text CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `NumDocSoporte` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Soporte` text CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `idLibroDiario` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+

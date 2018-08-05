@@ -112,7 +112,11 @@ print("<body>");
     $css->CierraFilaTabla();
     $css->CerrarTabla();
     $css->CerrarForm();
-    /*
+     $Visible=0;
+    if($idComprobante>0){
+        $Visible=1;
+    }
+    $css->CrearDiv("DivDatosItemEgreso", "", "center", $Visible, 1);
     $css->CrearForm2("FrmImportarMovimientos", $myPage, "post", "_self");
     $css->CrearInputText("idComprobante", "hidden", "", $idComprobante, "", "", "", "", 0, 0, 1, 1);
     $css->CrearTabla();
@@ -123,14 +127,9 @@ print("<body>");
     print("</td>");
     $css->CerrarTabla();
     $css->CerrarForm();
-     * 
-     */
+     
     $css->CrearForm2("FrmAgregaItemE", $myPage, "post", "_self");
-    $Visible=0;
-    if($idComprobante>0){
-        $Visible=1;
-    }
-    $css->CrearDiv("DivDatosItemEgreso", "", "center", $Visible, 1);
+   
     $css->CrearTabla();
     $css->FilaTabla(16);
     $css->ColTabla("<strong>Registrar:</strong>", 1);

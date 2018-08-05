@@ -19,20 +19,7 @@ if(isset($_REQUEST["idDocumento"])){
             break;
         case 25: //Comprobante de altas y bajas
             $idComprobante=$obVenta->normalizar($_REQUEST["idComprobante"]);
-            $obDoc->PDF_CompBajasAltas($idComprobante);     
-            $obPrint->ImprimeComprobanteBajaAlta($idComprobante, "", 1, "");
-            break;
-        case 30: //Cuenta de cobro para un tercero
-            $idCuenta=$obVenta->normalizar($_REQUEST["idCuenta"]);
-            $obDoc->CuentaCobroTercero($idCuenta,"");            
-            break;
-        case 31: //ODF de una nota de devolucion
-            $idNota=$obVenta->normalizar($_REQUEST["idNotaDevolucion"]);
-            $obDoc->PDF_NotaDevolucion($idNota,"");            
-            break;
-        case 32: //PDF de un documento contable
-            $idDocumento=$obVenta->normalizar($_REQUEST["idDocumentoContable"]);
-            $obDoc->PDF_DocumentoContable($idDocumento,"");            
+            $obDoc->PDF_CompBajasAltas($idComprobante);            
             break;
     }
 }else{

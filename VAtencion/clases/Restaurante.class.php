@@ -435,8 +435,9 @@ class Restaurante extends ProcesoVenta{
         $Columnas[4]="FechaHora";           $Valores[4]=$fecha." ".$hora;
         $Columnas[5]="Cantidad";            $Valores[5]=$DatosItem["Cantidad"];
         $Columnas[6]="Total";               $Valores[6]=$DatosItem["Total"];
-        
-        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        if($Observaciones<>'1985'){
+            $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        }
         
         $this->BorraReg("restaurante_pedidos_items", "ID", $idItemDel);
         

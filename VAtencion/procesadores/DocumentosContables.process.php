@@ -81,31 +81,20 @@ if(!empty($_REQUEST["BtnGuardarMovimiento"])){
 // si se requiere importar movimientos
 if(!empty($_FILES['UpMovimientos']['name'])){
     $idComprobante=$obVenta->normalizar($_REQUEST["idComprobante"]);
-    $DatosComprobante=$obVenta->DevuelveValores("comprobantes_contabilidad", "ID", $idComprobante);
+    $DatosComprobante=$obContable->DevuelveValores("documentos_contables_control", "ID", $idComprobante);
+    $DescripcionDocumento=$obContable->DevuelveValores("documentos_contables", "ID", $DatosComprobante["idDocumento"]);
+    $Fecha=$DatosComprobante["Fecha"];
+    $Consecutivo=$DatosComprobante["Consecutivo"];
+    $NombreDocumento=$DescripcionDocumento["Nombre"];
     $handle = fopen($_FILES['UpMovimientos']['tmp_name'], "r");
+    
     $i=0;
+    
     while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
         if($i>0){
-             ////////////////Ingreso el Item
-            /////
-            ////
-
-            $tab="comprobantes_contabilidad_items";
-            $NumRegistros=11;
-
-            $Columnas[0]="Fecha";			$Valores[0]=$DatosComprobante["Fecha"];
-            $Columnas[1]="CentroCostos";		$Valores[1]=$data[0];
-            $Columnas[2]="Tercero";			$Valores[2]=$data[1];
-            $Columnas[3]="CuentaPUC";			$Valores[3]=$data[2];
-            $Columnas[4]="Debito";			$Valores[4]=$data[4];
-            $Columnas[5]="Credito";                     $Valores[5]=$data[5];
-            $Columnas[6]="Concepto";			$Valores[6]=$data[6];
-            $Columnas[7]="NumDocSoporte";		$Valores[7]=$data[7];
-            $Columnas[8]="Soporte";			$Valores[8]="";
-            $Columnas[9]="idComprobante";		$Valores[9]=$idComprobante;
-            $Columnas[10]="NombreCuenta";		$Valores[10]=$data[3];
-
-            $obVenta->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+                 
+            $obContable->IngreseMovimientoDocumentoContable($Fecha, $idComprobante, $NombreDocumento, $Consecutivo, $data[0], $data[1], $data[2], $data[4], $data[5], $data[6], $data[7], '', $data[3], "");
+             
         }
 
         $i++; 

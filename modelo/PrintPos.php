@@ -331,10 +331,22 @@ class PrintPos extends ProcesoVenta{
     }
     $Total=$this->Sume("facturas_items", "TotalItem", " WHERE idFactura='$idFactura'");
     $Bolsa=$this->Sume("facturas_items", "ValorOtrosImpuestos", " WHERE idFactura='$idFactura'");
+    
+	fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+    fwrite($handle,"TOTAL                    ".str_pad("$".number_format($Total+$Bolsa),20," ",STR_PAD_LEFT));
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
-    fwrite($handle,"TOTAL A PAGAR    ".str_pad("$".number_format($Total+$Bolsa),20," ",STR_PAD_LEFT));
-    fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+	
+    $DatosPropinas=$this->DevuelveValores("restaurante_registro_propinas", "idFactura", $idFactura);
+    $TotalPropina=$DatosPropinas["Efectivo"]+$DatosPropinas["Tarjetas"];
+    if($TotalPropina>0){
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle,"PROPINA            ".str_pad("$".number_format($TotalPropina),20," ",STR_PAD_LEFT));
+		fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+		fwrite($handle,"TOTAL + PROPINA    ".str_pad("$".number_format($Total+$Bolsa+$TotalPropina),20," ",STR_PAD_LEFT));
+		fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
 
+    }
+    
     $this->SeparadorHorizontal($handle, "_", $AnchoSeparador);
 
     /////////////////////////////Forma de PAGO
@@ -1610,13 +1622,24 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
     fwrite($handle, chr(27). chr(97). chr(0));// IZQUIERDA
     
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
-    fwrite($handle,"TOTAL A PAGAR    ".str_pad("$".number_format($Total),20," ",STR_PAD_LEFT));
+    fwrite($handle,"TOTAL             ".str_pad("$".number_format($Total),20," ",STR_PAD_LEFT));
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
 
     fwrite($handle,"_________________");
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
 
+    $propina=$Total*0.1;
     
+	fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+    fwrite($handle,"PROPINA VOLUNTARIA".str_pad("$".number_format($propina),20," ",STR_PAD_LEFT));
+    fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+
+    fwrite($handle,"_________________");
+	fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+    fwrite($handle,"TOTAL A PAGAR    ".str_pad("$".number_format($propina+$Total),20," ",STR_PAD_LEFT));
+    fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+
+    fwrite($handle,"_________________");
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
     fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
@@ -1961,6 +1984,66 @@ fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
         }
         fclose($handle); // cierra el fichero PRN
         $salida = shell_exec('lpr $COMPrinter');
+    }
+    
+    //Imprime cierre de modelos
+   
+    public function ImprimeComprobanteBajaAlta($idBaja,$COMPrinter,$Copias,$Vector) {
+        $DatosImpresora=$this->DevuelveValores("config_puertos", "ID", 1);   
+        if($DatosImpresora["Habilitado"]<>"SI"){
+            return;
+        }
+        $COMPrinter= $this->COMPrinter;
+        if(($handle = @fopen("$COMPrinter", "w")) === FALSE){
+            die('ERROR:\nNo se puedo Imprimir, Verifique la conexion de la IMPRESORA');
+        }
+        $Titulo="Comprobante de Bajas O Altas No. $idBaja";
+        $DatosComprobante=$this->DevuelveValores("prod_bajas_altas", "ID", $idBaja);
+        $Fecha=$DatosComprobante["Fecha"];
+        $Movimiento=$DatosComprobante["Movimiento"];
+        $idUsuario=$DatosComprobante["Usuarios_idUsuarios"];
+        
+        
+        for($i=1; $i<=$Copias;$i++){
+        fwrite($handle,chr(27). chr(64));//REINICIO
+        
+        fwrite($handle, chr(27). chr(100). chr(0));// SALTO DE CARRO VACIO
+        fwrite($handle, chr(27). chr(33). chr(8));// NEGRITA
+        fwrite($handle, chr(27). chr(97). chr(1));// CENTRADO
+        fwrite($handle,"*************************************");
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        fwrite($handle,$Titulo); // Titulo
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        fwrite($handle,"*************************************");
+        
+        fwrite($handle, chr(27). chr(100). chr(1));// SALTO DE LINEA
+        fwrite($handle, chr(27). chr(97). chr(0));// IZQUIERDA
+        fwrite($handle,"FECHA: $Fecha");
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle,"*************************************");
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        
+        //fwrite($handle,"Total Modelo: $DatosAgenda[HoraInicial] // ");
+        fwrite($handle,"Referencia: ".$DatosComprobante["Referencia"]);
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle,$DatosComprobante["Cantidad"]." / ".$DatosComprobante["Nombre"]);
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle,"Observaciones / ".$DatosComprobante["Observaciones"]);
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea    
+        fwrite($handle,"Usuario / ".$DatosComprobante["Usuarios_idUsuarios"]);
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea    
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+        fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+    fwrite($handle, chr(29). chr(86). chr(49));//CORTA PAPEL
+    fwrite($handle, chr(27). chr(100). chr(1));//salto de linea
+            
+        
+        
+    }
+    fclose($handle); // cierra el fichero PRN
+    $salida = shell_exec('lpr $COMPrinter');
     }
     //Fin Clases
 }

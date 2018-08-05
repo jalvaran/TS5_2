@@ -263,12 +263,14 @@ if(isset($_REQUEST["Accion"])){
             
             $obRest->ActualizaRegistro("restaurante_pedidos", "Estado", $Estado, "ID", $idPedido);
             $obRest->ActualizaRegistro("restaurante_pedidos_items", "Estado", $Estado, "idPedido", $idPedido);
-            if($Print=="S"){
-                $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
-            }
+            
             
             if($PropinaEfectivo>0 or $PropinaTarjetas>0){
                 $obRest->PropinasRegistro($CuentaDestino,$idFactura,$idColaborador,$PropinaEfectivo,$PropinaTarjetas,"");
+            }
+			
+			if($Print=="S"){
+                $obPrint->ImprimeFacturaPOS($idFactura, "", 1);
             }
             
             $Respuesta["msg"]="OK";
