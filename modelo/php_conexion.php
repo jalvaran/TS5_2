@@ -5955,7 +5955,7 @@ public function VerificaPermisos($VectorPermisos) {
      
      public function ActualiceClienteCartera($idFactura,$TablaTercero,$idTercero) {
          $DatosTercero=$this->DevuelveValores($TablaTercero, "Num_Identificacion", $idTercero);
-         $sql="UPDATE cartera SET idCliente='$DatosTercero[idClientes]',RazonSocial='$DatosTercero[RazonSocial]', Telefono=$DatosTercero[Telefono],"
+         $sql="UPDATE cartera SET idCliente='$DatosTercero[idClientes]',RazonSocial='$DatosTercero[RazonSocial]', Telefono='$DatosTercero[Telefono]',"
                  . " Contacto='$DatosTercero[Contacto]',TelContacto='$DatosTercero[TelContacto]' "
                  . " WHERE Facturas_idFacturas='$idFactura'";
         $this->Query($sql);         
