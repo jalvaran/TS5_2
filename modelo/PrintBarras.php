@@ -732,5 +732,87 @@ class Barras extends ProcesoVenta{
         $salida = shell_exec('lpr $Puerto');
         
      }
+     
+     /**
+      * Imprime solo el precio de venta
+      * @param type $Tabla
+      * @param type $idProducto
+      * @param type $Cantidad
+      * @param type $Puerto
+      * @param type $DatosCB
+      */
+     
+    public function ImprimirPrecioVentaTSC($Tabla,$idProducto,$Cantidad,$Puerto,$DatosCB){
+        `mode $Puerto: BAUD=9600 PARITY=N data=8 stop=1 xon=off`;  //inicializamos el puerto
+        if(($handle = @fopen("$Puerto", "w")) === FALSE){
+            die("<script>alert( 'ERROR:\nNo se puedo Imprimir, Verifique la conexion de la IMPRESORA')</script>");
+        }
+        
+        $DatosProducto=$this->DevuelveValores("productosventa", "idProductosVenta", $idProducto);
+        $Codigo= $DatosProducto["idProductosVenta"];
+        if($Codigo<1000){
+          $Codigo=str_pad($Codigo, 4, "0", STR_PAD_LEFT);
+        }
+        $Codigo='';
+        $Cantidad=$Cantidad/3;
+        $Numpages=ceil($Cantidad);
+        $idEmpresaPro=$DatosCB["EmpresaPro"];
+        $DatosEmpresa=$this->DevuelveValores("empresapro", "idEmpresaPro", $idEmpresaPro);
+        $fecha='';
+        $DatosConfigCB = $this->DevuelveValores("config_codigo_barras", "ID", 1);
+        $RazonSocial='';
+        $DatosProducto=$this->DevuelveValores($Tabla, "idProductosVenta", $idProducto);
+       
+        $Descripcion='';
+        $PrecioVenta= number_format($DatosProducto["PrecioVenta"]);
+        $Referencia= '';
+        $ID= '';
+        $Costo2= substr($DatosProducto["CostoUnitario"], 1, -1);
+        $Costo1= substr($DatosProducto["CostoUnitario"], 0, 1);
+        $Costo='';
+        $enter="\r\n";
+        
+        $L1=$DatosConfigCB["DistaciaEtiqueta1"];
+        $L2=$DatosConfigCB["DistaciaEtiqueta2"];
+        $L3=$DatosConfigCB["DistaciaEtiqueta3"];
+        $AL1=$DatosConfigCB["AlturaLinea1"];
+        $AL2=$DatosConfigCB["AlturaLinea2"];
+        $AL3=$DatosConfigCB["AlturaLinea3"];
+        $AL4=$DatosConfigCB["AlturaLinea4"];
+        $AL5=90;
+        $AlturaCB=$DatosConfigCB["AlturaCodigoBarras"];
+        if(strlen($PrecioVenta)>7){
+            $TamPrecio=2;
+        }else{
+            $TamPrecio=5;
+        }
+        
+
+        fwrite($handle,"SIZE 4,1.1".$enter);
+        fwrite($handle,"GAP 4 mm,0".$enter);
+        fwrite($handle,"DIRECTION 1".$enter);
+        fwrite($handle,"CLS".$enter);
+        fwrite($handle,'TEXT '.$L1.','.$AL1.',"2",0,1,1,"'.$RazonSocial.'"'.$enter);
+        fwrite($handle,'TEXT '.$L1.','.$AL2.',"1",0,1,1,"'.$Referencia.' '.$fecha.' '.$Costo.'"'.$enter);
+        fwrite($handle,'TEXT '.$L1.','.$AL3.',"1",0,1,1,"'.$ID.' '.$Descripcion.'"'.$enter);
+        fwrite($handle,'BARCODE '.$L1.','.$AL4.',"128",'.$AlturaCB.',1,0,2,2,"'.$Codigo.'"'.$enter);
+        fwrite($handle,'TEXT '.$L1.','.$AL5.',"'.$TamPrecio.'",0,1,1,"$'.$PrecioVenta.'"'.$enter);
+
+        fwrite($handle,'TEXT '.$L2.','.$AL1.',"2",0,1,1,"'.$RazonSocial.'"'.$enter);
+        fwrite($handle,'TEXT '.$L2.','.$AL2.',"1",0,1,1,"'.$Referencia.' '.$fecha.' '.$Costo.'"'.$enter);
+        fwrite($handle,'TEXT '.$L2.','.$AL3.',"1",0,1,1,"'.$ID.' '.$Descripcion.'"'.$enter);
+        fwrite($handle,'BARCODE '.$L2.','.$AL4.',"128",'.$AlturaCB.',1,0,2,2,"'.$Codigo.'"'.$enter);
+        fwrite($handle,'TEXT '.$L2.','.$AL5.',"'.$TamPrecio.'",0,1,1,"$'.$PrecioVenta.'"'.$enter);
+
+        fwrite($handle,'TEXT '.$L3.','.$AL1.',"2",0,1,1,"'.$RazonSocial.'"'.$enter);
+        fwrite($handle,'TEXT '.$L3.','.$AL2.',"1",0,1,1,"'.$Referencia.' '.$fecha.' '.$Costo.'"'.$enter);
+        fwrite($handle,'TEXT '.$L3.','.$AL3.',"1",0,1,1,"'.$ID.' '.$Descripcion.'"'.$enter);
+        fwrite($handle,'BARCODE '.$L3.','.$AL4.',"128",'.$AlturaCB.',1,0,2,2,"'.$Codigo.'"'.$enter);
+        fwrite($handle,'TEXT '.$L3.','.$AL5.',"'.$TamPrecio.'",0,1,1,"$'.$PrecioVenta.'"'.$enter);
+        fwrite($handle,"PRINT $Numpages".$enter);
+
+        $salida = shell_exec('lpr $Puerto');
+        
+     }
     //Fin Clases
 }

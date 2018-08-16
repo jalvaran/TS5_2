@@ -27,7 +27,7 @@ $Vector["VerRegistro"]["Deshabilitado"]=1;
 
 $Vector["Enabled_PrinterCB"]=1;  //Habilita la impresion de los codigos de barras
 //$Vector["Enabled_PrinterLB"]=1;  //Habilita la impresion de los labels
-//$Vector["Enabled_PrinterCC"]=1;  //Habilita la impresion de los codigos cortos
+$Vector["Enabled_PrinterCC"]=1;  //Habilita la impresion de los codigos cortos
 
 
 ///Columnas excluidas
