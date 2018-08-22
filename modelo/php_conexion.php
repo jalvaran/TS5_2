@@ -573,9 +573,34 @@ public function AgregaPreventa($fecha,$Cantidad,$idVentaActiva,$idProducto,$Tabl
             if($ValorAcordado>0){
                 $DatosProductoGeneral["PrecioVenta"]=$ValorAcordado;
             }
+            
+            // buscar si tiene habilitado precio de descuento 
+            $DatosFechasPreciosEspeciales= $this->DevuelveValores("ventas_fechas_especiales", "ID", 1);
+            
+            if($DatosFechasPreciosEspeciales["Habilitado"]==1){
+                
+                $fecha_inicio=$DatosFechasPreciosEspeciales["FechaInicial"];
+                $fecha_fin=$DatosFechasPreciosEspeciales["FechaFinal"];
+                $fecha_inicio = strtotime($fecha_inicio);
+                $fecha_fin = strtotime($fecha_fin);
+                $fecha = strtotime(date("Y-m-d"));
+                if(($fecha >= $fecha_inicio) and ($fecha <= $fecha_fin)) {
+                    $DatosPreciosEspeciales=$this->DevuelveValores("ventas_fechas_especiales_precios", "Referencia", $DatosProductoGeneral["Referencia"]);
+                    
+                    if($DatosPreciosEspeciales["PrecioVenta"]<>''){
+                        $PrecioEspecial=$DatosPreciosEspeciales["PrecioVenta"];
+                        $DatosProductoGeneral["PrecioVenta"]=$PrecioEspecial;
+                    }
+                }
+                
+              
+            }
+            
+            
             if($DatosImpuestosAdicionales["Incluido"]=='SI'){
                $DatosProductoGeneral["PrecioVenta"]=$DatosProductoGeneral["PrecioVenta"] - $DatosImpuestosAdicionales["ValorImpuesto"];
             }
+            
             if($DatosTablaItem["IVAIncluido"]=="SI"){
                 
                 $ValorUnitario=$DatosProductoGeneral["PrecioVenta"]/$impuesto;
@@ -591,6 +616,9 @@ public function AgregaPreventa($fecha,$Cantidad,$idVentaActiva,$idProducto,$Tabl
                     $ValorUnitario=$ValorUnitario*$Porcentaje;
 
             }
+            
+            
+            
             $Subtotal=$ValorUnitario*$Cantidad;
             //Para colocarle el valor totoal al producto especial
             if(isset($DatosProductoGeneral["Especial"])){

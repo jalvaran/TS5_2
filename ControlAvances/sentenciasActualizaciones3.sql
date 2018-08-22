@@ -381,3 +381,29 @@ CREATE TABLE `documentos_contables_items_temp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
+DROP TABLE IF EXISTS `ventas_fechas_especiales`;
+CREATE TABLE `ventas_fechas_especiales` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NombreFecha` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
+  `FechaInicial` date NOT NULL,
+  `FechaFinal` date NOT NULL,
+  `Habilitado` int(1) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+INSERT INTO `ventas_fechas_especiales` (`ID`, `NombreFecha`, `FechaInicial`, `FechaFinal`, `Habilitado`, `Updated`, `Sync`) VALUES
+(1,	'INFINITAZO',	'2018-08-18',	'2018-08-31',	1,	'2018-08-16 14:07:24',	'0000-00-00 00:00:00');
+
+DROP TABLE IF EXISTS `ventas_fechas_especiales_precios`;
+CREATE TABLE `ventas_fechas_especiales_precios` (
+  `Referencia` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
+  `PrecioVenta` double NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`Referencia`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+

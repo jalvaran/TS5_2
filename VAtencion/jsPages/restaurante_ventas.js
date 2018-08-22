@@ -61,6 +61,25 @@ function CargarProductos(){
         data: form_data,
         type: 'POST',
         success: (data) =>{
+             console.log(data);
+             
+             if(data.msg=="Todos"){
+                $('#idProducto').select2({
+		  
+                placeholder: 'Buscar Producto',
+                ajax: {
+                  url: './buscadores/productosventa.php',
+                  dataType: 'json',
+                  delay: 250,
+                  processResults: function (data) {
+                    return {
+                      results: data
+                    };
+                  },
+                  cache: true
+                }
+              });
+            }
              
             if(data[0].ID){
                   $("#idProducto").empty();
@@ -72,6 +91,9 @@ function CargarProductos(){
                              
             }
             
+            
+            
+            
         },
         error: function(xhr, ajaxOptions, thrownError){
           alert(xhr.status);
@@ -82,7 +104,10 @@ function CargarProductos(){
 
 //funcion para Crear un Pedido
 function AgregarItemPedido(idPedido=''){
-    
+    if($('#idMesa').val()<1){
+        alertify.alert("Debe seleccionar una mesa");
+        return;
+    }
     //e.preventDefault();
     //se crea un objeto con los datos del formulario
     var form_data = new FormData();

@@ -93,6 +93,7 @@ if(isset($_REQUEST["TipoPedido"])){
                 $css->CrearSelect("idDepartamento", "CargarProductos()", 300);
                     $Datos=$obRest->ConsultarTabla("prod_departamentos", " ORDER BY Nombre");
                     $css->CrearOptionSelect("", "Departamento", 0);
+                    $css->CrearOptionSelect("Todos", "Todos", 0);
                     while ($DatosDepartamentos=$obRest->FetchArray($Datos)){
                         $css->CrearOptionSelect2($DatosDepartamentos["idDepartamentos"], $DatosDepartamentos["Nombre"], "", 0);
                         
