@@ -30,6 +30,15 @@ $Vector["idDocumento"]["IDTabla"]="ID"; //id de la tabla que se vincula
 $Vector["idDocumento"]["Display"]="Nombre"; 
 $Vector["idDocumento"]["Predeterminado"]=1;
 
+
+// Nueva Accion
+$Ruta="AnularDocumentoContable.php?idDocumentoContable=";
+$Vector["NuevaAccionLink"][1]="Anular";
+$Vector["NuevaAccion"]["Anular"]["Titulo"]="Anular";
+$Vector["NuevaAccion"]["Anular"]["Link"]=$Ruta;
+$Vector["NuevaAccion"]["Anular"]["ColumnaLink"]="ID";
+$Vector["NuevaAccion"]["Anular"]["Target"]="_self";
+
 $Vector["Tabla"]=$myTabla;          //Tabla
 $Vector["Titulo"]=$myTitulo;        //Titulo
 $Vector["VerDesde"]=$startpoint;    //Punto desde donde empieza
