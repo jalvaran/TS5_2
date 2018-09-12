@@ -401,14 +401,13 @@ public function DibujeTabla($Vector){
     $ColFiltro=$NumCols-1;
     $this->css->CrearTabla();
     $this->css->FilaTabla(18);
-    print("<td ><strong>$Titulo</strong>");
+    print("<td ><strong>$Titulo </strong>");
     print("</td>");
     print("<td style='text-align: left' colspan=$ColFiltro>");
     $this->css->CrearLink("$myPage","_self","Limpiar ");
     $this->css->CrearBotonVerde("BtnFiltrar", "Filtrar");
-    $TxtSt=urlencode($statement);
-    $TxtTabla= base64_encode($Tabla["Tabla"]);
-    
+    $TxtSt=base64_encode($statement);
+    $TxtTabla=  base64_encode($Tabla["Tabla"]);
     $imagerute="../images/excel.png";    
     $this->css->CrearImageLink("$myPage?BtnExportarExcel=1&TxtT=$TxtTabla&TxtL=$TxtSt", $imagerute, "_blank",50,50);
     $imagerute="../images/csv2.png";    
@@ -419,54 +418,7 @@ public function DibujeTabla($Vector){
     $imagerute="../images/pdf2.png";
     
     $this->css->CrearImageLink("CreePDFFromTabla.php?BtnVerPDF=1&TxtT=$TxtTabla&TxtL=$TxtSt", $imagerute, "_blank",50,50);
-    if($_SESSION["tipouser"]=='administrador'){
-        $Titulo="Ajustes";
-        $Nombre="ImgShowMenu";
-        $RutaImage="../images/options.gif";
-        $javascript="";
-        $VectorBim["f"]=0;
-        $target="#DialTabla";
-        $this->css->CrearBotonImagen($Titulo,$Nombre,$target,$RutaImage,"",80,80,"fixed","left:10px;top:50",$VectorBim);
-        
-        $this->css->CrearCuadroDeDialogo("DialTabla", "Opciones para $tbl");
-            $this->css->CrearDiv("DivUpdateCampo", "", "center", 1, 1);
-            $this->css->CerrarDiv();
-            $this->css->CrearTabla();
-            
-                $this->css->FilaTabla(16);
-                    $this->css->ColTabla("<strong>Columna</strong>", 1);
-                    $this->css->ColTabla("<strong>Visualizar</strong>", 1);
-                    //$this->css->ColTabla("<strong>Editar</strong>", 1);
-                    
-                $this->css->CierraFilaTabla();
-                
-                    foreach ($Columnas as $Campo){
-                        $consulta=$this->obCon->ConsultarTabla("tablas_campos_control", "WHERE NombreTabla='$tbl' AND Campo='$Campo'");
-                        $DatosCampo=$this->obCon->FetchArray($consulta);
-                        if($DatosCampo["Habilitado"]=='' or $DatosCampo["Habilitado"]=='1'){
-                            $this->css->FilaTabla(16);
-                                $this->css->ColTabla($Campo, 1);
-                                print("<td>");
-
-
-                                $Page="Consultas/ControlCamposTablas.php?idElement=Act_$Campo&Tbl=$tbl&Campo=$Campo&Ret=";
-                                $js="OnClick=EnvieObjetoConsulta2(`$Page`,`Act_$Campo`,`DivUpdateCampo`,`5`);return false;";
-                                $Act=0;
-                                if($DatosCampo["Visible"]=='' or $DatosCampo["Visible"]=='1'){
-                                    $Act=1;
-                                }
-                                
-                                $this->css->CheckOnOff("Act_$Campo", $js, $Act, "");
-                                print("</td>");
-                            $this->css->CierraFilaTabla();
-                        }
-                    }
-                    
-                
-            $this->css->CerrarTabla();
-            
-        $this->css->CerrarCuadroDeDialogo();
-    }
+   
     print("</td>");
     $this->css->CierraFilaTabla();
     
@@ -480,19 +432,9 @@ public function DibujeTabla($Vector){
             $this->css->ColTabla("<strong>Abonar</strong>","");
         }
         foreach($Columnas as $NombreCol){
-            $consulta=$this->obCon->ConsultarTabla("tablas_campos_control", "WHERE NombreTabla='$tbl' AND Campo='$NombreCol'");
-            $DatosCampo=$this->obCon->FetchArray($consulta);
-            if($DatosCampo["Visible"]<>''){
-                if($DatosCampo["Visible"]==0 or $DatosCampo["Habilitado"]==0){
-                    $Vector["Excluir"][$NombreCol]=1;
-                }
-                
-            } 
-            
             if(isset($Vector[$NombreCol]["Link"])){
                 $Colink[$i]=1;
             }
-            $Ancho=50;
             if(!isset($Vector["Excluir"][$NombreCol])){
                 
                 print("<td><strong>$NombreCol</strong><br>");
@@ -757,21 +699,18 @@ public function DibujeTabla($Vector){
 public function VerifiqueExport($Vector)  {
     
     if(isset($_REQUEST["BtnExportarExcel"])){
-       $statement= urldecode($_REQUEST["TxtL"]);
+       $statement= base64_decode($_REQUEST["TxtL"]);
     require_once '../librerias/Excel/PHPExcel.php';
    $objPHPExcel = new PHPExcel();    
-     
-     //$Tabla["Tabla"]=$Vector["Tabla"];
-    $tbl= base64_decode($_REQUEST["TxtT"]);
-    $Tabla["Tabla"]=$tbl;
+        
+   $Tabla["Tabla"]=$Vector["Tabla"];
+    $tbl=$Tabla["Tabla"];
     $Titulo=$Vector["Titulo"];
     $VerDesde=$Vector["VerDesde"];
     $Limit=$Vector["Limit"];
     $Order=$Vector["Order"];
     
     $tbl=$Vector["Tabla"];
-    
-    
     $Columnas=$this->Columnas($Tabla); //Se debe disenar la base de datos colocando siempre la llave primaria de primera
    
     $i=0;
@@ -1306,7 +1245,7 @@ public function CrearCuadroClientes ($id,$titulo,$myPage,$VectorCDC){
     /////////////////Cuadro de dialogo de Clientes create
 	$this->css->CrearCuadroDeDialogo($id,$titulo); 
 	 
-        $this->css->CrearForm2("FrmCrearCliente",$myPage,"post","_self");
+        $this->css->CrearForm("FrmCrearCliente",$myPage,"post","_self");
         $this->css->CrearSelect("CmbTipoDocumento","Oculta()");
         $this->css->CrearOptionSelect('13','Cedula',1);
         $this->css->CrearOptionSelect('31','NIT',0);
@@ -3081,7 +3020,7 @@ public function GenerarInformeComprasComparativo($TipoReporte,$FechaInicial,$Fec
                 
                 $Cuenta=substr($CuentaPUC,0,4);
                 if($TipoReporte<>"Corte"){
-                    $sql="SELECT SUM(`Neto`) AS SaldoAnterior FROM librodiario WHERE Fecha<'$FechaCalculoAnterior' AND CuentaPUC LIKE '$CuentaPUC%' AND Tercero_Identificacion='$Tercero'";
+                    $sql="SELECT SUM(`Neto`) AS SaldoAnterior FROM librodiario WHERE Fecha<'$FechaCalculoAnterior' AND CuentaPUC LIKE '$Cuenta%' AND Tercero_Identificacion='$Tercero'";
                     $ConsultaAnterior=  $this->obCon->Query($sql);
                     $DatosConsultaAnterior=$this->obCon->FetchArray($ConsultaAnterior);
                     $SaldoAnterior=$DatosConsultaAnterior["SaldoAnterior"];
@@ -4691,15 +4630,14 @@ EOD;
         
         $html= $this->HTML_Items_Factura_Compra($idCompra);
         $Position=$this->PDF->SetY(80);
-        $this->PDF_Write(utf8_encode($html));
+        $this->PDF_Write($html);
         $html= $this->HTML_Items_Devueltos_FC($idCompra);
-        $this->PDF_Write(utf8_encode($html));
+        $this->PDF_Write($html);
         $html= $this->HTML_Servicios_FC($idCompra);
-        $this->PDF_Write(utf8_encode($html));
+        $this->PDF_Write($html);
         
         $html= $this->HTML_Movimiento_Contable_FC($idCompra);
-        //print($html);
-        $this->PDF_Write(($html));
+        $this->PDF_Write($html);
         //$Position=$this->PDF->GetY();
         //if($Position>246){
           //$this->PDF_Add();
@@ -4719,15 +4657,14 @@ EOD;
         $DatosTercero=$this->obCon->DevuelveValores("proveedores", "Num_Identificacion", $DatosFactura["Tercero"]);
         $DatosCentroCostos=$this->obCon->DevuelveValores("centrocosto","ID",$DatosFactura["idCentroCostos"]);
         $DatosEmpresaPro=$this->obCon->DevuelveValores("empresapro", "idEmpresaPro", $DatosCentroCostos["EmpresaPro"]);
-        $RazonSocial=utf8_encode($DatosTercero["RazonSocial"]);
-        $Direccion=utf8_encode($DatosTercero["Direccion"]);
+      
         $DatosUsuario=$this->obCon->DevuelveValores("usuarios", "idUsuarios", $DatosFactura["idUsuario"]);
         $Comprador=$DatosUsuario["Nombre"]." ".$DatosUsuario["Apellido"];
         $tbl = <<<EOD
 <table cellspacing="0" cellpadding="2" border="1">
     <tr>
         <td><strong>Tercero:</strong></td>
-        <td colspan="3">$RazonSocial</td>
+        <td colspan="3">$DatosTercero[RazonSocial]</td>
         
     </tr>
     <tr>
@@ -4740,7 +4677,7 @@ EOD;
         <td><strong>Teléfono:</strong></td>
     </tr>
     <tr>
-        <td colspan="2">$Direccion</td>
+        <td colspan="2">$DatosTercero[Direccion]</td>
         <td>$DatosTercero[Ciudad]</td>
         <td>$DatosTercero[Telefono]</td>
     </tr>
@@ -4923,7 +4860,7 @@ EOD;
     public function HTML_VentasXDepartamentos($CondicionItems) {
         $html="";
         $sql="SELECT Departamento as idDepartamento, SUM(SubtotalItem) as Subtotal, SUM(IVAItem) as IVA, SUM(TotalItem) as Total, SUM(Cantidad) as Items"
-        . " $CondicionItems GROUP BY Departamento";
+        . "  FROM $CondicionItems GROUP BY Departamento";
         $Datos=$this->obCon->Query($sql);
         
         if($this->obCon->NumRows($Datos)){
@@ -5006,10 +4943,11 @@ EOD;
         
          * 
          */
-        $sql="SELECT fi.idUsuarios as IdUsuarios,f.FormaPago as TipoVenta,sum(fi.`TotalItem`) as Total,sum(fi.`IVAItem`) as IVA,sum(fi.`SubtotalItem`) as Subtotal,"
+        $sql="SELECT fi.idUsuarios as IdUsuarios,fa.FormaPago as TipoVenta,sum(fi.`TotalItem`) as Total,sum(fi.`IVAItem`) as IVA,sum(fi.`SubtotalItem`) as Subtotal,"
                 . "sum(fi.`SubtotalCosto`) as TotalCostos, sum(fi.`ValorOtrosImpuestos`) as Bolsas, "
-                . "SUM(fi.`Cantidad`) AS Items, fi.idUsuarios $CondicionFacturas "
-                . " GROUP BY fi.idUsuarios,f.FormaPago";
+                . "SUM(fi.`Cantidad`) AS Items, fi.idUsuarios FROM `ori_facturas_items` fi "
+                . "INNER JOIN facturas fa ON fi.idFactura=fa.idFacturas "
+                . "WHERE $CondicionFecha3 GROUP BY fi.idUsuarios,fa.FormaPago";
         $Datos= $this->obCon->Query($sql);
         if($this->obCon->NumRows($Datos)){
             $html='<br><span style="color:RED;font-family:Bookman Old Style;font-size:12px;"><strong><em>Total de Ventas Discriminadas por Usuarios y Tipo de Venta:
@@ -5582,8 +5520,6 @@ EOD;
     }
     ///Clases para hacer el informe de administrador
     public function PDF_Informe_Ventas_Admin($TipoReporte,$FechaCorte,$FechaIni, $FechaFinal,$CentroCostos,$EmpresaPro,$Vector) {
-        
-        
         $Condicion=" ori_facturas_items WHERE ";
         $Condicion2=" ori_facturas WHERE ";
         if($TipoReporte=="Corte"){
@@ -5600,11 +5536,6 @@ EOD;
 
         $CondicionItems=$Condicion.$CondicionFecha1;
         $CondicionFacturas=$Condicion2.$CondicionFecha2;
-        
-        $CondicionItems=" FROM `ori_facturas_items` fi INNER JOIN facturas f ON fi.`idFactura` = f.idFacturas 
-            WHERE $CondicionFecha1
-            ";
-        
         $idFormato=16;
         $DatosFormatos= $this->obCon->DevuelveValores("formatos_calidad", "ID", $idFormato);
         
@@ -5616,10 +5547,8 @@ EOD;
                
         $html= $this->HTML_VentasXDepartamentos($CondicionItems);
         $this->PDF_Write($html);
-        
-        $html= $this->HTML_VentasXUsuario($CondicionItems,$CondicionFecha1,$CondicionFecha3);
+        $html= $this->HTML_VentasXUsuario($CondicionFacturas,$CondicionFecha1,$CondicionFecha3);
         $this->PDF_Write($html);
-        
         $html= $this->HTML_Uso_Resoluciones($CondicionFecha2, $CentroCostos, $EmpresaPro, "");
         $this->PDF_Write($html);
         $html= $this->HTML_Egresos_Admin($CondicionFecha2);
@@ -5634,7 +5563,6 @@ EOD;
         $this->PDF_Write($html);
         $html= $this->HTML_Ventas_Colaboradores($CondicionFecha2, $CentroCostos, $EmpresaPro, "");
         $this->PDF_Write($html);
-         
         /*Solo Juan Car
         $this->PDF_Add();
         //$this->PDF->SetFont('helvetica', '', 6);

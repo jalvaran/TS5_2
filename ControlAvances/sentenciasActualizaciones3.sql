@@ -407,3 +407,5 @@ CREATE TABLE `ventas_fechas_especiales_precios` (
 
 
 
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (175, 'Historial de Pedidos Items', '30', '3', 'restaurante_pedidos_items.php', '_SELF', b'1', 'historial3.png', '6', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+
