@@ -2823,54 +2823,68 @@ public function CalculePesoRemision($idCotizacion)
        $DatosProducto=$this->DevuelveValores("productosventa", "idProductosVenta", $idProducto);
        $PrecioVenta=$DatosProducto["PrecioVenta"];
        $PrecioMayorista=$DatosProducto["PrecioMayorista"];
+       /*
        if($idBodega>1){
             $DatosProductoBodega=$this->DevuelveValores("productosventa_bodega_$idBodega", "Referencia", $DatosProducto["Referencia"]);
             $PrecioVenta=$DatosProductoBodega["PrecioVenta"];
             $PrecioMayorista=$DatosProductoBodega["PrecioMayorista"];
             
        }
-       $sql="SELECT CodigoBarras FROM prod_codbarras WHERE ProductosVenta_idProductosVenta='$idProducto' LIMIT 5";
+        * *
+        */
+       
+       $sql="SELECT * FROM traslados_items WHERE idTraslado='$idComprobante' AND CodigoBarras='$idProducto'";
        $consulta=$this->Query($sql);
-       $i=0;
-       $Codigo[0]="";
-       $Codigo[1]="";
-       $Codigo[2]="";
-       $Codigo[3]="";
-       $Codigo[4]="";
-       while($CodigoBarras=$this->FetchArray($consulta)){
-           
-            $Codigo[$i]=$CodigoBarras["CodigoBarras"];
-            $i++;
+       $DatosItems=$this->FetchAssoc($consulta);
+       if($DatosItems["ID"]==''){
+           $sql="SELECT CodigoBarras FROM prod_codbarras WHERE ProductosVenta_idProductosVenta='$idProducto' LIMIT 5";
+            $consulta=$this->Query($sql);
+            $i=0;
+            $Codigo[0]="";
+            $Codigo[1]="";
+            $Codigo[2]="";
+            $Codigo[3]="";
+            $Codigo[4]="";
+            while($CodigoBarras=$this->FetchArray($consulta)){
+
+                 $Codigo[$i]=$CodigoBarras["CodigoBarras"];
+                 $i++;
+            }
+
+            //$CodigoBarras=$this->DevuelveValores("prod_codbarras", "ProductosVenta_idProductosVenta", $idProducto);
+            $tab="traslados_items";
+            $NumRegistros=23;
+
+            $Columnas[0]="Fecha";			$Valores[0]=$DatosTraslado["Fecha"];
+            $Columnas[1]="CodigoBarras";		$Valores[1]=$idProducto;
+            $Columnas[2]="Referencia";		$Valores[2]=$DatosProducto["Referencia"];
+            $Columnas[3]="Nombre";			$Valores[3]=$DatosProducto["Nombre"];
+            $Columnas[4]="Cantidad";			$Valores[4]=$Cantidad;
+            $Columnas[5]="PrecioVenta";              $Valores[5]=$PrecioVenta;
+            $Columnas[6]="PrecioMayorista";		$Valores[6]=$PrecioMayorista;
+            $Columnas[7]="CostoUnitario";		$Valores[7]=$DatosProducto["CostoUnitario"];
+            $Columnas[8]="IVA";			$Valores[8]=$DatosProducto["IVA"];
+            $Columnas[9]="Departamento";		$Valores[9]=$DatosProducto["Departamento"];
+            $Columnas[10]="Sub1";                    $Valores[10]=$DatosProducto["Sub1"];
+            $Columnas[11]="Sub2";			$Valores[11]=$DatosProducto["Sub2"];
+            $Columnas[12]="Sub3";                    $Valores[12]=$DatosProducto["Sub3"];
+            $Columnas[13]="Sub4";			$Valores[13]=$DatosProducto["Sub4"];
+            $Columnas[14]="Sub5";                    $Valores[14]=$DatosProducto["Sub5"];
+            $Columnas[15]="CuentaPUC";		$Valores[15]=$DatosProducto["CuentaPUC"];
+            $Columnas[16]="idTraslado";		$Valores[16]=$idComprobante;
+            $Columnas[17]="Estado";                  $Valores[17]="EN DESARROLLO";
+            $Columnas[18]="Destino";                 $Valores[18]=$DatosTraslado["Destino"];
+            $Columnas[19]="CodigoBarras1";		$Valores[19]=$Codigo[0];
+            $Columnas[20]="CodigoBarras2";		$Valores[20]=$Codigo[1];
+            $Columnas[21]="CodigoBarras3";           $Valores[21]=$Codigo[2];
+            $Columnas[22]="CodigoBarras4";           $Valores[22]=$Codigo[3];
+            $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+       }else{
+           $Cantidad=$Cantidad+$DatosItems["Cantidad"];
+           //$CostoUnitario=$DatosProducto["CostoUnitario"];
+           $this->ActualizaRegistro("traslados_items", "Cantidad", $Cantidad, "ID", $DatosItems["ID"]);
        }
        
-       //$CodigoBarras=$this->DevuelveValores("prod_codbarras", "ProductosVenta_idProductosVenta", $idProducto);
-       $tab="traslados_items";
-       $NumRegistros=23;
-
-       $Columnas[0]="Fecha";			$Valores[0]=$DatosTraslado["Fecha"];
-       $Columnas[1]="CodigoBarras";		$Valores[1]=$idProducto;
-       $Columnas[2]="Referencia";		$Valores[2]=$DatosProducto["Referencia"];
-       $Columnas[3]="Nombre";			$Valores[3]=$DatosProducto["Nombre"];
-       $Columnas[4]="Cantidad";			$Valores[4]=$Cantidad;
-       $Columnas[5]="PrecioVenta";              $Valores[5]=$PrecioVenta;
-       $Columnas[6]="PrecioMayorista";		$Valores[6]=$PrecioMayorista;
-       $Columnas[7]="CostoUnitario";		$Valores[7]=$DatosProducto["CostoUnitario"];
-       $Columnas[8]="IVA";			$Valores[8]=$DatosProducto["IVA"];
-       $Columnas[9]="Departamento";		$Valores[9]=$DatosProducto["Departamento"];
-       $Columnas[10]="Sub1";                    $Valores[10]=$DatosProducto["Sub1"];
-       $Columnas[11]="Sub2";			$Valores[11]=$DatosProducto["Sub2"];
-       $Columnas[12]="Sub3";                    $Valores[12]=$DatosProducto["Sub3"];
-       $Columnas[13]="Sub4";			$Valores[13]=$DatosProducto["Sub4"];
-       $Columnas[14]="Sub5";                    $Valores[14]=$DatosProducto["Sub5"];
-       $Columnas[15]="CuentaPUC";		$Valores[15]=$DatosProducto["CuentaPUC"];
-       $Columnas[16]="idTraslado";		$Valores[16]=$idComprobante;
-       $Columnas[17]="Estado";                  $Valores[17]="EN DESARROLLO";
-       $Columnas[18]="Destino";                 $Valores[18]=$DatosTraslado["Destino"];
-       $Columnas[19]="CodigoBarras1";		$Valores[19]=$Codigo[0];
-       $Columnas[20]="CodigoBarras2";		$Valores[20]=$Codigo[1];
-       $Columnas[21]="CodigoBarras3";           $Valores[21]=$Codigo[2];
-       $Columnas[22]="CodigoBarras4";           $Valores[22]=$Codigo[3];
-       $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
     
      }
      
