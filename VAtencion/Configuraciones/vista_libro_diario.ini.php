@@ -2,7 +2,7 @@
 
 $myTabla="vista_libro_diario";
 $idTabla="idLibroDiario";
-$myPage="librodiario.php";
+$myPage="vista_libro_diario.php";
 $myTitulo="Libro Diario";
 
 

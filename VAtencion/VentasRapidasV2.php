@@ -203,7 +203,7 @@ $css->AnchoElemento("CmbProveedores_chosen", 300);
 $css->AnchoElemento("CmbClienteCotizacion_chosen", 200);
 $css->AgregaSubir();
 $css->AgregaJSVentaRapida();
-
+print('<script src="jsPages/VentasRapidas.js"></script>');
 if($idPreventa>0){
     $Page="Consultas/ItemsPreventa.php?myPage=$myPage&idClientes=$idClientes&idAnticipo=$idAnticipo&CmbPreVentaAct=";
     print("<script>EnvieObjetoConsulta(`$Page`,`CmbPreVentaAct`,`DivItemsPreventa`,`2`);</script>");

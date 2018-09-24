@@ -55,22 +55,30 @@ if(!empty($_REQUEST["TxtBuscarSeparado"])){
             $css->ColTabla("TotalItem", 1);
             $css->ColTabla("Opciones", 1);
             $css->CierraFilaTabla();
-        
+            $TotalAbonos=$DatosSeparado["Total"]-$DatosSeparado["Saldo"];
             $ConsultaItems=$obVenta->ConsultarTabla("separados_items", "WHERE idSeparado='$DatosSeparado[ID]'");
             while($DatosItemsSeparados=$obVenta->FetchArray($ConsultaItems)){
-                
+                $CantidadMaxima=$DatosItemsSeparados["Cantidad"];
+                $ValorUnitarioItem=$DatosItemsSeparados["ValorUnitarioItem"];
+                $idItemSeparado=$DatosItemsSeparados["ID"];
                 $css->FilaTabla(14);
                 $css->ColTabla($DatosItemsSeparados["idSeparado"], 1);
                 $css->ColTabla($DatosItemsSeparados["Referencia"], 1);
+                
                 $css->ColTabla($DatosItemsSeparados["Nombre"], 2);
-                $css->ColTabla($DatosItemsSeparados["Cantidad"], 1);
+                print("<td>");
+                
+                $css->CrearInputNumber("TxtCantidadItemSeparado_$idItemSeparado", "number", "", $DatosItemsSeparados["Cantidad"], "", "", "onKeyPress", "CampoNumerico(event)", 100, 30, 0, 0,0,$DatosItemsSeparados["Cantidad"],"any");
+                //$css->ColTabla($DatosItemsSeparados["Cantidad"], 1);
+                print("</td>");
+                
                 $css->ColTabla(number_format($DatosItemsSeparados["TotalItem"]), 1);
                 print("<td>");
-                    $idItemSeparado=$DatosItemsSeparados["ID"];
+                    
                     $Page="Consultas/FacturarItemSeparado.php?myPage=$myPage&FacturarItemSeparado=1&idItemSeparado=$idItemSeparado&CmbPreVentaAct=$idPreventa&";
                     $css->CrearInputText("TxtIdSeparado".$idItemSeparado, "hidden", "", $idItemSeparado, "", "", "", "", "", "", 1, 1);
-                    $css->CrearBotonEvento("BtnFactItemSeparado$DatosItemsSeparados[ID]", "Facturar este Item", 1, "onClick", "EnvieObjetoConsulta(`$Page`,`TxtIdSeparado$idItemSeparado`,`DivRespuestasJS`,`1`);return false;", "naranja", "");
-            
+                    //$css->CrearBotonEvento("BtnFactItemSeparado$DatosItemsSeparados[ID]", "Facturar este Item", 1, "onClick", "EnvieObjetoConsulta(`$Page`,`TxtIdSeparado$idItemSeparado`,`DivRespuestasJS`,`1`);return false;", "naranja", "");
+                    $css->CrearBotonEvento("BtnFactItemSeparado", "Facturar Item", 1, "onClick", "FacturarItemSeparado('$idItemSeparado','$TotalAbonos','$CantidadMaxima','$ValorUnitarioItem')", "naranja", "");
                 print("</td>");
                 $css->CierraFilaTabla();
             }           

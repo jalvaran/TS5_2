@@ -6187,18 +6187,69 @@ public function VerificaPermisos($VectorPermisos) {
         $this->RegistrarCuentaXPagar($fecha, "NA", $fecha, "facturas_intereses_sistecredito", $idInteres, $Intereses, 0, $Intereses, 0, 0, 0, $idTerceroInteres, $DatosSede["ID"], $CentroCosto, "Intereses Factura SisteCredito", "", "");
     }
     //Facturar un item de un separado
-    public function FacturarItemSeparado($idItemSeparado,$Vector) {
+    public function FacturarItemSeparado($idItemSeparado,$Cantidad,$idUser,$Vector) {
         $DatosItem=$this->DevuelveValores("separados_items", "ID", $idItemSeparado);
         $idSeparadoOld=$DatosItem["idSeparado"];
+        $PorcentajeIVA= str_replace("%", '', $DatosItem["PorcentajeIVA"]);
+        $PorcentajeIVA=$PorcentajeIVA/100;
+        $ValorUnitarioItem=$DatosItem["ValorUnitarioItem"];
+        $SubtotalItem=$ValorUnitarioItem*$Cantidad;
+        
+        $IVAItem=round(($SubtotalItem)*$PorcentajeIVA);
+        $TotalItem=$SubtotalItem+$IVAItem;
+        
         $DatosSeparado=$this->DevuelveValores("separados", "ID", $idSeparadoOld);
-        $idSeparadoNew=$this->CrearSeparado($DatosSeparado["idCliente"],$DatosItem["TotalItem"], $Vector);
-        $this->ActualizaRegistro("separados_items", "idSeparado", $idSeparadoNew, "ID", $idItemSeparado);
-        $TotalAbonos=$DatosSeparado["Total"]-$DatosSeparado["Saldo"];
-        $TotalAbonos=$TotalAbonos-$DatosItem["TotalItem"];
-        $TotalSeparado=$DatosSeparado["Total"]-$DatosItem["TotalItem"];
+        
+        $idSeparadoNew=$this->CrearSeparado($DatosSeparado["idCliente"],$TotalItem, $Vector);
+        
+        $Datos["Fecha"]=date("Y-m-d");
+        $Datos["idSeparado"]=$idSeparadoNew;
+        $Datos["TablaItems"]=$DatosItem["TablaItems"];
+        $Datos["Referencia"]=$DatosItem["Referencia"];
+        $Datos["Nombre"]=$DatosItem["Nombre"];
+        $Datos["Departamento"]=$DatosItem["Departamento"];
+        $Datos["SubGrupo1"]=$DatosItem["SubGrupo1"];
+        $Datos["SubGrupo2"]=$DatosItem["SubGrupo2"];
+        $Datos["SubGrupo3"]=$DatosItem["SubGrupo3"];
+        $Datos["SubGrupo4"]=$DatosItem["SubGrupo4"];
+        $Datos["SubGrupo5"]=$DatosItem["SubGrupo5"];
+        $Datos["ValorUnitarioItem"]=$ValorUnitarioItem;
+        $Datos["Cantidad"]=$Cantidad;
+        $Datos["SubtotalItem"]=$ValorUnitarioItem*$Cantidad;
+        $Datos["IVAItem"]=$IVAItem;
+        $Datos["TotalItem"]=$TotalItem;
+        $Datos["PorcentajeIVA"]=$DatosItem["PorcentajeIVA"];
+        $Datos["PrecioCostoUnitario"]=$DatosItem["PrecioCostoUnitario"];
+        $Datos["SubtotalCosto"]=$DatosItem["PrecioCostoUnitario"]*$Cantidad;
+        $Datos["TipoItem"]=$DatosItem["TipoItem"];
+        $Datos["CuentaPUC"]=$DatosItem["CuentaPUC"];
+        $Datos["GeneradoDesde"]=$DatosItem["GeneradoDesde"];
+        $Datos["NumeroIdentificador"]=$DatosItem["NumeroIdentificador"];
+        $Datos["Multiplicador"]=$DatosItem["Multiplicador"];
+        $sql=$this->getSQLInsert("separados_items", $Datos);
+        
+        $this->Query($sql);
+        
+        $NuevaCantidad=$DatosItem["Cantidad"]-$Cantidad;
+        $NuevoSubtotal=$NuevaCantidad*$ValorUnitarioItem;
+        $NuevoIVAItem=round($NuevoSubtotal*$PorcentajeIVA);
+        $NuevoTotal=$NuevoSubtotal+$NuevoIVAItem;
+        $NuevaCostoTotal=$DatosItem["PrecioCostoUnitario"]*$NuevaCantidad;
+        $this->ActualizaRegistro("separados_items", "Cantidad", $NuevaCantidad, "ID", $idItemSeparado);
+        $this->ActualizaRegistro("separados_items", "IVAItem", $NuevoIVAItem, "ID", $idItemSeparado);
+        $this->ActualizaRegistro("separados_items", "TotalItem", $NuevoTotal, "ID", $idItemSeparado);
+        $this->ActualizaRegistro("separados_items", "SubtotalItem", $NuevoSubtotal, "ID", $idItemSeparado);
+        $this->ActualizaRegistro("separados_items", "SubtotalCosto", $NuevaCostoTotal, "ID", $idItemSeparado);
+        
+        $TotalAbonos=$DatosSeparado["Total"]-$DatosSeparado["Saldo"];        
+        $TotalSeparado=$DatosSeparado["Total"]-$TotalItem;
+        $TotalAbonos=$TotalAbonos-$TotalItem;
         $TotalSaldo=$TotalSeparado-$TotalAbonos;
         $this->ActualizaRegistro("separados", "Total", $TotalSeparado, "ID", $idSeparadoOld);
         $this->ActualizaRegistro("separados", "Saldo", $TotalSaldo, "ID", $idSeparadoOld);
+        if($TotalSaldo<=0){
+            $this->ActualizaRegistro("separados", "Estado", "Cerrado", "ID", $idSeparadoOld);
+        }
         $DatosCaja=$this->DevuelveValores("cajas", "idUsuario", $idUser);
         $CuentaDestino=$DatosCaja["CuentaPUCEfectivo"];
         $NumFactura=$this->CreaFacturaDesdeSeparado($idSeparadoNew,$CuentaDestino,"");
