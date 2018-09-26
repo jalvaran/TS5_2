@@ -33,27 +33,34 @@ if(isset($_REQUEST["idAccion"])){
                         $css->ColTabla("<strong>Referencia</strong>", 1);
                         $css->ColTabla("<strong>Precio de Venta</strong>", 1);
                         $css->ColTabla("<strong>Costo Unitario</strong>", 1);
-                        $css->ColTabla("<strong>Existencias</strong>", 1);
+                        $css->ColTabla("<strong>Existencias Actuales</strong>", 1);
+                        $css->ColTabla("<strong>Cantidad a Construir</strong>", 1);
                         $css->ColTabla("<strong>Construir</strong>", 1);
                     $css->CierraFilaTabla();
                     
                     $css->FilaTabla(16);
+                        //$idProductoCrear=$DatosProducto["idProductosVenta"];
                         $css->ColTabla($DatosProducto["idProductosVenta"], 1);
                         $css->ColTabla($DatosProducto["Nombre"], 1);
                         $css->ColTabla($DatosProducto["Referencia"], 1);
                         $css->ColTabla($DatosProducto["PrecioVenta"], 1);
                         $css->ColTabla($DatosProducto["CostoUnitario"], 1);
                         $css->ColTabla($DatosProducto["Existencias"], 1);
-                        $css->ColTabla("<strong>Construir</strong>", 1);
+                        print("<td>");
+                            $css->CrearInputNumber("TxtCantidadCrear", "number", "", 1, "", "", "", "", 100, 30, 0, 1, 0, "", "any");
+                        print("</td>");
+                        print("<td>");
+                            $css->CrearBotonEvento("BtnCrearProducto", "Construir", 1, "onClick", "CrearProductoDesdeReceta('$idProducto')", "azul", "");
+                        print("</td>");
                     $css->CierraFilaTabla();
                     
                     $css->FilaTabla(16);
-                        $css->ColTabla("<strong>Items para producir este producto</strong>", 7,"C");
+                        $css->ColTabla("<strong>Items para producir este producto</strong>", 8,"C");
                         
                     $css->CierraFilaTabla();
                     $css->FilaTabla(16);
                         $css->ColTabla("<strong>Tabla del insumo</strong>", 1);
-                        $css->ColTabla("<strong>Producto</strong>", 3);
+                        $css->ColTabla("<strong>Producto</strong>", 4);
                         $css->ColTabla("<strong>Referencia</strong>", 1);
                         $css->ColTabla("<strong>Cantidad</strong>", 1);
                         $css->ColTabla("<strong>Editar (Poner en cero para inhabilitar insumo)</strong>", 1);
@@ -65,7 +72,7 @@ if(isset($_REQUEST["idAccion"])){
                         $css->FilaTabla(16);
                             $Item=$DatosItems["ID"];
                             $css->ColTabla($DatosItems["TablaIngrediente"], 1);
-                            $css->ColTabla($DatosInsumo["Nombre"], 3);
+                            $css->ColTabla($DatosInsumo["Nombre"], 4);
                             $css->ColTabla($DatosInsumo["Referencia"], 1);
                             print("<td style=text-align:center>");
                                 $css->CrearInputNumber("TxtCantidad_".$Item, "number", "", $DatosItems["Cantidad"], "Cantidad", "", "", "", 100, 30, 0, 1, 0, "", "any");
@@ -89,11 +96,30 @@ if(isset($_REQUEST["idAccion"])){
             $obReceta->CalcularCostosProductoReceta($DatosItem["ReferenciaProducto"], "");
             print("OK");
             break;
-        case 4://Elimina un item de un traslado
-            $idItem=$obCon->normalizar($_REQUEST["idItem"]);
-            $obCon->BorraReg("traslados_items", "ID", $idItem);
+        case 4://Agrega un servicio
+            $idProducto=$obReceta->normalizar($_REQUEST["idProducto"]);
+            $Cantidad=$obReceta->normalizar($_REQUEST["Cantidad"]);
+            $idServicio=$obReceta->normalizar($_REQUEST["idServicio"]); 
+            $obReceta->AgregarItemReceta($idProducto, "servicios", "idProductosVenta", $idServicio, $Cantidad, $idUser, "");
+            $DatosProducto= $obReceta->ValorActual("productosventa", "Referencia", " idProductosVenta='$idProducto'");
+            $obReceta->CalcularCostosProductoReceta($DatosProducto["Referencia"], "");
             print("OK");
-            break;
+        break;
+        case 5://Agrega un producto
+            $idProducto=$obReceta->normalizar($_REQUEST["idProducto"]);
+            $Cantidad=$obReceta->normalizar($_REQUEST["Cantidad"]);
+            $idProductoReceta=$obReceta->normalizar($_REQUEST["idProductoReceta"]); 
+            $obReceta->AgregarItemReceta($idProducto, "productosventa", "idProductosVenta", $idProductoReceta, $Cantidad, $idUser, "");
+            $DatosProducto= $obReceta->ValorActual("productosventa", "Referencia", " idProductosVenta='$idProducto'");
+            $obReceta->CalcularCostosProductoReceta($DatosProducto["Referencia"], "");
+            print("OK");
+        break;
+        case 6://Fabricar un producto
+            $idProducto=$obReceta->normalizar($_REQUEST["idProducto"]);
+            $Cantidad=$obReceta->normalizar($_REQUEST["Cantidad"]);            
+            $obReceta->FabricarProducto($idProducto, $Cantidad, "");
+            print("OK");
+        break;
     }
     
 }else{

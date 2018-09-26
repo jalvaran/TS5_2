@@ -1483,6 +1483,7 @@ public function CalculePesoRemision($idCotizacion)
         $Columnas[9]="CostoTotalPromedio";              $Valores[9]=$DatosKardex['CostoTotalPromedio'];
         
         $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        /*
         if(isset($DatosKardex["CalcularCostoPromedio"])){
             
             $idKardex= $this->ObtenerMAX($tab,"idKardexMercancias",1,"");

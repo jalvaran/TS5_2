@@ -412,3 +412,71 @@ INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`,
 ALTER TABLE `productosventa` ADD `Sub6` INT NOT NULL AFTER `Sub5`;
 ALTER TABLE `inventarios_temporal` ADD `Sub6` INT NOT NULL AFTER `Sub5`;
 
+ALTER TABLE `kardexmercancias` CHANGE `Fecha` `Fecha` DATE NULL DEFAULT NULL;
+
+ALTER TABLE `kardexmercancias` CHANGE `ValorUnitario` `ValorUnitario` DOUBLE NOT NULL;
+ALTER TABLE `kardexmercancias` CHANGE `Cantidad` `Cantidad` DOUBLE NOT NULL;
+ALTER TABLE `kardexmercancias` CHANGE `ValorUnitario` `ValorUnitario` DOUBLE NOT NULL;
+ALTER TABLE `kardexmercancias` CHANGE `ValorTotal` `ValorTotal` DOUBLE NOT NULL;
+
+CREATE TABLE `insumos` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Referencia` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
+  `Nombre` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
+  `Existencia` double NOT NULL,
+  `CostoUnitario` double NOT NULL,
+  `CostoTotal` double NOT NULL,
+  `Unidad` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Referencia` (`Referencia`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+CREATE TABLE `insumos_kardex` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idBodega` int(11) NOT NULL DEFAULT '1',
+  `Fecha` date DEFAULT NULL,
+  `Movimiento` varchar(45) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `Detalle` varchar(400) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `idDocumento` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `Cantidad` double DEFAULT NULL,
+  `ValorUnitario` double NOT NULL,
+  `ValorTotal` double NOT NULL,
+  `ReferenciaInsumo` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `ReferenciaInsumo` (`ReferenciaInsumo`),
+  KEY `Movimiento` (`Movimiento`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+CREATE TABLE `recetas_relaciones` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ReferenciaProducto` varchar(100) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Referencia del producto que se realiza con receta',
+  `ReferenciaIngrediente` varchar(100) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Referencia del producto o servicio que hace parte de la receta',
+  `TablaIngrediente` varchar(100) COLLATE latin1_spanish_ci NOT NULL COMMENT 'tabla del producto de la receta',
+  `Cantidad` double NOT NULL COMMENT 'Cantidad del insumo para crear un producto',
+  `idUser` int(11) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `ReferenciaProducto` (`ReferenciaProducto`),
+  KEY `ReferenciaIngrediente` (`ReferenciaIngrediente`),
+  KEY `TablaIngrediente` (`TablaIngrediente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+ALTER TABLE `kardexmercancias` ENGINE = MyISAM;
+ALTER TABLE `insumos_kardex` ENGINE = MyISAM;
+
+INSERT INTO `subcuentas` (`PUC`, `Nombre`, `Valor`, `Cuentas_idPUC`, `Updated`, `Sync`) VALUES
+(140505,	'MATERIAS PRIMAS',	NULL,	'1405',	'2018-09-26 17:04:13',	'0000-00-00 00:00:00');
+
+INSERT INTO `subcuentas` (`PUC`, `Nombre`, `Valor`, `Cuentas_idPUC`, `Updated`, `Sync`) VALUES
+(143005,	'PRODUCTOS MANUFACTURADOS',	NULL,	'1430',	'2018-09-26 17:12:31',	'0000-00-00 00:00:00');
+
+INSERT INTO `parametros_contables` (`ID`, `Descripcion`, `CuentaPUC`, `NombreCuenta`, `Updated`, `Sync`) VALUES
+(23,	'Cuenta para contabilizar el ingreso a inventario de  productos fabricados',	143005,	'Productos Manufacturados',	'2017-10-13 14:28:42',	'2017-10-13 14:28:42'),
+(22,	'Cuenta para contabilizar la compra de materia prima o insumos',	140505,	'Materias Primas',	'2017-10-13 14:28:42',	'2017-10-13 14:28:42');
+

@@ -65,6 +65,100 @@ class Recetas extends ProcesoVenta{
         $this->ActualizaRegistro("productosventa", "CostoTotal", $CostoTotalProducto, "Referencia", $ReferenciaProducto);
         
     }
+    /**
+     * Fabricar un producto
+     * @param type $idProducto
+     * @param type $Cantidad
+     * @param type $Vector
+     */
+    public function FabricarProducto($idProducto,$Cantidad,$Vector) {
+        $DatosProducto=$this->DevuelveValores("productosventa", "idProductosVenta", $idProducto);
+        $DatosKardex["Cantidad"]=$Cantidad;
+        $DatosKardex["idProductosVenta"]=$idProducto;
+        $DatosKardex["CostoUnitario"]=$DatosProducto['CostoUnitario'];
+        $DatosKardex["Existencias"]=$DatosProducto['Existencias'];
+        $DatosKardex["Detalle"]="Receta";
+        $DatosKardex["idDocumento"]="";
+        $DatosKardex["TotalCosto"]=$DatosProducto['CostoUnitario']*$Cantidad;
+        $DatosKardex["Movimiento"]="ENTRADA";
+        $DatosKardex["CostoUnitarioPromedio"]=$DatosProducto["CostoUnitarioPromedio"];
+        $DatosKardex["CostoTotalPromedio"]=$DatosProducto["CostoUnitarioPromedio"]*$Cantidad;
+        $this->InserteKardex($DatosKardex);
+        $TotalCostoProduccion=$DatosProducto['CostoUnitario']*$Cantidad;
+        $ReferenciaProducto=$DatosProducto["Referencia"];
+        $Consulta= $this->ConsultarTabla("recetas_relaciones", " WHERE ReferenciaProducto='$ReferenciaProducto'");
+        while($DatosInsumo= $this->FetchAssoc($Consulta)){
+            
+            if($DatosInsumo["Cantidad"]>0){
+                if($DatosInsumo["TablaIngrediente"]=="productosventa"){
+                    $DatosProductoInsumo=$this->DevuelveValores("productosventa", "Referencia", $DatosInsumo["ReferenciaIngrediente"]);
+                    $CantidadInsumo=$DatosInsumo["Cantidad"]*$Cantidad;
+                    //$TotalCostoProduccion=$TotalCostoProduccion+($DatosProductoInsumo['CostoUnitario']*$CantidadInsumo);
+                    $DatosKardex["Cantidad"]=$CantidadInsumo;
+                    $DatosKardex["idProductosVenta"]=$DatosProductoInsumo["idProductosVenta"];
+                    $DatosKardex["CostoUnitario"]=$DatosProductoInsumo['CostoUnitario'];
+                    $DatosKardex["Existencias"]=$DatosProductoInsumo['Existencias'];
+                    $DatosKardex["Detalle"]="Receta";
+                    $DatosKardex["idDocumento"]="";
+                    $DatosKardex["TotalCosto"]=$DatosProductoInsumo['CostoUnitario']*$CantidadInsumo;
+                    $DatosKardex["Movimiento"]="SALIDA";
+                    $DatosKardex["CostoUnitarioPromedio"]=$DatosProductoInsumo["CostoUnitarioPromedio"];
+                    $DatosKardex["CostoTotalPromedio"]=$DatosProductoInsumo["CostoUnitarioPromedio"]*$CantidadInsumo;
+                    $this->InserteKardex($DatosKardex);
+                }
+                
+                if($DatosInsumo["TablaIngrediente"]=="insumos"){
+                    $DatosProductoInsumo=$this->DevuelveValores("insumos", "Referencia", $DatosInsumo["ReferenciaIngrediente"]);
+                    
+                    $CantidadInsumo=$DatosInsumo["Cantidad"]*$Cantidad;
+                    //$TotalCostoProduccion=$TotalCostoProduccion+($DatosProductoInsumo['CostoUnitario']*$CantidadInsumo);
+                    $this->KardexInsumo("SALIDA", "Fabricacion producto $idProducto", "", $DatosProductoInsumo["Referencia"], $CantidadInsumo, $DatosProductoInsumo["CostoUnitario"], "");
+                }
+                
+            }
+        }
+        
+        if($TotalCostoProduccion>0){
+            $ParametroContable=$this->DevuelveValores("parametros_contables", "ID", 22);
+            $this->IngreseMovimientoLibroDiario(date("Y-m-d"), "Fabricacion", "", "", "", $ParametroContable["CuentaPUC"],$ParametroContable["NombreCuenta"], "Fabricacion de Producto", "CR", $TotalCostoProduccion, "Fabricacion de Producto", 1, 1, "");
+            $ParametroContable=$this->DevuelveValores("parametros_contables", "ID", 23);
+            $this->IngreseMovimientoLibroDiario(date("Y-m-d"), "Fabricacion", "", "", "", $ParametroContable["CuentaPUC"],$ParametroContable["NombreCuenta"], "Fabricacion de Producto", "DB", $TotalCostoProduccion, "Fabricacion de Producto", 1, 1, "");
+           
+        }
+        
+    }
     
+    
+    public function KardexInsumo($Movimiento,$Detalle,$idDocumento,$ReferenciaInsumo,$Cantidad,$CostoUnitario,$Vector) {
+        $DatosInsumo=$this->DevuelveValores("insumos", "Referencia", $ReferenciaInsumo);
+        $Fecha=date("Y-m-d");
+        if($Movimiento=="SALIDA"){
+            $Saldo=$DatosInsumo["Existencia"]-$Cantidad;
+        }else if($DatosKardex["Movimiento"]=="ENTRADA"){
+            $Saldo=$DatosInsumo["Existencia"]+$Cantidad;
+        }else{
+            $Saldo=0;
+        }
+        
+                
+        $Datos["Fecha"]=$Fecha;
+        $Datos["Movimiento"]=$Movimiento;
+        $Datos["Detalle"]=$Detalle;
+        $Datos["idDocumento"]="";
+        $Datos["Cantidad"]=$Cantidad;
+        $Datos["ValorUnitario"]=$DatosInsumo["CostoUnitario"];
+        $Datos["ValorTotal"]=$DatosInsumo["CostoUnitario"]*$Cantidad;
+        $Datos["ReferenciaInsumo"]=$ReferenciaInsumo;
+        
+        $sql=$this->getSQLInsert("insumos_kardex", $Datos);
+        $this->Query($sql);
+        
+        $Datos["Movimiento"]="SALDOS";
+        $Datos["Cantidad"]=$Saldo;
+        $Datos["ValorTotal"]=$DatosInsumo["CostoUnitario"]*$Saldo;
+        $sql=$this->getSQLInsert("insumos_kardex", $Datos);
+        $this->Query($sql);
+        
+    }
     //Fin Clases
 }

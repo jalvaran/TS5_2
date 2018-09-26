@@ -177,4 +177,3 @@ SELECT `idLibroDiario`,`Fecha`,`Tipo_Documento_Intero`,(select if((`librodiario`
 
 
 
-
