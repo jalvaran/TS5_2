@@ -72,6 +72,11 @@ $Vector[$TablaConfig]["Sub5"]["TablaVinculo"]="prod_sub5";  //tabla de donde se 
 $Vector[$TablaConfig]["Sub5"]["IDTabla"]="idSub5"; //id de la tabla que se vincula
 $Vector[$TablaConfig]["Sub5"]["Display"]="NombreSub5";                    //Columna que quiero mostrar
 
+$Vector[$TablaConfig]["Sub6"]["Vinculo"]=1;   //Indico que esta columna tendra un vinculo
+$Vector[$TablaConfig]["Sub6"]["TablaVinculo"]="prod_sub6";  //tabla de donde se vincula
+$Vector[$TablaConfig]["Sub6"]["IDTabla"]="idSub6"; //id de la tabla que se vincula
+$Vector[$TablaConfig]["Sub6"]["Display"]="NombreSub6";                    //Columna que quiero mostrar
+
 /*
  * Parametros de configuracion Tabla facturas
  * Columnas Excluidas

@@ -101,6 +101,11 @@ $Vector["Sub4"]["TablaVinculo"]="prod_sub4";  //tabla de donde se vincula
 $Vector["Sub4"]["IDTabla"]="idSub4"; //id de la tabla que se vincula
 $Vector["Sub4"]["Display"]="NombreSub4";                    //Columna que quiero mostrar
 //
+$Vector["Sub6"]["Vinculo"]=1;   //Indico que esta columna tendra un vinculo
+$Vector["Sub6"]["TablaVinculo"]="prod_sub6";  //tabla de donde se vincula
+$Vector["Sub6"]["IDTabla"]="idSub6"; //id de la tabla que se vincula
+$Vector["Sub6"]["Display"]="NombreSub6";                    //Columna que quiero mostrar
+//
 $Vector["Sub5"]["Vinculo"]=1;   //Indico que esta columna tendra un vinculo
 $Vector["Sub5"]["TablaVinculo"]="prod_sub5";  //tabla de donde se vincula
 $Vector["Sub5"]["IDTabla"]="idSub5"; //id de la tabla que se vincula

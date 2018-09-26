@@ -1507,7 +1507,7 @@ public function CalculePesoRemision($idCotizacion)
          */
         $sql="UPDATE productosventa SET Existencias='$Saldo', CostoTotal='$TotalCostoSaldo',CostoUnitario='$DatosKardex[CostoUnitario]',"
                 . " CostoUnitarioPromedio='$CostoUnitarioPromedio',CostoTotalPromedio='$TotalCostoPromedioSaldo'"
-                . " WHERE idProductosVenta=$DatosKardex[idProductosVenta]";
+                . " WHERE idProductosVenta='$DatosKardex[idProductosVenta]'";
         $this->Query($sql);
         
     }
@@ -5777,9 +5777,12 @@ public function VerificaPermisos($VectorPermisos) {
     
     //Crear un producto para la venta
      public function CrearProductoVenta($Nombre,$CodigoBarras,$Referencia,$PrecioVenta,$PrecioMayor,$Existencias,$CostoUnitario,$IVA,$idDepartamento,$Sub1,$Sub2,$Sub3,$Sub4,$Sub5,$CuentaPUC,$Vector,$idProductoVenta='',$RutaImagen='') {
-        
+        $Sub6=0;
+        if(isset($Vector["Sub6"])){
+            $Sub6=$Vector["Sub6"];
+        }
         $tab="productosventa";	
-        $NumRegistros=21;
+        $NumRegistros=22;
         
         $Columnas[0]="idProductosVenta";$Valores[0]=$idProductoVenta;
         $Columnas[1]="CodigoBarras";	$Valores[1]=$idProductoVenta;
@@ -5802,6 +5805,7 @@ public function VerificaPermisos($VectorPermisos) {
         $Columnas[18]="RutaImagen";	$Valores[18]=$RutaImagen;
         $Columnas[19]="CostoUnitarioPromedio";	$Valores[19]=$CostoUnitario;
         $Columnas[20]="CostoTotalPromedio";	$Valores[20]=$CostoUnitario*$Existencias;
+        $Columnas[21]="Sub6";		$Valores[21]=$Sub6;
         $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
         if($idProductoVenta==""){
             $ID=$this->ObtenerMAX($tab,"idProductosVenta", 1,"");

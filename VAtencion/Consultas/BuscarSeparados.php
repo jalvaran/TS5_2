@@ -20,7 +20,7 @@ if(!empty($_REQUEST["TxtBuscarSeparado"])){
     $key=$obVenta->normalizar($_REQUEST["TxtBuscarSeparado"]);
     $sql="SELECT sp.ID, cl.RazonSocial, cl.Num_Identificacion, sp.Total, sp.Saldo, sp.idCliente FROM separados sp"
             . " INNER JOIN clientes cl ON sp.idCliente = cl.idClientes "
-            . " WHERE (sp.Estado<>'Cerrado' AND sp.Saldo>0) AND (cl.RazonSocial LIKE '%$key%' OR cl.Num_Identificacion LIKE '%$key%') LIMIT 10";
+            . " WHERE (sp.Estado<>'Cerrado' AND sp.Estado<>'ANULADO' AND sp.Saldo>0) AND (cl.RazonSocial LIKE '%$key%' OR cl.Num_Identificacion LIKE '%$key%') LIMIT 10";
     $Datos=$obVenta->Query($sql);
     if($obVenta->NumRows($Datos)){
         $css->CrearTabla();
