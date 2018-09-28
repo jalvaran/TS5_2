@@ -265,4 +265,7 @@ $Vector[$TablaConfig]["TipoItem"]["Predeterminado"]=1;
 
 $TablaConfig="documentos_contables_control";
 $Vector[$TablaConfig]["Excluir"]["Consecutivo"]=1;
+
+$TablaConfig="insumos";
+$Vector[$TablaConfig]["Excluir"]["Referencia"]=1;
 ?>

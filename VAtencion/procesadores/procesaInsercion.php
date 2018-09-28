@@ -122,6 +122,19 @@ if(!empty($_REQUEST["BtnGuardarRegistro"])){
         
     }
     
+    if($tab=="insumos"){
+        
+        
+        if(empty($_REQUEST["Referencia"])){
+            $Vector["Tabla"]="insumos";
+            $ID=$obTabla->ObtengaAutoIncrement($Vector);
+            $ID=$ID-1;
+            $obVenta->ActualizaRegistro($tab, "Referencia", "I".$ID, "ID", $ID);
+        }
+        
+        
+    }
+    
     /*
      * Si se crea una sucursal
      */
