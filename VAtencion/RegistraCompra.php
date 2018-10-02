@@ -2,6 +2,7 @@
 $myPage="RegistraCompra.php";
 include_once("../sesiones/php_control.php");
 include_once("clases/ClasesCompras.php");
+include_once("clases/Recetas.class.php");
 include_once("css_construct.php");
 
 print("<html>");
@@ -10,6 +11,7 @@ $css =  new CssIni("Compras");
 $obVenta=new ProcesoVenta($idUser);  
 $obTabla = new Tabla($db);
 $obCompra=new Compra($idUser);
+$obInsumos=new Recetas($idUser);
 $idCompra=0;
 $TipoMovimiento=0;
 if(isset($_REQUEST["idCompra"])){
@@ -34,7 +36,7 @@ print("<body>");
         $css->CrearNotificacionVerde("Compra $idCompraCreada Creada Satisfactoriamente <a target='_blank'  href='PDF_FCompra.php?ID=$idCompraCreada'>ver</a>", 16);
     }
     //si se creó el traslado se crea el link para verlo
-    if(isset($_REQUEST["idTrasladoCreado"])){
+    if(isset($_REQUEST["idTrasladoCreado"]) and !empty($_REQUEST["idTrasladoCreado"])){
         $idTrasladoCreado=$_REQUEST["idTrasladoCreado"];
         $Ruta="../tcpdf/examples/imprimirTraslado.php?idTraslado=$idTrasladoCreado";
         $css->CrearNotificacionAzul("Traslado $idTrasladoCreado Creado Satisfactoriamente <a target='_blank' href='$Ruta'>ver</a>", 16);
@@ -71,6 +73,7 @@ print("<body>");
         $css->CrearTabla();
             $css->FilaTabla(16);
                 $css->ColTabla("<strong>Buscar Producto:<strong>", 1);
+                $css->ColTabla("<strong>Buscar Insumo:<strong>", 1);
                 print("<td>");
                 print("<strong>Agregar Servicio: <strong>");
                 $css->ImageOcultarMostrar("ImgHidden", "Click: ", "DivAgregaServicio", 30, 30, "");
@@ -86,6 +89,10 @@ print("<body>");
                 print("<td>");
                 $Page="Consultas/BuscarItemsCompras.php?TipoItem=1&myPage=$myPage&idCompra=$idCompra&key=";
                 $css->CrearInputText("TxtProducto", "text", "", "", "Buscar Producto", "", "onKeyPress", "EnvieObjetoConsulta(`$Page`,`TxtProducto`,`DivBusquedas`,`0`);", 200, 30, 0, 1);
+                print("</td>");
+                print("<td>");
+                $Page="Consultas/BuscarItemsCompras.php?TipoItem=2&myPage=$myPage&idCompra=$idCompra&key=";
+                $css->CrearInputText("TxtInsumos", "text", "", "", "Buscar Insumos", "", "onKeyPress", "EnvieObjetoConsulta(`$Page`,`TxtInsumos`,`DivBusquedas`,`0`);", 200, 30, 0, 1);
                 print("</td>");
                 print("<td>");
                 $css->CrearDiv("DivAgregaServicio", "", "Center", 0, 1);
@@ -332,7 +339,8 @@ print("<body>");
         $css->CerrarDiv();
         
         $DivVisible=0;
-        if($TotalesCompra["Total_Servicios"]>0 or $TotalesCompra["Total_Productos"]){
+        //print_r($TotalesCompra);
+        if($TotalesCompra["Total_Servicios"]>0 or $TotalesCompra["Total_Productos"]>0 or $TotalesCompra["Total_Insumos"]>0){
             $DivVisible=1;
         }
         $css->CrearDiv("DivTotales", "", "center", $DivVisible, 0);
@@ -354,11 +362,11 @@ print("<body>");
                     $css->ColTabla("<strong>Opciones</strong>", 1);
                 $css->CierraFilaTabla();
                 $css->FilaTabla(14);
-                    $css->ColTabla(number_format($TotalesCompra["Subtotal_Descuentos_Productos_Add"]+$TotalesCompra["Subtotal_Productos_Add"]+$TotalesCompra["Subtotal_Servicios"]), 1);
+                    $css->ColTabla(number_format($TotalesCompra["Subtotal_Descuentos_Productos_Add"]+$TotalesCompra["Subtotal_Productos_Add"]+$TotalesCompra["Subtotal_Servicios"]+$TotalesCompra["Subtotal_Insumos"]), 1);
                     $css->ColTabla(number_format($TotalesCompra["Subtotal_Descuentos_Productos_Add"]), 1);
-                    $css->ColTabla(number_format($TotalesCompra["Subtotal_Productos_Add"]+$TotalesCompra["Subtotal_Servicios"]), 1);
-                    $css->ColTabla(number_format($TotalesCompra["Impuestos_Productos_Add"]+$TotalesCompra["Impuestos_Servicios"]), 1);
-                    $css->ColTabla(number_format($TotalesCompra["Total_Productos_Add"]+$TotalesCompra["Total_Servicios"]), 1);
+                    $css->ColTabla(number_format($TotalesCompra["Subtotal_Productos_Add"]+$TotalesCompra["Subtotal_Servicios"]+$TotalesCompra["Subtotal_Insumos"]), 1);
+                    $css->ColTabla(number_format($TotalesCompra["Impuestos_Productos_Add"]+$TotalesCompra["Impuestos_Servicios"]+$TotalesCompra["Impuestos_Insumos"]), 1);
+                    $css->ColTabla(number_format($TotalesCompra["Total_Productos_Add"]+$TotalesCompra["Total_Servicios"]+$TotalesCompra["Total_Insumos"]), 1);
                     $css->ColTabla(number_format($TotalesCompra["Total_Retenciones"]), 1);
                     $css->ColTabla(number_format($TotalesCompra["Subtotal_Productos_Dev"]), 1);
                     $css->ColTabla(number_format($TotalesCompra["Impuestos_Productos_Dev"]), 1);
@@ -514,6 +522,52 @@ print("<body>");
             $css->CerrarTabla();
         }else{
             $css->CrearNotificacionNaranja("No hay productos agregados a esta Compra", 16);
+        }
+        
+        
+        $consulta=$obVenta->ConsultarTabla("factura_compra_insumos", "WHERE idFacturaCompra='$idCompra'");
+        if($obVenta->NumRows($consulta)){
+            $css->CrearNotificacionAzul("Insumos agregados a esta Compra", 16);
+            $css->CrearTabla();
+            $css->FilaTabla(14);
+               
+               $css->ColTabla("<strong>idInsumo</strong>", 1);
+               //$css->ColTabla("<strong>Imprimir</strong>", 1);
+               $css->ColTabla("<strong>Nombre</strong>", 1);
+               $css->ColTabla("<strong>Cantidad</strong>", 1);
+               $css->ColTabla("<strong>CostoUnitario</strong>", 1);
+               
+               $css->ColTabla("<strong>Subtotal</strong>", 1);
+               $css->ColTabla("<strong>Impuestos</strong>", 1);
+               $css->ColTabla("<strong>Total</strong>", 1);
+               $css->ColTabla("<strong>% Impuestos</strong>", 1);
+               //$css->ColTabla("<strong>% Descuento</strong>", 1);
+               $css->ColTabla("<strong>Borrar</strong>", 1);
+               //$css->ColTabla("<strong>Devolucion</strong>", 1);
+               $css->CierraFilaTabla();
+            while($DatosItems=$obVenta->FetchAssoc($consulta)){
+               $css->FilaTabla(14);
+               $idProducto=$DatosItems["ID"];
+               $DatosProducto=$obVenta->DevuelveValores("insumos", "ID", $idProducto);
+               $DatosIVA=$obVenta->DevuelveValores("porcentajes_iva", "Valor", $DatosItems["Tipo_Impuesto"]);
+                    $css->ColTabla($idProducto, 1);
+                    
+                    $css->ColTabla($DatosProducto["Nombre"], 1);
+                    $css->ColTabla(number_format($DatosItems["Cantidad"]), 1);
+                    
+                    $css->ColTabla(number_format($DatosItems["CostoUnitarioCompra"]), 1);
+                    $css->ColTabla(number_format($DatosItems["SubtotalCompra"]), 1);
+                    $css->ColTabla(number_format($DatosItems["ImpuestoCompra"]), 1);
+                    $css->ColTabla(number_format($DatosItems["TotalCompra"]), 1);
+                    $css->ColTabla($DatosIVA["Nombre"], 1);
+                    
+                    $css->ColTablaDel($myPage, "factura_compra_insumos", "ID", $DatosItems["ID"], $idCompra);
+                    
+               $css->CierraFilaTabla();
+            }
+            $css->CerrarTabla();
+        }else{
+            $css->CrearNotificacionNaranja("No hay insumos agregados a esta Compra", 16);
         }
     $css->CerrarDiv();
     //DivServicios

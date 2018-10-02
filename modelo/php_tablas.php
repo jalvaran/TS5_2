@@ -4691,7 +4691,15 @@ EOD;
         
         $html= $this->HTML_Items_Factura_Compra($idCompra);
         $Position=$this->PDF->SetY(80);
-        $this->PDF_Write(utf8_encode($html));
+        if($html<>''){
+            
+            $this->PDF_Write(utf8_encode($html));
+        }
+        
+        
+        
+        $html= $this->HTML_Insumos_Factura_Compra($idCompra);
+        $this->PDF_Write(utf8_encode("<br><br>".$html));
         $html= $this->HTML_Items_Devueltos_FC($idCompra);
         $this->PDF_Write(utf8_encode($html));
         $html= $this->HTML_Servicios_FC($idCompra);
@@ -5659,6 +5667,86 @@ $h=1;
 if($this->obCon->NumRows($Consulta)){
     $tbl = <<<EOD
                 <h3 align="center">PRODUCTOS AGREGADOS</h3>
+<table cellspacing="1" cellpadding="2" border="0">
+    <tr>
+        <td align="center" ><strong>ID</strong></td>
+        <td align="center" ><strong>Referencia</strong></td>
+        <td align="center" colspan="3"><strong>Producto</strong></td>
+        <td align="center" ><strong>Costo Unitario</strong></td>
+        <td align="center" ><strong>Cantidad</strong></td>
+        <td align="center" ><strong>Subtotal</strong></td>
+        <td align="center" ><strong>Impuestos</strong></td>
+        <td align="center" ><strong>Total</strong></td>
+        <td align="center" ><strong>TipoIVA</strong></td>
+    </tr>
+    
+         
+EOD;
+$GranSubtotal=0;
+$GranIVA=0;
+$GranTotal=0;
+while($DatosItemFactura=$this->obCon->FetchArray($Consulta)){
+    $GranSubtotal=$GranSubtotal+$DatosItemFactura["SubtotalCompra"];
+    $GranIVA=$GranIVA+$DatosItemFactura["ImpuestoCompra"];
+    $GranTotal=$GranTotal+$DatosItemFactura["TotalCompra"];
+    
+    $ValorUnitario=  number_format($DatosItemFactura["CostoUnitarioCompra"]);
+    $SubTotalItem=  number_format($DatosItemFactura["SubtotalCompra"]);
+    $Cantidad=$DatosItemFactura["Cantidad"];
+    
+    if($h==0){
+        $Back="#f2f2f2";
+        $h=1;
+    }else{
+        $Back="white";
+        $h=0;
+    }
+    
+    $tbl .= '    
+    
+    <tr>
+        <td align="left" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["idProducto"].'</td>    
+        <td align="left" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["Referencia"].'</td>
+        <td align="left" colspan="3" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["Nombre"].'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$ValorUnitario.'</td>
+        <td align="center" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$Cantidad.'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$SubTotalItem.'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.number_format($DatosItemFactura["ImpuestoCompra"]).'</td>
+        <td align="right" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.number_format($DatosItemFactura["TotalCompra"]).'</td>
+        <td align="center" style="border-bottom: 1px solid #ddd;background-color: '.$Back.';">'.$DatosItemFactura["Tipo_Impuesto"].'</td>
+    </tr>
+        
+ ';
+    
+}
+$tbl.= '<tr>'
+        . '<td align="right" colspan="7" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>TOTALES</strong></td>'
+        . '<td align="right" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>'.number_format($GranSubtotal).'</strong></td>'
+        . '<td align="right" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>'.number_format($GranIVA).'</strong></td>'
+        . '<td align="right" style="border-bottom: 1px solid #ddd;background-color: white;"><strong>'.number_format($GranTotal).'</strong></td>'
+        . '<td align="center" style="border-bottom: 1px solid #ddd;background-color: white;"> </td>'
+        . '</tr>';
+$tbl.= "</table>";
+        
+}
+        return($tbl);
+
+    }
+    
+    
+    //Arme HTML de los prodctos agregados en una Factura DE COMPRA
+    
+    public function HTML_Insumos_Factura_Compra($idFactura) {
+        $tbl = "";
+        
+
+$sql="SELECT fi.idProducto,fi.Cantidad, fi.CostoUnitarioCompra, fi.SubtotalCompra, fi.ImpuestoCompra, fi.TotalCompra, fi.Tipo_Impuesto, pv.Referencia,pv.Nombre"
+        . " FROM factura_compra_insumos fi INNER JOIN insumos pv ON fi.idProducto=pv.ID WHERE fi.idFacturaCompra='$idFactura'";
+$Consulta= $this->obCon->Query($sql);
+$h=1;  
+if($this->obCon->NumRows($Consulta)){
+    $tbl = <<<EOD
+                <h3 align="center">INSUMOS AGREGADOS</h3>
 <table cellspacing="1" cellpadding="2" border="0">
     <tr>
         <td align="center" ><strong>ID</strong></td>

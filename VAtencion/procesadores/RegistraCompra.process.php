@@ -107,7 +107,10 @@ if(isset($_REQUEST["BtnAgregarItem"])){
     switch ($_REQUEST["TipoItem"]){
         case 1:
             $obCompra->AgregueProductoCompra($idCompra,$idProducto,$Cantidad,$CostoUnitario,$TipoIVA,$IVAIncluido,"");
-            break;
+        break;
+        case 2:
+            $obCompra->AgregueInsumoCompra($idCompra,$idProducto,$Cantidad,$CostoUnitario,$TipoIVA,$IVAIncluido,"");
+        break;
     }
 }
 
@@ -116,10 +119,17 @@ if(isset($_REQUEST["BtnAgregarItem"])){
 if(isset($_REQUEST["del"])){
     $idItem=$obCompra->normalizar($_REQUEST["del"]);
     $idCompra=$_REQUEST["TxtIdPre"];
-    $DatosItem=$obCompra->DevuelveValores("factura_compra_items", "ID", $idItem);
-    $obCompra->BorraReg("factura_compra_items", "ID", $idItem);
-    $sql="DELETE FROM factura_compra_items_devoluciones WHERE idProducto='$DatosItem[idProducto]' AND idFacturaCompra='$DatosItem[idFacturaCompra]'";
-    $obCompra->Query($sql);   
+    $Tabla=$_REQUEST["TxtTabla"];
+    if($Tabla=="factura_compra_items"){
+        $DatosItem=$obCompra->DevuelveValores("factura_compra_items", "ID", $idItem);
+        $obCompra->BorraReg("factura_compra_items", "ID", $idItem);
+        $sql="DELETE FROM factura_compra_items_devoluciones WHERE idProducto='$DatosItem[idProducto]' AND idFacturaCompra='$DatosItem[idFacturaCompra]'";
+        $obCompra->Query($sql);   
+    }
+    if($Tabla=="factura_compra_insumos"){
+        $obCompra->BorraReg("factura_compra_insumos", "ID", $idItem);
+    }
+    
     header("location:$myPage?idCompra=$idCompra");
 }
 
@@ -225,6 +235,7 @@ if(isset($_REQUEST["DelRetencion"])){
 //Guardar Compra
 
 if(isset($_REQUEST["BtnGuardarCompra"])){
+    
     $idCompra=$obCompra->normalizar($_REQUEST["idCompra"]);
     $TipoPago=$obCompra->normalizar($_REQUEST["CmbTipoPago"]);
     $CuentaOrigen=$obCompra->normalizar($_REQUEST["CmbCuentaOrigen"]);

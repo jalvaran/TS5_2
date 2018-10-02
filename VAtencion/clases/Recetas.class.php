@@ -132,22 +132,21 @@ class Recetas extends ProcesoVenta{
     public function KardexInsumo($Movimiento,$Detalle,$idDocumento,$ReferenciaInsumo,$Cantidad,$CostoUnitario,$Vector) {
         $DatosInsumo=$this->DevuelveValores("insumos", "Referencia", $ReferenciaInsumo);
         $Fecha=date("Y-m-d");
+        $Saldo=0;
         if($Movimiento=="SALIDA"){
             $Saldo=$DatosInsumo["Existencia"]-$Cantidad;
-        }else if($DatosKardex["Movimiento"]=="ENTRADA"){
+        }else if($Movimiento=="ENTRADA"){
             $Saldo=$DatosInsumo["Existencia"]+$Cantidad;
-        }else{
-            $Saldo=0;
         }
         
                 
         $Datos["Fecha"]=$Fecha;
         $Datos["Movimiento"]=$Movimiento;
         $Datos["Detalle"]=$Detalle;
-        $Datos["idDocumento"]="";
+        $Datos["idDocumento"]=$idDocumento;
         $Datos["Cantidad"]=$Cantidad;
-        $Datos["ValorUnitario"]=$DatosInsumo["CostoUnitario"];
-        $Datos["ValorTotal"]=$DatosInsumo["CostoUnitario"]*$Cantidad;
+        $Datos["ValorUnitario"]=$CostoUnitario;
+        $Datos["ValorTotal"]=$CostoUnitario*$Cantidad;
         $Datos["ReferenciaInsumo"]=$ReferenciaInsumo;
         
         $sql=$this->getSQLInsert("insumos_kardex", $Datos);
@@ -155,9 +154,15 @@ class Recetas extends ProcesoVenta{
         
         $Datos["Movimiento"]="SALDOS";
         $Datos["Cantidad"]=$Saldo;
-        $Datos["ValorTotal"]=$DatosInsumo["CostoUnitario"]*$Saldo;
+        $Datos["ValorTotal"]=$CostoUnitario*$Saldo;
         $sql=$this->getSQLInsert("insumos_kardex", $Datos);
         $this->Query($sql);
+        
+        $this->ActualizaRegistro("insumos", "Existencia", $Saldo, "Referencia", $ReferenciaInsumo);
+        $this->ActualizaRegistro("insumos", "CostoUnitario", $CostoUnitario, "Referencia", $ReferenciaInsumo);
+        $this->ActualizaRegistro("insumos", "CostoTotal", $CostoUnitario*$Saldo, "Referencia", $ReferenciaInsumo);
+        
+        
         
     }
     //Fin Clases
