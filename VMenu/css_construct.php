@@ -172,7 +172,7 @@ function SubTabs($link,$target,$image,$SubTitle){
 		
               <div class="grid_3">
                     <a href="'.$link.'" target="'.$target.'" class="gal"><img src="'.$image.'" alt="" style="width: 120px;height: 120px;"><span></span></a>
-                    <div class="col2"><span class="col3"><a href="'.$link.'" target="'.$target.'">'.$SubTitle.'</a></span></div>
+                    <div class="col2"><span class="col3"><a href="'.$link.'" target="'.$target.'">'.utf8_encode($SubTitle).'</a></span></div>
                   </div>
 		');
 	}

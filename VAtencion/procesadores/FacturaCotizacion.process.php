@@ -111,7 +111,16 @@ if(!empty($_REQUEST["BtnGenerarFactura"])){
         
         $ID=$obVenta->CrearFacturaDesdePrefactura($DatosFactura);
         $obVenta->BorraReg("facturas_pre", "idUsuarios", $idUser);
-        
+        if($_REQUEST['CmbFacturaFrecuente']<>'NO'){
+            $Periodo=$obVenta->normalizar($_REQUEST['CmbFacturaFrecuente']);
+            $Datos["idCliente"]=$DatosFactura["CmbCliente"];
+            $Datos["Periodo"]=$Periodo;
+            $Datos["FacturaBase"]=$ID;
+            $Datos["UltimaFactura"]=$ID;
+            $Datos["Habilitado"]=1;
+            $sql=$obVenta->getSQLInsert("facturas_frecuentes", $Datos);
+            $obVenta->Query($sql);
+        }
         header("location:FacturaCotizacion.php?TxtidFactura=$ID");
         
     }

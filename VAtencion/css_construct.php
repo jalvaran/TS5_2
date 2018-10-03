@@ -188,6 +188,7 @@ class CssIni{
                 <link rel='stylesheet' href='chousen/source/chosen.css'>
                 <link rel='stylesheet' href='css/calendar.css'>   
                 <link rel='stylesheet' type='text/css' href='css/bootstrap.min.css' />
+                <link href='css/bootstrap-grid.css' rel='stylesheet'>
                 <link rel='stylesheet' type='text/css' href='css/DateTimePicker.css' />
                 <link rel='stylesheet' href='alertify/themes/alertify.core.css' />
                 <link rel='stylesheet' href='alertify/themes/alertify.default.css' id='toggleCSS' />

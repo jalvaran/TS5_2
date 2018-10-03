@@ -148,6 +148,7 @@ print("<body>");
         
         $css->FilaTabla(14);
        print("<strong>Seleccione un Cliente para esta Factura:<br>");
+       /*
         $VarSelect["Ancho"]="200";
             $VarSelect["PlaceHolder"]="Seleccione un Cliente";
             $VarSelect["Required"]=1;
@@ -162,6 +163,9 @@ print("<body>");
                    $css->CrearOptionSelect($DatosClientes["idClientes"], "$DatosClientes[Num_Identificacion] $DatosClientes[RazonSocial] $DatosClientes[Ciudad]" , $Sel);
                }
             $css->CerrarSelect();
+            */
+            $css->CrearSelectTable("CmbCliente", "clientes", "", "idClientes", "Num_Identificacion", "RazonSocial", "", "", "", 1,"Seleccione un cliente");
+            
            print("<br><br>");
             //print("<td>");
         print("Centro de costos: <br>");
@@ -194,10 +198,21 @@ print("<body>");
         print("<br>Forma de Pago:<br> ");
         $css->CrearSelect("CmbFormaPago", "");
             $css->CrearOptionSelect("Contado", "Contado", 1);
+            $css->CrearOptionSelect("1", "1 Dia", 0);
+            $css->CrearOptionSelect("8", "8 Dias", 0);
             $css->CrearOptionSelect("15", "15 Dias", 0);
             $css->CrearOptionSelect("30", "30 Dias", 0);
             $css->CrearOptionSelect("60", "60 Dias", 0);
             $css->CrearOptionSelect("90", "90 Dias", 0);
+        $css->CerrarSelect();
+        
+       
+        print("<br>Factura Frecuente?:<br> ");
+        $css->CrearSelect("CmbFacturaFrecuente", "");
+            $css->CrearOptionSelect("NO", "NO", 1);
+            $css->CrearOptionSelect("1", "Cada Mes", 0);
+            $css->CrearOptionSelect("2", "Cada 2 Meses", 0);
+            
         $css->CerrarSelect();
         
         print("<br>");
@@ -251,7 +266,9 @@ print("<body>");
     $css->CerrarDiv();//Cerramos contenedor Principal
     $css->Footer();
     $css->AgregaJS(); //Agregamos javascripts
+    $css->AgregaCssJSSelect2(); //Agregamos CSS y JS de Select2
     $css->AgregaSubir();
+    print("<script>$('#CmbCliente').select2();</script>");
     print("</body></html>");
     ob_end_flush();
 ?>

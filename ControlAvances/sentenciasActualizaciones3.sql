@@ -483,3 +483,4 @@ INSERT INTO `parametros_contables` (`ID`, `Descripcion`, `CuentaPUC`, `NombreCue
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (177, 'Insumos', '22', '3', 'insumos.php', '_SELF', b'1', 'insumos.png', '3', '2017-12-19 11:03:35', '2017-10-13 14:16:57');
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (178, 'Subgrupo 6', '23', '3', 'prod_sub6.php', '_SELF', b'1', 'usuariostipo.png', '7', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (179, 'Facturación Frecuente', '12', '3', 'GenerarFacturacionFrecuente.php', '_SELF', b'1', 'repetitivo.png', '4', '2017-10-13 14:16:57', '2017-10-13 14:16:57');

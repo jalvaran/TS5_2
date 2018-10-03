@@ -177,3 +177,16 @@ SELECT `idLibroDiario`,`Fecha`,`Tipo_Documento_Intero`,(select if((`librodiario`
 
 
 
+DROP VIEW IF EXISTS `vista_facturas_frecuentes`;
+CREATE VIEW vista_facturas_frecuentes AS
+SELECT ID,idCliente,Periodo,FacturaBase,UltimaFactura, 
+(SELECT Fecha FROM facturas WHERE facturas.idFacturas=facturas_frecuentes.UltimaFactura) as UltimaFechaFacturacion,
+(SELECT DATE_ADD((SELECT UltimaFechaFacturacion), INTERVAL (SELECT Periodo) MONTH )) AS ProximaFechaFacturacion,
+(SELECT Fecha FROM acueducto_lecturas WHERE acueducto_lecturas.idCliente=facturas_frecuentes.idCliente ORDER BY acueducto_lecturas.ID DESC LIMIT 1) as FechaUltimaLectura,
+(SELECT LecturaContador FROM acueducto_lecturas WHERE acueducto_lecturas.idCliente=facturas_frecuentes.idCliente ORDER BY acueducto_lecturas.ID DESC LIMIT 1) as UltimaLectura,
+(SELECT Facturado FROM acueducto_lecturas WHERE acueducto_lecturas.idCliente=facturas_frecuentes.idCliente ORDER BY acueducto_lecturas.ID DESC LIMIT 1) as EstadoFacturadoUltimo,
+(SELECT Fecha FROM acueducto_lecturas WHERE acueducto_lecturas.idCliente=facturas_frecuentes.idCliente ORDER BY acueducto_lecturas.ID DESC LIMIT 1,1) as FechaPenultimaLectura,
+(SELECT LecturaContador FROM acueducto_lecturas WHERE acueducto_lecturas.idCliente=facturas_frecuentes.idCliente ORDER BY acueducto_lecturas.ID DESC LIMIT 1,1) as PenultimaLectura,
+(SELECT Facturado FROM acueducto_lecturas WHERE acueducto_lecturas.idCliente=facturas_frecuentes.idCliente ORDER BY acueducto_lecturas.ID DESC LIMIT 1,1) as EstadoFacturadoPenultimo
+
+FROM facturas_frecuentes WHERE Habilitado=1;

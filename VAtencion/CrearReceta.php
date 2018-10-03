@@ -12,7 +12,7 @@ $css =  new CssIni("Recetas");
 print("</head>");
 print("<body>");
     
-    include_once("procesadores/ProcesaCreaTraslado.php");
+    //include_once("procesadores/ProcesaCreaTraslado.php");
     
     $css->CabeceraIni("Crear Receta"); //Inicia la cabecera de la pagina
     $css->CabeceraFin();    
