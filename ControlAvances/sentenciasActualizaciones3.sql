@@ -484,3 +484,62 @@ INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`,
 
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (178, 'Subgrupo 6', '23', '3', 'prod_sub6.php', '_SELF', b'1', 'usuariostipo.png', '7', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (179, 'Facturación Frecuente', '12', '3', 'GenerarFacturacionFrecuente.php', '_SELF', b'1', 'repetitivo.png', '4', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+
+
+
+CREATE TABLE `acueducto_configuraciones` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ConsumoBase` bigint(20) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+CREATE TABLE `acueducto_lecturas` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Fecha` date NOT NULL,
+  `idCliente` bigint(20) NOT NULL,
+  `LecturaContador` bigint(20) NOT NULL,
+  `Facturado` int(1) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `idCliente` (`idCliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+CREATE TABLE `facturas_frecuentes` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idCliente` bigint(20) NOT NULL,
+  `Periodo` int(11) NOT NULL,
+  `FacturaBase` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `UltimaFactura` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Habilitado` int(1) NOT NULL,
+  `Realizada` int(1) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `FacturaBase` (`FacturaBase`),
+  KEY `UltimaFactura` (`UltimaFactura`),
+  KEY `idCliente` (`idCliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+CREATE TABLE `facturas_frecuentes_items_adicionales` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TablaOrigen` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
+  `idTablaOrigen` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
+  `idItem` bigint(20) NOT NULL,
+  `ValorUnitario` double NOT NULL,
+  `Cantidad` double NOT NULL,
+  `idFacturaFrecuente` bigint(20) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+

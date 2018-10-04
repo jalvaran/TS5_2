@@ -188,7 +188,7 @@ class CssIni{
                 <link rel='stylesheet' href='chousen/source/chosen.css'>
                 <link rel='stylesheet' href='css/calendar.css'>   
                 <link rel='stylesheet' type='text/css' href='css/bootstrap.min.css' />
-                <link href='css/bootstrap-grid.css' rel='stylesheet'>
+                
                 <link rel='stylesheet' type='text/css' href='css/DateTimePicker.css' />
                 <link rel='stylesheet' href='alertify/themes/alertify.core.css' />
                 <link rel='stylesheet' href='alertify/themes/alertify.default.css' id='toggleCSS' />
@@ -227,7 +227,9 @@ class CssIni{
 	}
 	
 	/////////////////////Cierro la Cabecera de la pagina
-	
+	function AgregarCssGrid() {
+            print("<link href='css/bootstrap-grid.css' rel='stylesheet'>");
+        }
 	function CabeceraFin(){
 		
 		print('
@@ -1662,6 +1664,14 @@ function Footer(){
             print('<script src="select2\vendor\jquery-2.1.0.js"></script>');
             print('<script src="select2\dist\js/select2.min.js"></script>');     
     
+        }
+        
+        public function ProgressBar($NombreBarra,$NombreLeyenda,$Tipo,$Valor,$Min,$Max,$Ancho,$Leyenda,$Color,$Vector) {
+            print('<div class="progress">
+                    <div id="'.$NombreBarra.'" name="'.$NombreBarra.'" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="'.$Valor.'" aria-valuemin="'.$Min.'" aria-valuemax="'.$Max.'" style="width:'.$Ancho.'%">
+                      <div id="'.$NombreLeyenda.'" name="'.$NombreLeyenda.'"">'.$Leyenda.'</div>
+                    </div>
+                  </div>');
         }
         //////////////////////////////////FIN
 }

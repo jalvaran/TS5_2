@@ -1714,6 +1714,10 @@ public function CalculePesoRemision($idCotizacion)
         $OrdenSalida="";
         $ObservacionesFactura=$Observaciones;
         $FechaFactura=date("Y-m-d");
+        if(isset($DatosVentaRapida["FechaFactura"])){
+            $FechaFactura=$DatosVentaRapida["FechaFactura"];
+        }
+        
         
         $Consulta=$this->DevuelveValores("centrocosto", "ID", $CentroCostos);
         $EmpresaPro=$Consulta["EmpresaPro"];
