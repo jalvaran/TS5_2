@@ -131,6 +131,7 @@ if(isset($_REQUEST["idAccion"])){
             $PorcentajeRealizado=round((100/$CantidadTotalFacturas)*$CantidadTotalFacturasRealizadas);
             if($PorcentajeRealizado==100){
                 $obVenta->VaciarTabla("facturas_frecuentes_items_adicionales");
+                $obVenta->update("facturas_frecuentes", "Realizada", 0,"");
             }
             $DatosFactura=$obVenta->ValorActual("facturas", "NumeroFactura", "idFacturas='$NumFactura'");
             $NumeroFactura=$DatosFactura["NumeroFactura"];

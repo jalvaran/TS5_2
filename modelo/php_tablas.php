@@ -1223,6 +1223,8 @@ public function FormularioEditarRegistro($Parametros,$VarEdit,$TablaEdit)  {
                 $VectorSel["Evento"]="";
                 $VectorSel["Funcion"]="";
                 $VectorSel["Required"]=$Required;
+                
+                //$this->css->CrearSelectChosen($NombreCol,$VectorSel);
                 $this->css->CrearSelect2($VectorSel);
                 $this->css->CrearOptionSelect("", "Seleccione Una Opcion", 0);
                 while($Opciones=$this->obCon->FetchArray($Consulta)){

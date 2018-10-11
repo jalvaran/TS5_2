@@ -59,6 +59,7 @@ $obTabla->FormularioEditarRegistro($Parametros,$Vector,$TablaEdit);
 $css->CerrarDiv();//Cerramos contenedor Principal
 
 $css->AgregaJS(); //Agregamos javascripts
+print('<script src="jsPages/EditarRegistro.js"></script>');
 $css->AgregaSubir();    
 ////Fin HTML  
 ///Verifico si hay peticiones para exportar
