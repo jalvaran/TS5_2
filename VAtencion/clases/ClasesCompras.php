@@ -187,10 +187,14 @@ class Compra extends ProcesoVenta{
             if($idTabla=='idNotaDevolucion'){
                 $Detalle="NotaDevolucion";
             }
-        if($Movimiento=="ENTRADA"){
+        if($Movimiento=="ENTRADA" AND $idTabla=='idNotaDevolucion'){
+            $consulta= $this->ConsultarTabla("factura_compra_items_devoluciones", "WHERE $idTabla='$idCompra'");
+        }    
+        if($Movimiento=="ENTRADA" AND $idTabla=='idFacturaCompra'){
             $consulta= $this->ConsultarTabla("factura_compra_items", "WHERE $idTabla='$idCompra'");
             $DatosKardex["CalcularCostoPromedio"]=1;
-        }else{
+        }
+        if($Movimiento=="SALIDA"){
             $consulta= $this->ConsultarTabla("factura_compra_items_devoluciones", "WHERE $idTabla='$idCompra'");
         } 
         while($DatosProductos= $this->FetchArray($consulta)){
@@ -209,7 +213,7 @@ class Compra extends ProcesoVenta{
             $this->InserteKardex($DatosKardex);
         }
         
-        if($Movimiento=="ENTRADA"){
+        if($Movimiento=="ENTRADA" AND $idTabla=='idFacturaCompra'){
             $consulta= $this->ConsultarTabla("factura_compra_insumos", "WHERE $idTabla='$idCompra'");
             while($DatosProductos= $this->FetchArray($consulta)){
                 $DatosProductoGeneral= $this->DevuelveValores("insumos", "ID", $DatosProductos["idProducto"]);
@@ -410,14 +414,42 @@ class Compra extends ProcesoVenta{
         return $idAnulacion;
     }
     
+    //Anula una una anulacion
+    
+    public function AnularComprobanteAnulacion($Fecha,$Concepto,$idNota,$idUser) {
+        $hora=date("H:i:s");
+        $tab="factura_compra_anulaciones";
+        $NumRegistros=5;
+        $Columnas[0]="Fecha";               $Valores[0]=$Fecha;
+        $Columnas[1]="Hora";                $Valores[1]=$hora;
+        $Columnas[2]="Observaciones";       $Valores[2]=$Concepto;
+        $Columnas[3]="idCompra";            $Valores[3]=$idNota;
+        $Columnas[4]="idUsuario";           $Valores[4]=$idUser;
+                
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        
+        $idAnulacion=$this->ObtenerMAX($tab,"ID", 1, "");
+        $DocumentoInterno="NOTA_DEVOLUCION";
+        $this->AnularMovimientoLibroDiario($DocumentoInterno, $idNota, "");
+        //$this->ReverseInventarioCompra($idCompra,"Entradas");  //retiro los productos agregados
+        $this->ReverseInventarioCompra($idNota,"Devoluciones",$idTabla='idNotaDevolucion');  //retiro los productos devueltos
+        
+        $this->ActualizaRegistro("factura_compra_notas_devolucion", "Estado", "ANULADA", "ID", $idNota);
+        return $idAnulacion;
+    }
+    
     //Ingrese los items al inventario o retire items del inventario
-    public function ReverseInventarioCompra($idCompra,$Proceso) {
+    public function ReverseInventarioCompra($idCompra,$Proceso,$idTabla='idFacturaCompra') {
+        $Detalle="FacturaCompra";
+        if($idTabla=='idNotaDevolucion'){
+            $Detalle="NotaDevolucion";
+        }
         if($Proceso=='Entradas'){
             $Movimiento="SALIDA";
             $consulta= $this->ConsultarTabla("factura_compra_items", "WHERE idFacturaCompra='$idCompra'");
         }else{
             $Movimiento="ENTRADA";
-            $consulta= $this->ConsultarTabla("factura_compra_items_devoluciones", "WHERE idFacturaCompra='$idCompra'");
+            $consulta= $this->ConsultarTabla("factura_compra_items_devoluciones", "WHERE $idTabla='$idCompra'");
         } 
         while($DatosProductos= $this->FetchArray($consulta)){
             $DatosProductoGeneral= $this->DevuelveValores("productosventa", "idProductosVenta", $DatosProductos["idProducto"]);
@@ -425,7 +457,7 @@ class Compra extends ProcesoVenta{
             $DatosKardex["idProductosVenta"]=$DatosProductos["idProducto"];
             $DatosKardex["CostoUnitario"]=$DatosProductos['CostoUnitarioCompra'];
             $DatosKardex["Existencias"]=$DatosProductoGeneral['Existencias'];
-            $DatosKardex["Detalle"]="FacturaCompra";
+            $DatosKardex["Detalle"]=$Detalle;
             $DatosKardex["idDocumento"]=$idCompra;
             $DatosKardex["TotalCosto"]=$DatosProductos["Cantidad"]*$DatosProductos['CostoUnitarioCompra'];
             $DatosKardex["Movimiento"]=$Movimiento;

@@ -28,6 +28,15 @@ $Ruta="PDF_Documentos.php?idDocumento=31&idNotaDevolucion=";
 $Vector["VerRegistro"]["Link"]=$Ruta;
 $Vector["VerRegistro"]["ColumnaLink"]="ID";
 
+
+// Nueva Accion
+$Ruta="AnularNotaDevolucion.php?idNota=";
+$Vector["NuevaAccionLink"][2]="Anular";
+$Vector["NuevaAccion"]["Anular"]["Titulo"]="Anular";
+$Vector["NuevaAccion"]["Anular"]["Link"]=$Ruta;
+$Vector["NuevaAccion"]["Anular"]["ColumnaLink"]="ID";
+$Vector["NuevaAccion"]["Anular"]["Target"]="_self";
+
 ///Filtros y orden
 $Vector["Order"]=" $idTabla DESC ";   //Orden
 ?>
