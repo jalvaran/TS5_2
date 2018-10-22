@@ -192,3 +192,10 @@ SELECT ID,idCliente,Periodo,FacturaBase,UltimaFactura, Realizada,
 (SELECT Facturado FROM acueducto_lecturas WHERE acueducto_lecturas.idCliente=facturas_frecuentes.idCliente ORDER BY acueducto_lecturas.ID DESC LIMIT 1,1) as EstadoFacturadoPenultimo
 
 FROM facturas_frecuentes WHERE Habilitado=1;
+
+
+DROP VIEW IF EXISTS `vista_nomina_servicios_turnos`;
+CREATE VIEW vista_nomina_servicios_turnos AS
+SELECT *, (SELECT Nombre FROM empresa_pro_sucursales WHERE empresa_pro_sucursales.ID=nomina_servicios_turnos.Sucursal LIMIT 1) AS NombreSucursal,
+(SELECT RazonSocial FROM proveedores WHERE proveedores.Num_Identificacion=nomina_servicios_turnos.Tercero LIMIT 1) AS NombreTercero
+FROM nomina_servicios_turnos WHERE Estado<>'ANULADO';

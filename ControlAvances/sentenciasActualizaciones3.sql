@@ -543,3 +543,65 @@ CREATE TABLE `facturas_frecuentes_items_adicionales` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 
+ALTER TABLE `ordenesdecompra_items` CHANGE `ValorUnitario` `ValorUnitario` DOUBLE NOT NULL;
+ALTER TABLE `ordenesdecompra_items` CHANGE `Cantidad` `Cantidad` DOUBLE NOT NULL;
+ALTER TABLE `ordenesdecompra_items` CHANGE `Subtotal` `Subtotal` DOUBLE NOT NULL;
+ALTER TABLE `ordenesdecompra_items` CHANGE `IVA` `IVA` DOUBLE NOT NULL;
+ALTER TABLE `ordenesdecompra_items` CHANGE `Total` `Total` DOUBLE NOT NULL;
+
+ALTER TABLE `ordenesdecompra_items` CHANGE `NumOrden` `NumOrden` BIGINT NOT NULL;
+ALTER TABLE `ordenesdecompra` ADD `Estado` VARCHAR(25) NOT NULL AFTER `UsuarioCreador`;
+
+ALTER TABLE `ordenesdecompra_items` CHANGE `ID` `ID` BIGINT NOT NULL;
+
+ALTER TABLE `ordenesdecompra_items` ADD `Faltante` DOUBLE NOT NULL AFTER `Total`;
+ALTER TABLE `ordenesdecompra_items` ADD `Devuelto` DOUBLE NOT NULL AFTER `Faltante`;
+ALTER TABLE `ordenesdecompra_items` ADD `Tipo_Impuesto` DOUBLE NOT NULL AFTER `Total`;
+ALTER TABLE `ordenesdecompra_items` ADD `Verificado` INT NOT NULL AFTER `Devuelto`;
+
+UPDATE `menu_submenus` SET `Pagina` = 'CrearOrdenCompra.php' WHERE `menu_submenus`.`ID` = 58;
+
+ALTER TABLE `ordenesdecompra` CHANGE `Tercero` `Tercero` BIGINT NOT NULL;
+ALTER TABLE `ordenesdecompra_items` ADD INDEX(`NumOrden`);
+ALTER TABLE `ordenesdecompra` CHANGE `ID` `ID` BIGINT NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `ordenesdecompra_items` ADD `Tipo_Impuesto` VARCHAR(10) NOT NULL AFTER `Total`;
+
+ALTER TABLE `ordenesdecompra_items` ADD `idProducto` BIGINT NOT NULL AFTER `NumOrden`;
+ALTER TABLE `ordenesdecompra_items` ADD INDEX(`idProducto`);
+ALTER TABLE `ordenesdecompra_items` CHANGE `ID` `ID` BIGINT(20) NOT NULL AUTO_INCREMENT;
+
+INSERT INTO `menu_pestanas` (`ID`, `Nombre`, `idMenu`, `Orden`, `Estado`, `Updated`, `Sync`) VALUES (47, 'Ordenes de Compra', '5', '2', b'1', '2017-10-13 14:16:55', '2017-10-13 14:16:55');
+UPDATE `menu_submenus` SET `idPestana` = 47 WHERE `menu_submenus`.`ID` = 58;
+UPDATE `menu_submenus` SET `Nombre` = "Crear Orden" WHERE `menu_submenus`.`ID` = 58;
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (180, 'Historial', '47', '3', 'ordenesdecompra.php', '_SELF', b'1', 'historial.png', '1', '2018-10-18 09:56:38', '2017-10-13 14:16:57');
+
+CREATE TABLE `factura_compra_insumos` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idFacturaCompra` bigint(20) NOT NULL,
+  `idProducto` bigint(20) NOT NULL,
+  `Cantidad` double NOT NULL,
+  `CostoUnitarioCompra` double NOT NULL,
+  `SubtotalCompra` double NOT NULL,
+  `ImpuestoCompra` double NOT NULL,
+  `TotalCompra` double NOT NULL,
+  `Tipo_Impuesto` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
+  `ProcentajeDescuento` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
+  `ValorDescuento` double NOT NULL,
+  `SubtotalDescuento` double NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `idFacturaCompra` (`idFacturaCompra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES
+(176,	'Recetas',	27,	3,	'CrearReceta.php',	'_SELF',	CONV('1', 2, 10) + 0,	'recetas.png',	4,	'2017-10-13 14:16:57',	'2017-10-13 14:16:57');
+
+UPDATE `menu` SET `Orden` = '50' WHERE `menu`.`ID` = 20;
+INSERT INTO `menu` (`ID`, `Nombre`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (32, 'Gestión del Personal', '1', 'MnuNomina.php', '_BLANK', '1', 'colaboradores.png', '20', '2017-10-13 14:16:49', '2017-10-13 14:16:49');
+INSERT INTO `menu_pestanas` (`ID`, `Nombre`, `idMenu`, `Orden`, `Estado`, `Updated`, `Sync`) VALUES (48, 'Colaboradores', '20', '1', b'1', '2017-10-13 14:16:55', '2017-10-13 14:16:55');
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (181, 'Historial de Turnos prestados', '48', '3', 'nomina_servicios_turnos.php', '_SELF', b'1', 'historial.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (182, 'Manejo de Turnos', '48', '3', 'AdministrarTurnos.php', '_SELF', b'1', 'turnos.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+
+
