@@ -22,17 +22,17 @@ $obVenta = new ProcesoVenta($idUser);
     //$css->CrearInputText("CmbPreVentaAct","hidden","",$idPreventa,"","","","",0,0,0,0);
     $css->CrearInputText("TxtNIT","number","","","Identificacion","black","","",200,30,0,1);
     echo '<br>';
-    $css->CrearInputText("TxtPN","text","","","Primer Nombre","black","onkeyup","CreaRazonSocial()",200,30,0,0);
-    $css->CrearInputText("TxtON","text","","","Otros Nombres","black","onkeyup","CreaRazonSocial()",200,30,0,0);
-    $css->CrearInputText("TxtPA","text","","","Primer Apellido","black","onkeyup","CreaRazonSocial()",200,30,0,0);
-    $css->CrearInputText("TxtSA","text","","","Segundo Apellido","black","onkeyup","CreaRazonSocial()",200,30,0,0);
+    $css->CrearInputText("TxtPN","text","","","Primer Nombre","black","onkeyup","CrearNombreCompleto()",200,30,0,0);
+    $css->CrearInputText("TxtON","text","","","Otros Nombres","black","onkeyup","CrearNombreCompleto()",200,30,0,0);
+    $css->CrearInputText("TxtPA","text","","","Primer Apellido","black","onkeyup","CrearNombreCompleto()",200,30,0,0);
+    $css->CrearInputText("TxtSA","text","","","Segundo Apellido","black","onkeyup","CrearNombreCompleto()",200,30,0,0);
     
     $css->CrearInputText("TxtRazonSocial","text","","","Razon Social","black","","",200,30,0,1);
     $css->CrearInputText("TxtDireccion","text","","","Direccion","black","","",200,30,0,1);
     $css->CrearInputText("TxtTelefono","text","","","Telefono","black","","",200,30,0,1);
 
     $css->CrearInputText("TxtEmail","text","","","Email","black","","",200,30,0,1);
-    $css->CrearInputText("TxtCupo","text","","","Cupo Credito","black","","",200,30,0,1);
+    $css->CrearInputText("TxtCupo","text","",0,"Cupo Credito","black","","",200,30,0,1);
     $VarSelect["Ancho"]="200";
     $VarSelect["PlaceHolder"]="Seleccione el municipio";
     $css->CrearSelectChosen("CmbCodMunicipio", $VarSelect);
@@ -48,6 +48,6 @@ $obVenta = new ProcesoVenta($idUser);
        }
     $css->CerrarSelect();
     echo '<br><br>';
-    $css->CrearBotonEvento("BtnCrearTercero", "Cerrar", 1, "onClick", "CrearTercero()", "naranja", "");
+    $css->CrearBotonEvento("BtnCrearTercero", "Crear", 1, "onClick", "CrearTercero()", "naranja", "");
     
     

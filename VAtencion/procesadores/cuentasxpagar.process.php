@@ -35,6 +35,7 @@ if(isset($_REQUEST['BtnEditar'])){
         $DatosNota=$obVenta->DevuelveValores("vista_notas_devolucion", "ID", $idNotaDevolucion);
         $Cruces=$DatosNota["Total"];
         $obVenta->ActualizaRegistro("egresos_pre", "CruceNota", $Cruces, "ID", $idPreEgreso);
+        $obVenta->ActualizaRegistro("factura_compra_notas_devolucion", "Estado", "CRUZADA", "ID", $idNotaDevolucion);
     }
     $AbonoTotal=$Abono+$Descuento+$Cruces;
     if($AbonoTotal<=$Saldo){

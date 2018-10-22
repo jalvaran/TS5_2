@@ -88,7 +88,7 @@ $obVenta=new ProcesoVenta($idUser);
             $obVenta->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
             print("Se ha creado el tercero Exitosamente");
         }else{
-            print("El cliente ya existe no se puede duplicar");
+            print("El tercero ya existe no se puede duplicar");
         }
     }else{
         print("Debe completar los campos obligatorios");

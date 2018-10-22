@@ -747,5 +747,69 @@ class Compra extends ProcesoVenta{
         }
         
     }
+    /**
+     * Funcion para crear una orden de compra
+     * @param type $Fecha
+     * @param type $Tercero
+     * @param type $Descripcion
+     * @param type $PlazoEntrega -> Plazo expresado en dias
+     * @param type $NoCotizacion
+     * @param type $Condiciones
+     * @param type $Solicitante
+     * @param type $Cargo
+     * @param type $idUser
+     * @param type $Vector
+     * @return type
+     */
+    public function CrearOrdenCompra($Fecha,$Tercero,$Descripcion,$PlazoEntrega,$NoCotizacion,$Condiciones,$Solicitante,$Cargo,$idUser,$Vector) {
+        $tab="ordenesdecompra";
+        $Datos["Fecha"]=$Fecha;
+        $Datos["Tercero"]=$Tercero;
+        $Datos["Descripcion"]=$Descripcion;
+        $Datos["PlazoEntrega"]=$PlazoEntrega;
+        $Datos["NoCotizacion"]=$NoCotizacion;
+        $Datos["Condiciones"]=$Condiciones;
+        $Datos["Solicitante"]=$Solicitante;
+        $Datos["Cargo"]=$Cargo;
+        $Datos["UsuarioCreador"]=$idUser;
+        $Datos["Estado"]="ABIERTA";
+        $sql=$this->getSQLInsert($tab, $Datos);
+        $this->Query($sql);
+        $idCompra=$this->ObtenerMAX($tab,"ID", 1,"");
+        return $idCompra;
+    }
+    
+    public function IngresaItemOrdenCompra($idOrden,$idProducto,$Referencia,$Nombre,$Cantidad,$CostoUnitario,$TipoIVA,$IVAIncluido,$Vector) {
+        //Proceso la informacion
+        if($IVAIncluido=="SI"){
+            if(is_numeric($TipoIVA)){
+                $CostoUnitario=round($CostoUnitario/(1+$TipoIVA));
+            }            
+        }
+        $Subtotal=round($CostoUnitario*$Cantidad);
+        if(is_numeric($TipoIVA)){
+            $Impuestos=round($Subtotal*$TipoIVA);
+        }else{
+            $Impuestos=0;
+        }
+        
+        $Impuestos= round($Subtotal*$TipoIVA);
+        $Total=$Subtotal+$Impuestos;
+        //////Agrego el registro           
+        $tab="ordenesdecompra_items";
+        $NumRegistros=10;
+
+        $Columnas[0]="NumOrden";        $Valores[0]=$idOrden;
+        $Columnas[1]="idProducto";      $Valores[1]=$idProducto;
+        $Columnas[2]="Cantidad";        $Valores[2]=$Cantidad;
+        $Columnas[3]="ValorUnitario";   $Valores[3]=$CostoUnitario;
+        $Columnas[4]="Subtotal";        $Valores[4]=$Subtotal;
+        $Columnas[5]="IVA";             $Valores[5]=$Impuestos;
+        $Columnas[6]="Total";           $Valores[6]=$Total;
+        $Columnas[7]="Tipo_Impuesto";   $Valores[7]=$TipoIVA;
+        $Columnas[8]="Referencia";      $Valores[8]=$Referencia;  
+        $Columnas[9]="Descripcion";     $Valores[9]=$Nombre;   
+        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+    }
     //Fin Clases
 }

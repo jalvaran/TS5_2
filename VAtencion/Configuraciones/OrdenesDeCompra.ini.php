@@ -12,7 +12,7 @@ $myTitulo="Ordenes de Compra";
 
 //$Vector["NuevoRegistro"]["Deshabilitado"]=1;            
 //$Vector["VerRegistro"]["Deshabilitado"]=1;                      
-//$Vector["EditarRegistro"]["Deshabilitado"]=1; 
+$Vector["EditarRegistro"]["Deshabilitado"]=1; 
 
 /////Asigno Datos necesarios para la visualizacion de la tabla en el formato que se desea
 ////
@@ -33,12 +33,12 @@ $Vector["VerRegistro"]["ColumnaLink"]="ID";
 
 
 //Nueva Accion
-$Ruta="AgregaItemsOC.php?idOT=";
-$Vector["NuevaAccionLink"][0]="AsociarCoti";
-$Vector["NuevaAccion"]["AsociarCoti"]["Titulo"]="Agregar Items";
-$Vector["NuevaAccion"]["AsociarCoti"]["Link"]=$Ruta;
-$Vector["NuevaAccion"]["AsociarCoti"]["ColumnaLink"]="ID";
-$Vector["NuevaAccion"]["AsociarCoti"]["Target"]="_self";
+$Ruta="CrearOrdenCompra.php?AbrirOrden=";
+$Vector["NuevaAccionLink"][0]="Editar";
+$Vector["NuevaAccion"]["Editar"]["Titulo"]="Editar";
+$Vector["NuevaAccion"]["Editar"]["Link"]=$Ruta;
+$Vector["NuevaAccion"]["Editar"]["ColumnaLink"]="ID";
+$Vector["NuevaAccion"]["Editar"]["Target"]="_blank";
 
 /*
  * 
