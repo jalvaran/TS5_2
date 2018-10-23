@@ -1139,8 +1139,8 @@ function Footer(){
              
           //print("<a href='$target' title='$Titulo'><image name='$Nombre' id='$Nombre' src='$RutaImage' $javascript style='display:scroll; position:".$posicion."; right:10px; height:".$Alto."px; width: ".$Ancho."px;'></a>");
           
-          print('<a href="'.$target.'" role="button"  data-toggle="modal" title="'.$Titulo.'" style="display:scroll; position:'.$posicion.'; '.$margenes.'; height:'.$Alto.'px; width: '.$Ancho.'px;">
-			<image src='.$RutaImage.' name='.$Nombre.' id='.$Nombre.' src='.$RutaImage.' '.$javascript.' ></a>');
+          print('<a href="'.$target.'" role="button"  data-toggle="modal" title="'.$Titulo.'" >
+			<image src='.$RutaImage.' name='.$Nombre.' id='.$Nombre.' src='.$RutaImage.' '.$javascript.' style="display:scroll; position:'.$posicion.'; '.$margenes.'; height:'.$Alto.'px; width: '.$Ancho.'px;"></a>');
 	} 
         
         /////////////////////Crear una imagen con una funcion javascrip
@@ -1672,6 +1672,14 @@ function Footer(){
                       <div id="'.$NombreLeyenda.'" name="'.$NombreLeyenda.'"">'.$Leyenda.'</div>
                     </div>
                   </div>');
+        }
+        
+        public function CheckBox($Nombre,$id,$Value,$Label,$styles,$FuncionJS,$Vector) {
+            print('  
+            <div class="checkbox" >
+                <label><input type="checkbox" value="'.$Value.'" id='.$id.' name='.$Nombre.' '.$FuncionJS.' '.$styles.'>'.$Label.'</label>
+            </div>
+                    ');
         }
         //////////////////////////////////FIN
 }

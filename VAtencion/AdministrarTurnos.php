@@ -106,6 +106,7 @@ print("<body>");
 
         $css->CierraFilaTabla();
     $css->CerrarTabla();
+    $css->ProgressBar("PgProgresoCMG", "LyProgresoCMG", "", 0, 0, 100, 0, "0%", "", "");
     $css->CrearDiv("DivMensajes", "container", "center", 1, 1);
     $css->CerrarDiv();
     $css->CrearDiv("DivHistorialTurnos", "container", "center", 1, 1);

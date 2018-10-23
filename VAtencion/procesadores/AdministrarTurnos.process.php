@@ -149,15 +149,36 @@ if(isset($_REQUEST["idAccion"])){
                     if($MuestreEncabezado==0){
                         $MuestreEncabezado=1;  
                         $css->FilaTabla(14);
+                            $css->ColTabla("<strong>Total</strong>", 1);
+                            $css->ColTabla("<strong>Reporte</strong>", 2);
+                            $css->ColTabla("<strong>Limpiar Filtros</strong>", 1);
+                            $css->ColTabla("<strong>Exportar</strong>", 1);
+                            $css->ColTabla("<strong>Liquidar Turnos</strong>", 1);
+                        $css->CierraFilaTabla();
+                        $css->FilaTabla(14);
                             $css->ColTabla("<h4 style='color:red'>Total: ".number_format($Total)."</h4>", 1);
-                        print("<td colspan=3>");
+                        print("<td colspan=2>");
                             $css->CrearNotificacionNaranja("Historial de Turnos", 14);
                         print("</td>");
-                        print("<td colspan='2' style='text-align:center'>");
-                        
-                        $css->CrearImageLink("ProcesadoresJS/GeneradorCSVReportes.php?Opcion=1&sp=$Separador&st=$st", "../images/csv.png", "_blank", 50, 50);
+                        print("<td colspan='1' style='text-align:center'>");
+                            $RutaImage="../images/limpiar.png";
+                            $javascript="onClick='LimpiarFiltros()'";
+                            $css->CrearBotonImagen("Limpiar Filtros", "BtnLimpiar", "_self", $RutaImage, $javascript, 50, 50, "", 1, "");
+                            //$css->CrearImageLink("ProcesadoresJS/GeneradorCSVReportes.php?Opcion=1&sp=$Separador&st=$st", "../images/csv.png", "_blank", 50, 50);
 
-                    print("</td>");
+                        print("</td>");
+                        print("<td colspan='1' style='text-align:center'>");
+                        
+                            $css->CrearImageLink("ProcesadoresJS/GeneradorCSVReportes.php?Opcion=1&sp=$Separador&st=$st", "../images/csv.png", "_blank", 50, 50);
+
+                        print("</td>");
+                        print("<td colspan='1' style='text-align:center'>");
+                            $RutaImage="../images/liquidar.png";
+                            $javascript="onClick='ModalLiquidarTurnos()'";
+                            $css->CrearBotonImagen("Liquidar Turnos", "BtnLiquidar", "_self", $RutaImage, $javascript, 50, 50, "", 1, "");
+                            //$css->CrearImageLink("ProcesadoresJS/GeneradorCSVReportes.php?Opcion=1&sp=$Separador&st=$st", "../images/csv.png", "_blank", 50, 50);
+
+                        print("</td>");
                         $css->CierraFilaTabla();
                         $css->FilaTabla(14);
                         $css->ColTabla("<strong>Fecha</strong>", 1);
@@ -189,6 +210,11 @@ if(isset($_REQUEST["idAccion"])){
                 $css->CerrarTabla();
             }else{
                 $css->CrearNotificacionAzul("No hay resultados", 16);
+                print("<strong>Limpiar Filtros</br></strong>");
+                $RutaImage="../images/limpiar.png";
+                $javascript="onClick='LimpiarFiltros()'";
+                $css->CrearBotonImagen("Limpiar Filtros", "BtnLimpiar", "_self", $RutaImage, $javascript, 50, 50, "", 1, "");
+
             }
             break;
         case 3://Editar un valor
@@ -202,6 +228,127 @@ if(isset($_REQUEST["idAccion"])){
             $idItem=$obNomina->normalizar($_REQUEST["idItem"]);           
             $obNomina->ActualizaRegistro("nomina_servicios_turnos", "Estado", "ANULADO", "ID", $idItem);
             print("OK");
+        break;
+    
+        case 5://Elimina un turno
+            include_once("../css_construct.php");
+            $css =  new CssIni("",0);
+            
+            $css->CrearNotificacionAzul("Opciones para realizar la liquidación", 14);
+            $css->CrearTabla();
+                $css->FilaTabla(14);
+                    $css->ColTabla("<strong>Fecha de liquidación</strong>", 1);
+                    $css->ColTabla("<strong>Aplicar ReteICA</strong>", 1);
+                    $css->ColTabla("<strong>Aplicar Rete Fuente</strong>", 1);
+                $css->CierraFilaTabla();
+                
+                $css->FilaTabla(14);
+                    print("<td>");
+                        $css->CrearInputText("TxtFechaLiquidacion", "date", "", date("Y-m-d"), "Fecha", "", "", "", 130, 30, 0, 0);
+                    print("</td>");
+                    print("<td>");
+                        $css->CrearSelect("CmbReteICA", "",60);
+                            $css->CrearOptionSelect("SI", "SI", 1);
+                            $css->CrearOptionSelect("NO", "NO", 0);
+                        $css->CerrarSelect();
+                    print("</td>");
+                    print("<td>");
+                        $css->CrearSelect("CmbReteFuente", "",60);
+                            $css->CrearOptionSelect("SI", "SI", 0);
+                            $css->CrearOptionSelect("NO", "NO", 1);
+                        $css->CerrarSelect();
+                    print("</td>");
+                    
+                $css->CierraFilaTabla();
+                
+                $css->FilaTabla(14);
+                    $css->ColTabla("<strong>Concepto</strong>", 1);  
+                    $css->ColTabla("<strong>Cuenta de donde se paga</strong>", 1); 
+                    $css->ColTabla("<strong>Ejecutar</strong>", 1);
+                $css->CierraFilaTabla();
+                
+                $css->FilaTabla(14);
+                    print("<td>");
+                       $css->CrearTextArea("TxtConceptoLiquidacion", "", "", "Concepto de la liquidación", "", "", "", 150, 60, 0, 0);
+                    print("</td>"); 
+                    print("<td>");
+                        $css->CrearSelectTable("CmbCuentaOrigen", "subcuentas", "WHERE PUC LIKE '11%'", "PUC", "PUC", "Nombre", "", "", 110505, 1);
+                    print("</td>");
+                    print("<td>");
+                        $css->CrearBotonEvento("BtnLiquidarTurnos", "Liquidar", 1, "onClick", "LiquidarTurnos()", "rojo", "");
+                    print("</td>");
+                $css->CierraFilaTabla();
+             $css->CerrarTabla();
+        break;
+        case 6://Realiza los comprobantes
+            $FechaLiquidacion=$obNomina->normalizar($_REQUEST["FechaLiquidacion"]);
+            $ReteICA=$obNomina->normalizar($_REQUEST["ReteICA"]);
+            $ReteFuente=$obNomina->normalizar($_REQUEST["ReteFuente"]);
+            $Concepto=$obNomina->normalizar($_REQUEST["Concepto"]);
+            $FechaInicial=$obNomina->normalizar($_REQUEST["FechaInicial"]);
+            $FechaFinal=$obNomina->normalizar($_REQUEST["FechaFinal"]);
+            $Tercero=$obNomina->normalizar($_REQUEST["Tercero"]);
+            $Sucursal=$obNomina->normalizar($_REQUEST["Sucursal"]);
+            $CuentaOrigen=$obNomina->normalizar($_REQUEST["CuentaOrigen"]);
+            
+            $Group="GROUP BY";
+            $Filtro="WHERE Estado<>'ANULADO' ";
+            if($FechaInicial<>''){
+                $Filtro.=" AND Fecha>='$FechaInicial' ";
+            }
+            if($FechaFinal<>''){
+                $Filtro.=" AND Fecha<='$FechaFinal' ";
+            }
+            if($Tercero<>''){
+                $Filtro.=" AND Tercero='$Tercero' ";
+            }
+            if($Tercero==''){
+                $Group.=" Tercero,";
+            }   
+            
+            $Group.=" Sucursal ";
+            
+            //print($CantidadTotal."<br>");
+            $FiltroNoRealizados=" AND Estado='' ";
+            $sql="SELECT Tercero,Sucursal,SUM(Valor) as TotalValor FROM vista_nomina_servicios_turnos $Filtro $FiltroNoRealizados  $Group LIMIT 1";
+            //print("2".$sql."<br>");
+            $Consulta=$obNomina->Query($sql);
+            $DatosNomina=$obNomina->FetchAssoc($Consulta);
+            $Sucursal=$DatosNomina["Sucursal"];
+            $Tercero=$DatosNomina["Tercero"];
+            //print($DatosNomina["TotalValor"]);
+            if($DatosNomina["Tercero"]==""){
+                $msg="No se encontraron liquidaciones para realizar";
+                print("ERROR;0;$msg");
+                exit();
+            }
+            if($DatosNomina["Tercero"]<>""){
+                $NumDoc=$obNomina->NominaCrearDocumentoEquivalente($FechaLiquidacion, $DatosNomina["Tercero"], $Concepto,$CuentaOrigen,$Sucursal, $DatosNomina["TotalValor"], $ReteFuente, $ReteICA, $idUser, "");
+            }
+            
+            $FiltoUpdate=" AND Sucursal='$Sucursal' AND idDocumentoEquivalente='0' AND Tercero='$Tercero' ";
+            $sql="UPDATE nomina_servicios_turnos SET idDocumentoEquivalente='$NumDoc', Estado='PAGADO' $Filtro $FiltoUpdate";
+            $obNomina->Query($sql);
+            $FiltoTotal="AND Sucursal='$Sucursal' AND Tercero='$Tercero'";
+            $sql="SELECT COUNT(*) AS NumItems FROM nomina_servicios_turnos $Filtro ";            
+            $consulta=$obNomina->Query($sql);
+            $DatosNumFact=$obNomina->FetchAssoc($consulta);
+            $CantidadTotal=$DatosNumFact["NumItems"];
+            
+            $FiltroRealizados=" AND Estado='PAGADO'";
+            $sql="SELECT COUNT(*) AS NumItems FROM nomina_servicios_turnos $Filtro $FiltroRealizados";    
+            $consulta=$obNomina->Query($sql);
+            $DatosNumFact=$obNomina->FetchAssoc($consulta);
+            $CantidadTotalRealizadas=$DatosNumFact["NumItems"];
+            //print("Total: $CantidadTotal Realizadas=$CantidadTotalRealizadas");
+            if($CantidadTotal==0){
+                $CantidadTotal=1;
+            }
+            $PorcentajeRealizado=round((100/$CantidadTotal)*$CantidadTotalRealizadas);
+            
+            $Page="PDF_Factura.php?ImgPrintFactura=".$NumDoc;
+            $msg="Documento Equivalente $NumDoc Realizado  <a href='$Page' target='_blank'> Imprimir </a>";
+            print("OK;$PorcentajeRealizado;$msg");
         break;
         
     }

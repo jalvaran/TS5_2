@@ -291,7 +291,7 @@ function EliminarItem(idItem){
             if(data=='OK'){
                 alertify.error("Registro eliminado");    
                 document.getElementById('DivMensajes').innerHTML="";                
-                DibujeTurnos();                
+                document.getElementById('BtnActualizarTurnos').click();                   
             }else{
                 alertify.error("Error al tratar de eliminar el turno");
                 document.getElementById('DivMensajes').innerHTML=data;
@@ -304,3 +304,144 @@ function EliminarItem(idItem){
       })
 }
 
+function LimpiarFiltros() {
+   
+    document.getElementById('FiltroFechaInicial').value='';
+    document.getElementById('FiltroFechaFinal').value='';
+    document.getElementById('FiltroidSede').value='';
+    document.getElementById('select2-FiltroTercero-container').innerHTML='Buscar X Tercero';
+    document.getElementById('FiltroTercero').value='';
+    document.getElementById('BtnFiltrar').click();
+    
+}
+
+function ModalLiquidarTurnos(){
+    
+    document.getElementById('BtnAbreModal').click();
+    var form_data = new FormData();             
+        
+        form_data.append('idAccion', 5)
+        $.ajax({
+        url: 'procesadores/AdministrarTurnos.process.php',
+        //dataType: "json",
+        cache: false,
+        processData: false,
+        contentType: false,
+        data: form_data,
+        type: 'POST',
+        success: (data) =>{
+            if(data!=''){
+                document.getElementById('DivModalTurnos').innerHTML=data;                  
+            }else{
+                alertify.error("Error al tratar de abrir las opciones de liquidacion");
+                document.getElementById('DivMensajes').innerHTML=data;
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          alert(xhr.status);
+          alert(thrownError);
+        }
+      })
+}
+
+function LiquidarTurnos(Limpiar=1){
+    var FechaLiquidacion = document.getElementById('TxtFechaLiquidacion').value;    
+    var ReteICA = document.getElementById('CmbReteICA').value;
+    var ReteFuente = document.getElementById('CmbReteFuente').value;
+    var Concepto = document.getElementById('TxtConceptoLiquidacion').value;
+    
+    var FechaInicial = document.getElementById('FiltroFechaInicial').value;
+    var FechaFinal = document.getElementById('FiltroFechaFinal').value;
+    var Tercero = document.getElementById('FiltroTercero').value;
+    var Sucursal = document.getElementById('FiltroidSede').value;
+    var CuentaOrigen = document.getElementById('CmbCuentaOrigen').value;
+    
+    if(FechaLiquidacion==''){
+        alertify.alert("Debe seleccionar Fecha para la liquidación");        
+        document.getElementById('TxtFechaLiquidacion').style.backgroundColor="pink";
+        return;
+    }else{        
+        document.getElementById('TxtFechaLiquidacion').style.backgroundColor="";
+    }
+    
+    if(Concepto==''){
+        alertify.alert("Debe escribir un concepto para la liquidación");        
+        document.getElementById('TxtConceptoLiquidacion').style.backgroundColor="pink";
+        return;
+    }else{        
+        document.getElementById('TxtConceptoLiquidacion').style.backgroundColor="";
+    }
+    
+    document.getElementById("BtnAgregar").disabled=true;
+    document.getElementById("BtnFiltrar").disabled=true;
+    document.getElementById("TxtValor").disabled=true;
+    document.getElementById('BtnCierreModal').click();
+    document.getElementById("DivMensajes").innerHTML='<div id="DivProcesando">Liquidando Turnos...<br>por favor espere<br><img   src="../images/process.gif" alt="Cargando" height="100" width="100"></div>';
+    if(Limpiar==1){
+        document.getElementById('DivHistorialTurnos').innerHTML="";   
+    }
+    
+    var form_data = new FormData();        
+        form_data.append('idAccion', 6)
+        form_data.append('FechaLiquidacion', FechaLiquidacion)
+        form_data.append('ReteICA', ReteICA)
+        form_data.append('ReteFuente', ReteFuente)
+        form_data.append('Concepto', Concepto)
+        form_data.append('FechaInicial', FechaInicial)
+        form_data.append('FechaFinal', FechaFinal)
+        form_data.append('Tercero', Tercero)
+        form_data.append('Sucursal', Sucursal)
+        form_data.append('CuentaOrigen', CuentaOrigen)
+        
+        $.ajax({
+        url: 'procesadores/AdministrarTurnos.process.php',
+        //dataType: "json",
+        cache: false,
+        processData: false,
+        contentType: false,
+        data: form_data,
+        type: 'POST',
+        success: (data) =>{
+            console.log(data);
+            var respuestas = data.split(';');
+            
+            if(respuestas[0]=="OK"){
+                
+                var Porcentaje = respuestas[1];
+                var msg = respuestas[2];
+                $('.progress-bar').css('width',Porcentaje+'%').attr('aria-valuenow', Porcentaje);  
+                document.getElementById('LyProgresoCMG').innerHTML=Porcentaje+"%";
+                
+                document.getElementById('DivHistorialTurnos').innerHTML=msg+"<br>"+document.getElementById('DivHistorialTurnos').innerHTML;
+                if(Porcentaje==100){
+                    document.getElementById("BtnAgregar").disabled=false;
+                    document.getElementById("BtnFiltrar").disabled=false;
+                    document.getElementById("TxtValor").disabled=false;
+                    document.getElementById("DivProcesando").innerHTML="Proceso terminado exitósamente";
+                    alertify.success("Proceso Terminado Exitósamente");  
+                    return;
+                }
+                if(Porcentaje<100){
+                    LiquidarTurnos(0);
+                }
+             
+            }else{
+                $('.progress-bar').css('width','0%').attr('aria-valuenow', 0);  
+                document.getElementById('LyProgresoCMG').innerHTML="0%";
+                
+                document.getElementById("BtnAgregar").disabled=false;
+                document.getElementById("BtnFiltrar").disabled=false;
+                document.getElementById("TxtValor").disabled=false;
+                alertify.error("Error al tratar de realizar la liquidacion");
+                document.getElementById("DivProcesando").innerHTML="Error: ";
+                document.getElementById('DivMensajes').innerHTML=data;
+            }
+             
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          alert(xhr.status);
+          alert(thrownError);
+        }
+      })
+      
+}
