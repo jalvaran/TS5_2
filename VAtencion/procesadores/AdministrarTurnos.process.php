@@ -111,7 +111,7 @@ if(isset($_REQUEST["idAccion"])){
                             }
                             print("</td>");
                             $TotalPaginas= ceil($ResultadosTotales/$limit);
-                            print("<td colspan=4 style=text-align:center>");
+                            print("<td colspan=5 style=text-align:center>");
                             print("<strong>Página: </strong>");
 
                             $Page="procesadores/AdministrarTurnos.process.php?st=$st&idAccion=$idAccion&Separador=$Separador&Page=";
@@ -150,14 +150,14 @@ if(isset($_REQUEST["idAccion"])){
                         $MuestreEncabezado=1;  
                         $css->FilaTabla(14);
                             $css->ColTabla("<strong>Total</strong>", 1);
-                            $css->ColTabla("<strong>Reporte</strong>", 2);
+                            $css->ColTabla("<strong>Reporte</strong>", 3);
                             $css->ColTabla("<strong>Limpiar Filtros</strong>", 1);
                             $css->ColTabla("<strong>Exportar</strong>", 1);
                             $css->ColTabla("<strong>Liquidar Turnos</strong>", 1);
                         $css->CierraFilaTabla();
                         $css->FilaTabla(14);
                             $css->ColTabla("<h4 style='color:red'>Total: ".number_format($Total)."</h4>", 1);
-                        print("<td colspan=2>");
+                        print("<td colspan=3>");
                             $css->CrearNotificacionNaranja("Historial de Turnos", 14);
                         print("</td>");
                         print("<td colspan='1' style='text-align:center'>");
@@ -185,6 +185,7 @@ if(isset($_REQUEST["idAccion"])){
                         $css->ColTabla("<strong>Sede</strong>", 1);
                         $css->ColTabla("<strong>Tercero</strong>", 1);
                         $css->ColTabla("<strong>Valor</strong>", 1); 
+                        $css->ColTabla("<strong>Estado</strong>", 1); 
                         $css->ColTabla("<strong>Editar</strong>", 1); 
                         $css->ColTabla("<strong>Anular</strong>", 1);
                     $css->CierraFilaTabla();
@@ -195,8 +196,13 @@ if(isset($_REQUEST["idAccion"])){
                         $css->ColTabla($DatosTurnos["NombreSucursal"], 1);
                         $css->ColTabla($DatosTurnos["NombreTercero"], 1);
                         print("<td>");
-                            $css->CrearInputNumber("TxtValor".$idItem, "number", "", $DatosTurnos["Valor"], "Valor", "", "onChange", "EditarValor($idItem)", 150, 30, 0, 0, "", "", 1);
+                            $Habilidato=1;
+                            if($DatosTurnos["Estado"]==''){
+                                $Habilidato=0;
+                            }
+                            $css->CrearInputNumber("TxtValor".$idItem, "number", "", $DatosTurnos["Valor"], "Valor", "", "onChange", "EditarValor($idItem)", 150, 30, $Habilidato, 0, "", "", 1);
                         print("</td>");
+                        $css->ColTabla($DatosTurnos["Estado"], 1);
                         print("<td>");    
                             $css->CrearBotonEvento("BtnEditar", "E", 1, "", "", "naranja", "");
                         

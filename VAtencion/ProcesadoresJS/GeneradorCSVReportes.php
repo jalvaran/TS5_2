@@ -29,8 +29,8 @@ if(isset($_REQUEST["Opcion"])){
             }else{
                 $Separador=',';
             }
-            $sqlColumnas="SELECT 'Fecha','Sede','Identificacion Tercero','Nombre del Tercero','Valor'";
-            $CamposShow=" Fecha,NombreSucursal,Tercero,NombreTercero,Valor ";
+            $sqlColumnas="SELECT 'Fecha','Sede','Identificacion Tercero','Nombre del Tercero','Valor','Estado'";
+            $CamposShow=" Fecha,NombreSucursal,Tercero,NombreTercero,Valor,Estado ";
             $sqlColumnas.=" UNION ALL ";
             
             //print($Indice);

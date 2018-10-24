@@ -402,7 +402,7 @@ function LiquidarTurnos(Limpiar=1){
         data: form_data,
         type: 'POST',
         success: (data) =>{
-            console.log(data);
+            //console.log(data);
             var respuestas = data.split(';');
             
             if(respuestas[0]=="OK"){
@@ -413,6 +413,7 @@ function LiquidarTurnos(Limpiar=1){
                 document.getElementById('LyProgresoCMG').innerHTML=Porcentaje+"%";
                 
                 document.getElementById('DivHistorialTurnos').innerHTML=msg+"<br>"+document.getElementById('DivHistorialTurnos').innerHTML;
+                 
                 if(Porcentaje==100){
                     document.getElementById("BtnAgregar").disabled=false;
                     document.getElementById("BtnFiltrar").disabled=false;
