@@ -37,6 +37,7 @@ class Nomina extends ProcesoVenta{
         $Datos["Fecha"]=$Fecha;
         $Datos["Concepto"]=$Concepto;
         $Datos["Valor"]=$Valor;
+        $Datos["Sucursal"]=$Sucursal;
         $Datos["idUser"]=$idUser;
         $sql=$this->getSQLInsert("nomina_documentos_equivalentes", $Datos);
         $this->Query($sql);
@@ -70,7 +71,7 @@ class Nomina extends ProcesoVenta{
         $CuentaPUC=$ParametrosContables["CuentaPUC"];
         $Monto=$Valor;
         $TipoMovimiento="DB";
-        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, "Pago de Turnos", 1, $Sucursal, "");
+        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, $Concepto, 1, $Sucursal, "");
         
         
         //Causo la retefuente
@@ -81,7 +82,7 @@ class Nomina extends ProcesoVenta{
             $CuentaPUC=$ParametrosContables["CuentaPUC"];
             $Monto=$ValorRetefuente;
             $TipoMovimiento="CR";
-            $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, "Pago de Turnos", 1, $Sucursal, "");
+            $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, $Concepto, 1, $Sucursal, "");
         }
         
         //Causo el reteica
@@ -92,7 +93,7 @@ class Nomina extends ProcesoVenta{
             $CuentaPUC=$ParametrosContables["CuentaPUC"];
             $Monto=$ValorReteICA;
             $TipoMovimiento="CR";
-            $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, "Pago de Turnos", 1, $Sucursal, "");
+            $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, $Concepto, 1, $Sucursal, "");
         }
         //Causo la cuenta x pagar
         $ParametrosContables= $this->DevuelveValores("nomina_parametros_contables", "ID", 3);
@@ -101,9 +102,9 @@ class Nomina extends ProcesoVenta{
         $CuentaPUC=$ParametrosContables["CuentaPUC"];
         $Monto=$Valor-$ValorReteICA-$ValorRetefuente;
         $TipoMovimiento="CR";
-        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, "Pago de Turnos", 1, $Sucursal, "");
+        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, $Concepto, 1, $Sucursal, "");
         $TipoMovimiento="DB"; //Cruzo la cuenta x pagar
-        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, "Pago de Turnos", 1, $Sucursal, "");
+        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, $Concepto, 1, $Sucursal, "");
         
         //Se retira el dinero contra la cuenta que se haya seleccionado
         
@@ -112,7 +113,7 @@ class Nomina extends ProcesoVenta{
         $CuentaPUC=$CuentaOrigen;
         $Monto=$Valor-$ValorReteICA-$ValorRetefuente;
         $TipoMovimiento="CR";
-        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, "Pago de Turnos", 1, $Sucursal, "");
+        $this->IngreseMovimientoLibroDiario($Fecha, "DOC_EQUI_NOMINA", $idDocumento, "", $Tercero, $CuentaPUC, $NombreCuenta, "NOMINA", $TipoMovimiento, $Monto, $Concepto, 1, $Sucursal, "");
         
         return($idDocumento);
     }

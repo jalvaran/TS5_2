@@ -346,8 +346,9 @@ if(isset($_REQUEST["idAccion"])){
             }
             $PorcentajeRealizado=round((100/$CantidadTotal)*$CantidadTotalRealizadas);
             
-            $Page="PDF_Factura.php?ImgPrintFactura=".$NumDoc;
-            $msg="Documento Equivalente $NumDoc Realizado  <a href='$Page' target='_blank'> Imprimir </a>";
+            $Ruta="PDF_Documentos.php?idDocumento=33&idDocEqui=".$NumDoc;
+            $RutaRelacion="ProcesadoresJS/GeneradorCSVReportes.php?Opcion=2&sp=1&idDocumentoEquivalente=$NumDoc";
+            $msg="Documento Equivalente $NumDoc Realizado para $Tercero <a href='$Ruta' target='_blank'> Imprimir PDF </a> <a href='$RutaRelacion' target='_blank'> Imprimir Relacion </a>" ;
             print("OK;$PorcentajeRealizado;$msg");
         break;
         

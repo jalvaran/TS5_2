@@ -601,7 +601,67 @@ INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`,
 UPDATE `menu` SET `Orden` = '50' WHERE `menu`.`ID` = 20;
 INSERT INTO `menu` (`ID`, `Nombre`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (32, 'Gestión del Personal', '1', 'MnuNomina.php', '_BLANK', '1', 'colaboradores.png', '20', '2017-10-13 14:16:49', '2017-10-13 14:16:49');
 INSERT INTO `menu_pestanas` (`ID`, `Nombre`, `idMenu`, `Orden`, `Estado`, `Updated`, `Sync`) VALUES (48, 'Colaboradores', '20', '1', b'1', '2017-10-13 14:16:55', '2017-10-13 14:16:55');
-INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (181, 'Historial de Turnos prestados', '48', '3', 'nomina_servicios_turnos.php', '_SELF', b'1', 'historial.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (181,	'Historial de Documentos Equivalentes',48,3,'nomina_documentos_equivalentes.php','_SELF',b'1','historial.png',1,'2018-10-23 18:15:09','2017-10-13 14:16:57');
 INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES (182, 'Manejo de Turnos', '48', '3', 'AdministrarTurnos.php', '_SELF', b'1', 'turnos.png', '1', '2017-10-13 14:16:57', '2017-10-13 14:16:57');
 
+
+CREATE TABLE `nomina_configuracion_documentos_equivalentes` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Titulo` text COLLATE latin1_spanish_ci NOT NULL,
+  `Articulo1` text COLLATE latin1_spanish_ci NOT NULL,
+  `Articulo2` text COLLATE latin1_spanish_ci NOT NULL,
+  `Articulo3` text COLLATE latin1_spanish_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+INSERT INTO `nomina_configuracion_documentos_equivalentes` (`ID`, `Titulo`, `Articulo1`, `Articulo2`, `Articulo3`, `Updated`, `Sync`) VALUES
+(1,	'DOCUMENTO EQUIVALENTE A LA FACTURA EN ADQUISICIONES  O SERVICIOS EFECTUADOS POR RESPONSABLES DEL REGIMEN COMUN A PERSONAS NATURALES NO COMERCIANTES O INSCRITAS EN EL REGIMEN SIMPLIFICADO',	'CUENTA DE COBRO (Art. 4 Decreto 3050/97)',	'DCTO. EQUIVALENTE Art. 3 Decreto 522/03)',	'NOTA DE CONTABILIDAD (Art. 3 Decreto 380/96)',	'2018-10-23 16:06:24',	'0000-00-00 00:00:00');
+
+CREATE TABLE `nomina_documentos_equivalentes` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Fecha` date NOT NULL,
+  `Tercero` bigint(20) NOT NULL,
+  `Concepto` text COLLATE latin1_spanish_ci NOT NULL,
+  `Valor` double NOT NULL,
+  `Sucursal` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+CREATE TABLE `nomina_parametros_contables` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `CuentaPUC` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `NombreCuenta` text COLLATE latin1_spanish_ci NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+INSERT INTO `nomina_parametros_contables` (`ID`, `CuentaPUC`, `NombreCuenta`, `Updated`, `Sync`) VALUES
+(1,	'523510',	'Servicios Temporales',	'2018-10-23 23:11:28',	'0000-00-00 00:00:00'),
+(2,	'236540',	'RETEFUENTE',	'2018-10-23 23:11:28',	'0000-00-00 00:00:00'),
+(3,	'233525',	'CUENTA POR PAGAR',	'2018-10-23 23:11:28',	'0000-00-00 00:00:00'),
+(4,	'236805',	'RETENCION DE INDUSTRIA Y COMERCIO',	'2018-10-23 23:11:28',	'0000-00-00 00:00:00');
+
+CREATE TABLE `nomina_parametros_generales` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Descripcion` text COLLATE latin1_spanish_ci NOT NULL,
+  `Valor` double NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+INSERT INTO `nomina_parametros_generales` (`ID`, `Descripcion`, `Valor`, `Updated`, `Sync`) VALUES
+(1,	'RETENCION DE ICA',	0.0066,	'2018-10-23 23:11:31',	'0000-00-00 00:00:00'),
+(2,	'Tope para realizar retencion de ICA',	99000,	'2018-10-23 23:11:31',	'0000-00-00 00:00:00'),
+(3,	'Retefuente por servicios para personas naturales',	0.06,	'2018-10-23 23:11:31',	'0000-00-00 00:00:00'),
+(4,	'Tope en servicios para personas naturales',	133000,	'2018-10-23 23:11:31',	'0000-00-00 00:00:00');
+
+INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `CuerpoFormato`, `NotasPiePagina`, `Updated`, `Sync`) VALUES (33, 'DOCUMENTO EQUIVALENTE A FACTURA', '001', 'F-GC-004', '2018-05-15', '', 'CUENTA DE COBRO (Art. 4 Decreto 3050/97), DCTO. EQUIVALENTE Art. 3 Decreto 522/03), NOTA DE CONTABILIDAD (Art. 3 Decreto 380/96). ', '2017-10-20 10:30:00', '2017-10-20 10:30:00');
 

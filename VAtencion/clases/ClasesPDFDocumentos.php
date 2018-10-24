@@ -727,6 +727,34 @@ $this->PDF->MultiCell(93, 25, $tbl, 0, 'R', 1, 0, '', '', true,0, true, true, 10
     
     }
     
+    public function NominaPDFDocumentoEquivalente($idDocumento,$Vector) {
+        $DatosDocumento=$this->obCon->DevuelveValores("nomina_documentos_equivalentes", "ID", $idDocumento);
+        $Documento="CUENTA DE COBRO No. $idDocumento";
+        $DatosSucursal=$this->obCon->DevuelveValores("empresa_pro_sucursales", "ID", $DatosDocumento["Sucursal"]);
+        $this->PDF_Ini("NDE_$idDocumento", 8, "");
+        $idFormato=33;
+        $this->PDF_Encabezado($DatosDocumento["Fecha"],1, $idFormato, "",$Documento);
+        $this->PDF_Write("<br><h4>DOCUMENTO EQUIVALENTE A LA FACTURA EN ADQUISICIONES  O SERVICIOS EFECTUADOS POR RESPONSABLES DEL REGIMEN COMUN A PERSONAS NATURALES NO COMERCIANTES O INSCRITAS EN EL REGIMEN SIMPLIFICADO</h3><br>");
+        $Fecha=$DatosDocumento["Fecha"];
+        $Concepto=$DatosDocumento["Concepto"];
+        $Tercero=$DatosDocumento["Tercero"];
+        $idUsuario=$DatosDocumento["idUser"];
+        
+        $DatosUsuario=$this->obCon->ValorActual("usuarios", " Nombre , Apellido ", " idUsuarios='$idUsuario'");
+        $Valor=  $DatosDocumento["Valor"];
+        $DatosTercero=$this->obCon->DevuelveValores("proveedores","Num_Identificacion",$Tercero);
+        
+        $DatosFormatos= $this->obCon->DevuelveValores("formatos_calidad", "ID", $idFormato);
+        
+        $this->Datos_Generales($Fecha, "Sede: ".$DatosSucursal["Nombre"].", ".$Concepto, $DatosTercero, $DatosUsuario, "");
+        
+        $html= $this->HTML_Movimiento_Contable("DOC_EQUI_NOMINA",$idDocumento,"");
+        $this->PDF_Write("<br><br><br><br><br><br><br><br><br>".$html);
+        $html= $this->HTML_Movimiento_Firmas_Egresos($Valor);
+        $this->PDF_Write("<br><br>".$html);
+        
+        $this->PDF_Output("NDE_$idDocumento");
+    }
    //Fin Clases
 }
     

@@ -34,6 +34,10 @@ if(isset($_REQUEST["idDocumento"])){
             $idDocumento=$obVenta->normalizar($_REQUEST["idDocumentoContable"]);
             $obDoc->PDF_DocumentoContable($idDocumento,"");            
             break;
+        case 33: //PDF de un documento equivalente a factura para nomina
+            $idDocumento=$obVenta->normalizar($_REQUEST["idDocEqui"]);
+            $obDoc->NominaPDFDocumentoEquivalente($idDocumento,"");            
+            break;
     }
 }else{
     print("No se recibió parametro de documento");
