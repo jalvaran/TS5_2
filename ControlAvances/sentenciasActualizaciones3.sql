@@ -665,3 +665,24 @@ INSERT INTO `nomina_parametros_generales` (`ID`, `Descripcion`, `Valor`, `Update
 
 INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `CuerpoFormato`, `NotasPiePagina`, `Updated`, `Sync`) VALUES (33, 'DOCUMENTO EQUIVALENTE A FACTURA', '001', 'F-GC-004', '2018-05-15', '', 'CUENTA DE COBRO (Art. 4 Decreto 3050/97), DCTO. EQUIVALENTE Art. 3 Decreto 522/03), NOTA DE CONTABILIDAD (Art. 3 Decreto 380/96). ', '2017-10-20 10:30:00', '2017-10-20 10:30:00');
 
+
+CREATE TABLE `nomina_servicios_turnos` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Fecha` date NOT NULL,
+  `Tercero` bigint(20) NOT NULL,
+  `Sucursal` int(11) NOT NULL,
+  `Valor` double NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `Pagado` int(1) NOT NULL,
+  `Estado` varchar(10) COLLATE latin1_spanish_ci NOT NULL,
+  `idDocumentoEquivalente` bigint(20) NOT NULL,
+  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`ID`),
+  KEY `Estado` (`Estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+ALTER TABLE `nomina_documentos_equivalentes` ADD `Estado` VARCHAR(20) NOT NULL AFTER `Sucursal`;
+
+

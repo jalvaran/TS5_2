@@ -201,13 +201,12 @@ class Documento extends Tabla{
         $html= $this->HTML_Movimiento_Contable("ComprobanteIngreso",$idIngreso,"");
         
         $this->PDF_Write("<br><br><br><br><br><br><br><br><br>".$html);
-        $html=$this->HTML_Firmas_Documentos();
-        $this->PDF_Write("<br>".$html);
-        /*
+        //$html=$this->HTML_Firmas_Documentos();
+        //$this->PDF_Write("<br>".$html);
+        
         $html= $this->HTML_Movimiento_Firmas_Egresos($Valor);
         $this->PDF_Write("<br><br>".$html);
-         * 
-         */
+        
         $this->PDF_Output("ComprobanteIngreso_$idIngreso");
     }
     
@@ -478,7 +477,9 @@ class Documento extends Tabla{
                 . "WHERE Tipo_Documento_Intero='NOTA_DEVOLUCION' AND Num_Documento_Interno='$idNota'";
         $html=$this->HTML_Movimientos_Resumen($sql, $Vector);
         $this->PDF_Write("<BR><BR><BR><strong>MOVIMIENTOS CONTABLES:</strong><BR>".$html);
-                
+        $this->PDF_Write("<br>");
+        $html= $this->FirmaDocumentos();
+        $this->PDF_Write($html);        
         $this->PDF_Output("ND_$CodigoNota");
     }
     
@@ -543,7 +544,7 @@ $tbl = <<<EOD
 </table>
 <table cellspacing="0" cellpadding="2" border="1">
     <tr>
-        <td align="center" ><strong>Comprador: </strong></td>
+        <td align="center" ><strong>Realiza: </strong></td>
         
     </tr>
     <tr>

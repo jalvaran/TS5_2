@@ -575,6 +575,7 @@ public function AgregaPreventa($fecha,$Cantidad,$idVentaActiva,$idProducto,$Tabl
             }
             
             // buscar si tiene habilitado precio de descuento 
+            
             $DatosFechasPreciosEspeciales= $this->DevuelveValores("ventas_fechas_especiales", "ID", 1);
             
             if($DatosFechasPreciosEspeciales["Habilitado"]==1){
@@ -596,7 +597,7 @@ public function AgregaPreventa($fecha,$Cantidad,$idVentaActiva,$idProducto,$Tabl
               
             }
             
-            
+           
             if($DatosImpuestosAdicionales["Incluido"]=='SI'){
                $DatosProductoGeneral["PrecioVenta"]=$DatosProductoGeneral["PrecioVenta"] - $DatosImpuestosAdicionales["ValorImpuesto"];
             }
@@ -6562,6 +6563,7 @@ public function VerificaPermisos($VectorPermisos) {
         }
         $this->ActualizaRegistro("separados", "Estado", "ANULADO", "ID", $idSeparado,0);
         $this->ActualizaRegistro("separados", "Observaciones", $ConceptoAnulacion, "ID", $idSeparado,0);
+        $this->ActualizaRegistro("separados_abonos", "Valor", "0", "idSeparado", $idSeparado,0);
     }
     //Agregar un precio adicional a un producto
     public function AgregaPrecioProducto($idProducto,$PrecioVenta,$Tabla,$idLista,$idUser,$Vector) {
@@ -6591,6 +6593,13 @@ public function VerificaPermisos($VectorPermisos) {
         return($idAlerta);
     }
 //////////////////////////////Fin	
+}
+
+/**
+ * Clase temporal que permite la migracion 
+ */
+class conexion extends ProcesoVenta{
+    
 }
 	
 ?>

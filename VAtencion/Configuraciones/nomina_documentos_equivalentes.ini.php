@@ -44,6 +44,16 @@ $Vector["NuevaAccion"]["Relacion"]["Link"]=$Ruta;
 $Vector["NuevaAccion"]["Relacion"]["ColumnaLink"]="ID";
 $Vector["NuevaAccion"]["Relacion"]["Target"]="_blank";
 
+
+// Nueva Accion
+$Ruta="AnularDocumentoEquivalente.php?idDocumento=";
+$Vector["NuevaAccionLink"][1]="Anular";
+$Vector["NuevaAccion"]["Anular"]["Titulo"]=" Anular ";
+$Vector["NuevaAccion"]["Anular"]["Link"]=$Ruta;
+$Vector["NuevaAccion"]["Anular"]["ColumnaLink"]="ID";
+$Vector["NuevaAccion"]["Anular"]["Target"]="_self";
+
+
 $Vector["Tercero"]["Vinculo"]=1;   //Indico que esta columna tendra un vinculo
 $Vector["Tercero"]["TablaVinculo"]="proveedores";  //tabla de donde se vincula
 $Vector["Tercero"]["IDTabla"]="Num_Identificacion"; //id de la tabla que se vincula

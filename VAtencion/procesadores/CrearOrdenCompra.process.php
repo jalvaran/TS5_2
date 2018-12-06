@@ -20,7 +20,7 @@ header("location:$myPage?idOrden=$idCompra");
 }
 if(!empty($_REQUEST["AbrirOrden"])){
     $idOrden=$_REQUEST["AbrirOrden"];
-    $obCompra->ActualizaRegistro("ordenesdecompra", "Estado", "ABIERTA", "ID", $idOrden);
+    //$obCompra->ActualizaRegistro("ordenesdecompra", "Estado", "ABIERTA", "ID", $idOrden);
     header("location:$myPage?idOrden=$idOrden");
 }
 //Verificamos si se recibe la peticion de Agregar un item a la compra

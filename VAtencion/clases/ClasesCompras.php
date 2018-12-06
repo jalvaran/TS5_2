@@ -30,6 +30,7 @@ class Compra extends ProcesoVenta{
         
         //Miro si se recibe un archivo
         //
+        $destino="";
         if(!empty($_FILES['foto']['name'])){
             //echo "<script>alert ('entra foto')</script>";
             $Atras="../";
@@ -795,21 +796,57 @@ class Compra extends ProcesoVenta{
         
         $Impuestos= round($Subtotal*$TipoIVA);
         $Total=$Subtotal+$Impuestos;
-        //////Agrego el registro           
-        $tab="ordenesdecompra_items";
-        $NumRegistros=10;
+        $sql="SELECT * FROM ordenesdecompra_items WHERE NumOrden='$idOrden' AND idProducto='$idProducto'";
+        $Consulta=$this->Query($sql);
+        $DatosItem=$this->FetchAssoc($Consulta);
+        if($DatosItem==''){
+            //////Agrego el registro           
+            $tab="ordenesdecompra_items";
+            $NumRegistros=10;
 
-        $Columnas[0]="NumOrden";        $Valores[0]=$idOrden;
-        $Columnas[1]="idProducto";      $Valores[1]=$idProducto;
-        $Columnas[2]="Cantidad";        $Valores[2]=$Cantidad;
-        $Columnas[3]="ValorUnitario";   $Valores[3]=$CostoUnitario;
-        $Columnas[4]="Subtotal";        $Valores[4]=$Subtotal;
-        $Columnas[5]="IVA";             $Valores[5]=$Impuestos;
-        $Columnas[6]="Total";           $Valores[6]=$Total;
-        $Columnas[7]="Tipo_Impuesto";   $Valores[7]=$TipoIVA;
-        $Columnas[8]="Referencia";      $Valores[8]=$Referencia;  
-        $Columnas[9]="Descripcion";     $Valores[9]=$Nombre;   
-        $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+            $Columnas[0]="NumOrden";        $Valores[0]=$idOrden;
+            $Columnas[1]="idProducto";      $Valores[1]=$idProducto;
+            $Columnas[2]="Cantidad";        $Valores[2]=$Cantidad;
+            $Columnas[3]="ValorUnitario";   $Valores[3]=$CostoUnitario;
+            $Columnas[4]="Subtotal";        $Valores[4]=$Subtotal;
+            $Columnas[5]="IVA";             $Valores[5]=$Impuestos;
+            $Columnas[6]="Total";           $Valores[6]=$Total;
+            $Columnas[7]="Tipo_Impuesto";   $Valores[7]=$TipoIVA;
+            $Columnas[8]="Referencia";      $Valores[8]=$Referencia;  
+            $Columnas[9]="Descripcion";     $Valores[9]=$Nombre;   
+            $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+        }else{
+            $idItem=$DatosItem["ID"];
+            $sql="UPDATE ordenesdecompra_items SET Cantidad=Cantidad+$Cantidad, Subtotal=ValorUnitario*Cantidad,"
+                    . "IVA=round(Subtotal*Tipo_Impuesto),Total=Subtotal+IVA WHERE ID='$idItem'";
+            $this->Query($sql);
+        }
+    }
+    
+    //Clase para agregar un item a una compra
+    public function AgregueItemDesdeOrdenCompra($idCompra,$idOrdenCompra,$Vector) {
+        $sql="SELECT * FROM ordenesdecompra_items WHERE NumOrden='$idOrdenCompra'";
+        $Consulta=$this->Query($sql);
+        //////Agrego el registro           
+        $tab="factura_compra_items";
+        $NumRegistros=8;
+        while($DatosOC=$this->FetchAssoc($Consulta)){
+            $Columnas[0]="idFacturaCompra";     $Valores[0]=$idCompra;
+            $Columnas[1]="idProducto";          $Valores[1]=$DatosOC["idProducto"];
+            $Columnas[2]="Cantidad";            $Valores[2]=$DatosOC["Cantidad"];
+            $Columnas[3]="CostoUnitarioCompra"; $Valores[3]=$DatosOC["ValorUnitario"];
+            $Columnas[4]="SubtotalCompra";      $Valores[4]=$DatosOC["Subtotal"];
+            $Columnas[5]="ImpuestoCompra";      $Valores[5]=$DatosOC["IVA"];
+            $Columnas[6]="TotalCompra";         $Valores[6]=$DatosOC["Total"];
+            $Columnas[7]="Tipo_Impuesto";       $Valores[7]=$DatosOC["Tipo_Impuesto"];
+
+            $this->InsertarRegistro($tab,$NumRegistros,$Columnas,$Valores);
+            
+        }
+        
+        
+
+        
     }
     //Fin Clases
 }

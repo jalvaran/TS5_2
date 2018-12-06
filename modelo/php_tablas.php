@@ -4456,7 +4456,11 @@ EOD;
         if($VistaFactura==1)
         $this->PDF->SetY(246);
         $this->PDF_Write($html);
-        
+        if($VistaFactura==3){
+            $this->PDF_Write("<br>");
+            $html=$this->FirmaDocumentos();
+            $this->PDF_Write($html);
+        }
         $this->PDF_Output("Factura_$CodigoFactura");
     }
     
@@ -4709,7 +4713,10 @@ EOD;
         
         $html= $this->HTML_Movimiento_Contable_FC($idCompra);
         //print($html);
-        $this->PDF_Write(($html));
+        $this->PDF_Write($html);
+        $this->PDF_Write("<br>");
+        $html= $this->FirmaDocumentos();
+        $this->PDF_Write($html);
         //$Position=$this->PDF->GetY();
         //if($Position>246){
           //$this->PDF_Add();
@@ -4722,6 +4729,17 @@ EOD;
         $this->PDF_Output("FC_$CodigoFactura");
     }
     
+    public function FirmaDocumentos() {
+        $html = '<table border="1" cellpadding="2" cellspacing="0" align="left">
+            <tr align="left" >
+                <td style="height: 100px;" >Preparado:</td>
+                <td style="height: 100px;" >Revisado:</td>
+                <td style="height: 100px;" >Aprobado:</td>
+                <td style="height: 100px;" >Contabilizado:</td>
+            </tr>
+        </table>';
+        return($html);
+    }
     //Encabezado de las Facturas
     
     public function PDF_Encabezado_Factura_Compra($idCompra) {
@@ -4780,7 +4798,7 @@ $tbl = <<<EOD
 </table>
 <table cellspacing="0" cellpadding="2" border="1">
     <tr>
-        <td align="center" ><strong>Comprador: </strong></td>
+        <td align="center" ><strong>Realiza: </strong></td>
         <td align="center" ><strong>Documento Referencia:</strong></td>
     </tr>
     <tr>

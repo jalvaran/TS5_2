@@ -10,7 +10,7 @@ $myTitulo="Ordenes de Compra";
  * 
  */
 
-//$Vector["NuevoRegistro"]["Deshabilitado"]=1;            
+$Vector["NuevoRegistro"]["Deshabilitado"]=1;            
 //$Vector["VerRegistro"]["Deshabilitado"]=1;                      
 $Vector["EditarRegistro"]["Deshabilitado"]=1; 
 
@@ -39,6 +39,15 @@ $Vector["NuevaAccion"]["Editar"]["Titulo"]="Editar";
 $Vector["NuevaAccion"]["Editar"]["Link"]=$Ruta;
 $Vector["NuevaAccion"]["Editar"]["ColumnaLink"]="ID";
 $Vector["NuevaAccion"]["Editar"]["Target"]="_blank";
+
+
+//Nueva Accion
+$Ruta="CrearCompraDesdeOrden.php?idOrden=";
+$Vector["NuevaAccionLink"][1]="CrearCompra";
+$Vector["NuevaAccion"]["CrearCompra"]["Titulo"]="Crear Compra";
+$Vector["NuevaAccion"]["CrearCompra"]["Link"]=$Ruta;
+$Vector["NuevaAccion"]["CrearCompra"]["ColumnaLink"]="ID";
+$Vector["NuevaAccion"]["CrearCompra"]["Target"]="_blank";
 
 /*
  * 

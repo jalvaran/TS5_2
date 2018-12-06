@@ -14,8 +14,14 @@ $idSede=$obCompra->normalizar($_REQUEST["idSucursal"]);
 $TipoCompra=$obCompra->normalizar($_REQUEST["TipoCompra"]);
 $NumeroFactura=$obCompra->normalizar($_REQUEST["TxtNumFactura"]);
 $Concepto=$obCompra->normalizar($_REQUEST["TxtConcepto"]);
-$idCompra=$obCompra->CrearCompra($Fecha, $idTercero, "", $CentroCosto, $idSede, $idUser,$TipoCompra,$NumeroFactura,$Concepto, $Vector);
+$idCompra=$obCompra->CrearCompra($Fecha, $idTercero, "", $CentroCosto, $idSede, $idUser,$TipoCompra,$NumeroFactura,$Concepto, "");
+if(isset($_REQUEST["TxtIdOrdenOrdenCompra"])){
+    $idOrden=$obCompra->normalizar($_REQUEST["TxtIdOrdenOrdenCompra"]);
+    $obCompra->AgregueItemDesdeOrdenCompra($idCompra, $idOrden, "");    
+}
+
 header("location:$myPage?idCompra=$idCompra");
+
       
 }
 //Verificamos si se recibe la peticion de Agregar un item a la compra
