@@ -63,7 +63,7 @@ include_once("../sesiones/php_control.php");
         while($DatosPestanas=$obCon->FetchArray($Datos)){
             $Submenus[$i]=$DatosPestanas["ID"];
             if($i==0){
-            $css->MenuAlfaIni($DatosPestanas["Nombre"]);
+                $css->MenuAlfaIni($DatosPestanas["Nombre"]);
             }else{
                 $css->SubMenuAlfa($DatosPestanas["Nombre"],$DatosPestanas["Orden"]);
             }

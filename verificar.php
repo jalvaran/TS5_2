@@ -30,7 +30,7 @@ include("modelo/php_conexion.php");
 				$_SESSION['idUser'] = "A";
 			}
 				
-				header("Location: VMenu/Menu.php"); 
+                        header("Location: modulos/menu/Menu.php"); 
                         //echo'<script language="javascript">window.location=" VMenu/Menu.php"</script>';
 		}else{
 			exit("<a href='login/index.php' ><img src='images/401.png'>Usuario o Password Incorrecto</a>");

@@ -236,7 +236,7 @@ class Documento extends Tabla{
         $this->PDF_Encabezado($fecha,1, $idFormato, "",$Documento);
         $html="<br><br><br><br><pre>";
         $html.="<strong>El día $DatosComprobante[Fecha], se realiza por parte del Colaborador(a) $DatosUsuarios[Nombre] $DatosUsuarios[Apellido], Identificado con Documento $DatosUsuarios[Identificacion],"
-             . "Un movimiento de $DatosComprobante[Movimiento] en inventarios de $DatosComprobante[Cantidad] Unidades del producto $DatosComprobante[Nombre] con Referencia:  $DatosComprobante[Referencia],"
+             . "Por motivo: $DatosComprobante[Observaciones] ,Un movimiento de $DatosComprobante[Movimiento] en inventarios de $DatosComprobante[Cantidad] Unidades del producto $DatosComprobante[Nombre] con Referencia:  $DatosComprobante[Referencia],"
              . "Para Constancia se firma por las partes:</strong> </pre>"; 
         $this->PDF_Write("<br>".$html);
         $html=$this->HTML_Firmas_Documentos();

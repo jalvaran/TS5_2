@@ -199,3 +199,17 @@ CREATE VIEW vista_nomina_servicios_turnos AS
 SELECT *, (SELECT Nombre FROM empresa_pro_sucursales WHERE empresa_pro_sucursales.ID=nomina_servicios_turnos.Sucursal LIMIT 1) AS NombreSucursal,
 (SELECT RazonSocial FROM proveedores WHERE proveedores.Num_Identificacion=nomina_servicios_turnos.Tercero LIMIT 1) AS NombreTercero
 FROM nomina_servicios_turnos WHERE Estado<>'ANULADO';
+
+
+DROP VIEW IF EXISTS `vista_balancextercero1`;
+CREATE VIEW vista_balancextercero1 AS
+SELECT `Tercero_Identificacion`,`Tercero_Razon_Social`,`CuentaPUC`,
+SUM(`Debito`) AS Debitos,SUM(`Credito`) AS Creditos, (SUM(`Debito`)-SUM(`Credito`)) AS Neto FROM `librodiario` 
+GROUP BY `Tercero_Identificacion` ORDER BY SUBSTRING(`CuentaPUC`,1,8);
+
+DROP VIEW IF EXISTS `vista_balancextercero2`;
+CREATE VIEW vista_balancextercero2 AS
+SELECT `Tercero_Identificacion`,`Tercero_Razon_Social`,`CuentaPUC` as Cuenta,
+SUM(`Debito`) AS Debitos,SUM(`Credito`) AS Creditos,(SUM(`Debito`)-SUM(`Credito`)) AS Neto FROM `librodiario` 
+GROUP BY `Tercero_Identificacion` ORDER BY SUBSTRING(`CuentaPUC`,1,8);
+

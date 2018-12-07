@@ -1126,33 +1126,71 @@ class PageConstruct extends html_estruct_class{
             $sql="SELECT Nombre,Apellido,Identificacion,TipoUser FROM usuarios WHERE idUsuarios='$idUsuario'";
             $Consulta=$obCon->Query($sql);
             $DatosUsuario=$obCon->FetchAssoc($Consulta);
+            $TipoUser=$DatosUsuario["TipoUser"];
             $NombreUsuario=$DatosUsuario["Nombre"]." ".$DatosUsuario["Apellido"];
             
             $this->MenuLateralInit();    
                 $this->PanelInfoUser($NombreUsuario);
                 //$css->PanelBusqueda(); //uso futuro
-                $this->PanelLateralInit("MENU GENERAL");
-                    $Consulta=$obCon->ConsultarTabla("menu"," WHERE Estado=1 ORDER BY Orden ASC");
+                $this->PanelLateralInit("<a href='../menu/Menu.php'>MENU GENERAL</a>");
+                    $sql="SELECT m.ID,m.CSS_Clase,m.Nombre, m.Pagina,m.Target,m.Image,m.Orden, c.Ruta FROM menu m "
+                    . "INNER JOIN menu_carpetas c ON c.ID=m.idCarpeta WHERE m.Estado=1 ORDER BY m.Orden ASC";
+                    $Consulta=$obCon->Query($sql);
+                    //$Consulta=$obCon->ConsultarTabla("menu"," WHERE Estado=1 ORDER BY Orden ASC");
                     while($DatosMenu=$obCon->FetchArray($Consulta)){
                         $idMenu=$DatosMenu["ID"];
-                        $this->PanelMenuGeneralInit(utf8_encode($DatosMenu["Nombre"]),$DatosMenu["CSS_Clase"],0,"");
-                            $ConsultaPestanas=$obCon->ConsultarTabla("menu_pestanas"," WHERE idMenu='$idMenu' AND Estado=1 ORDER BY Orden ASC");
-                            $this->PanelPestanaInit();
-                            while($DatosPestanas=$obCon->FetchAssoc($ConsultaPestanas)){
-                                $idPestana=$DatosPestanas["ID"];
-                                $this->PanelPestana(utf8_encode($DatosPestanas["Nombre"]), "fa fa-circle-o text-red", "");
-                                $this->PanelSubMenuInit();
-                                $ConsultaSubmenus=$obCon->ConsultarTabla("menu_submenus"," WHERE idPestana='$idPestana' AND Estado=1 ORDER BY Orden ASC");
-                                while($DatosSubMenu=$obCon->FetchAssoc($ConsultaSubmenus)){
-                                    $js="";
-                                    $Ruta="#";
-                                    $this->PanelSubMenu(utf8_encode($DatosSubMenu["Nombre"]), $Ruta, $DatosSubMenu["JavaScript"], "fa fa-circle-o text-aqua");
-                                }
-                                $this->PanelSubMenuFin();
+                        if($DatosUsuario["TipoUser"]=="administrador"){
+                            $Visible=1;
+                        }else{
+                            $Visible=0;
+                            $sql="SELECT ID FROM paginas_bloques WHERE TipoUsuario='$TipoUser' AND Pagina='$DatosMenu[Pagina]' AND Habilitado='SI'";
+                            $DatosUser=$obCon->Query($sql);
+                            $DatosUser=$obCon->FetchArray($DatosUser);
+                            if($DatosUser["ID"]>0){
+                                $Visible=1;
                             }
-                            $this->PanelPestanaFin();
-                            
-                        $this->PanelMenuGeneralFin();
+                        }
+                        if($Visible==1){
+                            $this->PanelMenuGeneralInit(utf8_encode($DatosMenu["Nombre"]),$DatosMenu["CSS_Clase"],0,"");
+                                $ConsultaPestanas=$obCon->ConsultarTabla("menu_pestanas"," WHERE idMenu='$idMenu' AND Estado=1 ORDER BY Orden ASC");
+                                $this->PanelPestanaInit();
+                                while($DatosPestanas=$obCon->FetchAssoc($ConsultaPestanas)){
+                                    $idPestana=$DatosPestanas["ID"];
+                                    
+                                    $ConsultaSubmenus=$obCon->ConsultarTabla("menu_submenus"," WHERE idPestana='$idPestana' AND Estado=1 ORDER BY Orden ASC");
+                                    $IniciaPestana=1;
+                                    while($DatosSubMenu=$obCon->FetchAssoc($ConsultaSubmenus)){
+                                        
+                                        if($DatosUsuario["TipoUser"]=="administrador"){
+                                        $Visible=1;
+                                        }else{
+                                            $Visible=0;
+                                            $sql="SELECT ID FROM paginas_bloques WHERE TipoUsuario='$TipoUser' AND Pagina='$DatosSubMenu[Pagina]' AND Habilitado='SI'";
+                                            $DatosUser=$obCon->Query($sql);
+                                            $DatosUser=$obCon->FetchArray($DatosUser);
+                                            if($DatosUser["ID"]>0){
+                                                $Visible=1;
+                                            }
+                                        }
+                                        
+                                        $js="";
+                                        $Ruta="#";
+                                        if($Visible==1){
+                                            if($IniciaPestana==1){
+                                                $IniciaPestana=0;
+                                                $this->PanelPestana(utf8_encode($DatosPestanas["Nombre"]), "fa fa-circle-o text-red", "");
+                                                $this->PanelSubMenuInit();
+                                            }
+                                            $this->PanelSubMenu(utf8_encode($DatosSubMenu["Nombre"]), $Ruta, $DatosSubMenu["JavaScript"], "fa fa-circle-o text-aqua");
+                                        }
+                                        
+                                    }
+                                    $this->PanelSubMenuFin();
+                                }
+                                $this->PanelPestanaFin();
+
+                            $this->PanelMenuGeneralFin();
+                        }
                     }
                     
                 $this->CPanelLateral();
@@ -1599,6 +1637,82 @@ class PageConstruct extends html_estruct_class{
                     </div>');
         }
         
+        public function TituloMenu($Titulo) {
+            print('<h3 style= color:#d4b038>'.$Titulo.'</h3><br>');
+        }
+        
+        public function IniciaTabs() {
+            print('<div class="div-tabs">
+            <ul class="nav nav-tabs">');
+        }
+        
+        public function NuevaTab($idTab,$Titulo,$vector,$Activa='') {
+            if($Activa==1){
+                $Activa='class="active"';
+            }
+            print('<li '.$Activa.'><a href="#'.$idTab.'" data-toggle="tab" aria-expanded="true">'.$Titulo.'</a></li>');
+        }
+        
+        public function CierraTabs() {
+            print('</ul>');
+        }
+        
+        public function FinTabs() {
+            print('</div>');
+        }
+        
+        
+        public function IniciaContenidoTabs() {
+            print('<div class="tab-content">');
+        }
+        
+        public function FinContenidoTabs() {
+            print('</div>');
+        }
+        
+        public function ContenidoTabs($idTab,$vector,$Activo='class="tab-pane"') {
+            if($Activo==1){
+                $Activo='class="tab-pane active"';
+            }
+            print('<div '.$Activo.' id="'.$idTab.'">');
+        }
+        
+        public function CierreContenidoTabs() {
+            print('</div>');
+        }
+        
+        public function ImageLink($Link,$Target,$Imagen,$vector,$js,$style='') {
+            print('<a href="'.$Link.'" target="'.$Target.'" ><img src="'.$Imagen.'" '.$js.' alt="" '.$style.'></a>');
+        }
+        
+        
+        function SubTabs($link,$target,$image,$SubTitle,$js=""){
+		
+		print('	
+              <div class="col-md-3">
+                    <a href="'.$link.'" target="'.$target.'" class="gal" '.$js.'><img src="'.$image.'" alt="" style="width: 120px;height: 120px;"><span></span></a>
+                    <div class="col2"><span class="col3"><a href="'.$link.'" target="'.$target.'">'.utf8_encode($SubTitle).'</a></span></div>
+                  </div>
+		');
+	}
+        
+        function IniciaMenu($Title){
+		
+		print('
+		
+			<div class="">
+			  <h3 class="">'.$Title.'</h3>
+			</div>  
+			 <div class="tabs tb gallery">
+             
+            
+					
+		');
+	}
+        
+        function FinMenu(){
+            print('</div></div>');
+	}
         
         //////////////////////////////////FIN
 }
