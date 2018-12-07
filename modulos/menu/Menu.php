@@ -2,6 +2,12 @@
 /**
  * Pagina base para la plataforma TSS
  * 2018-11-27, Julian Alvaran Techno Soluciones SAS
+ * 
+ * es recomendable No usar los siguientes ID para ningún objeto:
+ * FrmModal, ModalAcciones,DivFormularios,BtnModalGuardar,DivOpcionesTablas,
+ * DivControlCampos,DivOpciones1,DivOpciones2,DivOpciones3,DivParametrosTablas
+ * TxtTabla, TxtCondicion,TxtOrdenNombreColumna,TxtOrdenTabla,TxtLimit,TxtPage,tabla
+ * 
  */
 $myPage="Menu.php";
 $myTitulo="Plataforma TSS";
@@ -20,7 +26,7 @@ $TipoUser=$DatosUsuario["TipoUser"];
 
 $css->PageInit($myTitulo);
     
-        $css->CrearDiv("DivMenu", "container", "center", 1, 1);
+        $css->CrearDiv("DivMenu", "container", "center", 1, 1);        
         
 	$css->IniciaMenu("Menú"); 
         
@@ -65,7 +71,7 @@ $css->PageInit($myTitulo);
 
 $css->PageFin();
 
-print('<script src="jsPages/funciones.js"></script>');  //scrip propio de la pagina
+print('<script src="jsPages/funciones.js"></script>');  //script propio de la pagina
 
 $css->Cbody();
 $css->Chtml();

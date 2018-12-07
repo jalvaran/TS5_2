@@ -272,13 +272,63 @@ class PageConstruct extends html_estruct_class{
         $this->CabeceraFin();
         $this->ConstruirMenuLateral($idUser, "");
         $this->CrearDiv("principal", "", "left", 1, 1);    
-        $this->CrearDiv("Contenido", "content-wrapper", "", 1, 1);
+        $this->CrearDiv("", "content-wrapper", "", 1, 1);
+        $this->OpcionesParaTablasDB();
+        $this->CrearDiv("ContenidoPagina", "container", "", 1, 1);
+    }
+    
+    public function OpcionesParaTablasDB() {
+        //$this->BotonAbreModal("Abrir", "ModalAcciones", "", "azul");
+        
+        $JSBoton="onsubmit='GuardarRegistro(event);'";
+        $this->form("FrmModal", "", "", "", "", "", "", $JSBoton);
+        
+            $this->Modal("ModalAcciones", "TSS", "", 0, 0, 1);
+
+                    $this->CrearDiv("DivFormularios", "", "", 1, 1);
+                    $this->CerrarDiv();
+
+            $JSBoton="";
+            
+            $this->CModal("BtnModalGuardar", $JSBoton, "submit", "Guardar");
+        $this->Cform();           
+        
+        
+        $this->CrearDiv("DivOpcionesTablas", "", "left", 1, 1);
+        
+            $this->CrearDiv("DivControlCampos", "col-sm-3", "left", 1, 1); //Control de campos
+            $this->CerrarDiv();
+            
+            $this->CrearDiv("DivOpciones1", "col-sm-3", "left", 1, 1); //Busquedas
+            $this->CerrarDiv();
+            
+            $this->CrearDiv("DivOpciones2", "col-sm-3", "left", 1, 1); //Acciones
+            $this->CerrarDiv();
+             
+            $this->CrearDiv("DivOpciones3", "col-sm-3", "left", 1, 1); //Agregar
+            $this->CerrarDiv();
+            
+        $this->CerrarDiv();
+        
+        $this->CrearDiv("DivParametrosTablas", "", "", 0, 0);
+            $this->CrearInputText("TxtTabla", "text", "", "", "", "", "", "", 300, 30, 0, 0,"1em");
+            $this->CrearInputText("TxtCondicion", "text", "", "", "", "", "", "", 300, 30, 0, 0,"1em");
+            $this->CrearInputText("TxtOrdenNombreColumna", "text", "", "", "", "", "", "", 300, 30, 0, 0,"1em");
+            $this->CrearInputText("TxtOrdenTabla", "text", "", "DESC", "", "", "", "", 300, 30, 0, 0,"1em");
+            $this->CrearInputText("TxtLimit", "text", "", "10", "", "", "", "", 300, 30, 0, 0,"1em");
+            $this->CrearInputText("TxtPage", "text", "", "1", "", "", "", "", 300, 30, 0, 0,"1em");
+        $this->CerrarDiv();    
+        
+        $this->CrearDiv("tabla", "", "", 1, 1); //Se dibujan las tablas realizando peticiones por ajax
+        
+        $this->CerrarDiv();
     }
                 
     /**
      * Fin de la pagina
      */
     public function PageFin() {
+        $this->CerrarDiv();
         $this->CerrarDiv();
         $this->FooterPage();
         $this->CrearDiv("DivBarraControles", "", "", 0, 0);
@@ -620,7 +670,7 @@ class PageConstruct extends html_estruct_class{
         print('<script src="../../dist/js/adminlte.min.js"></script>');
         print('<script src="../../dist/js/admintss.js"></script>');
         print('<script src="../../bower_components/select2/dist/js/select2.full.min.js"></script>');
-       
+        print('<script src="../../general/js/administrador.js"></script>');  //script propio de la pagina
         //print('<script type="text/javascript" src="../ext/jquery/jquery-1.11.0.min.js"></script>');
         
     }
@@ -1113,8 +1163,8 @@ class PageConstruct extends html_estruct_class{
          * @param type $js
          * @param type $Clase
          */
-        public function PanelSubMenu($Nombre,$Link,$js,$Clase) {
-            print('<li><a href="'.$Link.'" '.$js.'><i class="'.$Clase.'"></i> '.$Nombre.'</a></li>');
+        public function PanelSubMenu($Nombre,$Link,$js,$Clase,$Target) {
+            print('<li><a href="'.$Link.'" target='.$Target.' '.$js.'><i class="'.$Clase.'"></i> '.$Nombre.'</a></li>');
         }
         /**
          * Construye el menu lateral dibujando solo lo que el usuario por su tipo tiene permitido
@@ -1173,15 +1223,21 @@ class PageConstruct extends html_estruct_class{
                                             }
                                         }
                                         
-                                        $js="";
-                                        $Ruta="#";
+                                       
+                                        
                                         if($Visible==1){
                                             if($IniciaPestana==1){
                                                 $IniciaPestana=0;
                                                 $this->PanelPestana(utf8_encode($DatosPestanas["Nombre"]), "fa fa-circle-o text-red", "");
                                                 $this->PanelSubMenuInit();
                                             }
-                                            $this->PanelSubMenu(utf8_encode($DatosSubMenu["Nombre"]), $Ruta, $DatosSubMenu["JavaScript"], "fa fa-circle-o text-aqua");
+                                            $DatosCarpeta=$obCon->DevuelveValores("menu_carpetas", "ID", $DatosSubMenu["idCarpeta"]);
+                                            $Ruta="#";
+                                            if($DatosSubMenu["JavaScript"]==''){
+                                                $Ruta='../'.$DatosCarpeta["Ruta"].$DatosSubMenu["Pagina"];
+                                            }
+                                            
+                                            $this->PanelSubMenu(utf8_encode($DatosSubMenu["Nombre"]), $Ruta, $DatosSubMenu["JavaScript"], "fa fa-circle-o text-aqua",$DatosSubMenu["Target"]);
                                         }
                                         
                                     }
