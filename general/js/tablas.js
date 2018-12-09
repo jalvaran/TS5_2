@@ -5,85 +5,6 @@
  * 317 774 0609
  */
 
-
-/*
- * Dibuja los Filtros
- * @returns {undefined}
- */
-function DibujaFiltros(Tabla){
-       
-    var form_data = new FormData();
-        form_data.append('Accion', 3);
-        form_data.append('Tabla', Tabla);
-        $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
-        //dataType: 'json',
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: form_data,
-        type: 'post',
-        success: function(data){
-           
-          if (data != "") { 
-              document.getElementById('DivOpciones1').innerHTML=data;
-              
-          }else {
-            alert("No hay resultados para la consulta");
-          }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(thrownError);
-          }
-      })        
-}  
-
-/*
- * Selecciona la tabla a dibujar
- * @param {type} Tabla
- * @returns {undefined}
- */
-function SeleccionarTabla(Tabla){
-    
-    document.getElementById('TxtTabla').value=Tabla;
-    var Condicion = document.getElementById('TxtCondicion').value;
-    var OrdenColumna = document.getElementById('TxtOrdenNombreColumna').value;
-    var Orden = document.getElementById('TxtOrdenTabla').value;
-    var Limit = document.getElementById('TxtLimit').value;
-    var Page = document.getElementById('TxtPage').value;
-    var form_data = new FormData();
-        form_data.append('Accion', 2);
-        form_data.append('Tabla', Tabla);
-        form_data.append('Condicion', Condicion);
-        form_data.append('OrdenColumna', OrdenColumna);
-        form_data.append('Orden', Orden);
-        form_data.append('Limit', Limit);
-        form_data.append('Page', Page);
-        $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
-        //dataType: 'json',
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: form_data,
-        type: 'post',
-        success: function(data){
-           
-          if (data != "") { 
-              document.getElementById('tabla').innerHTML=data;
-              
-          }else {
-            alert("No hay resultados para la consulta");
-          }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            
-            alertify.alert('Error en SeleccionarTabla'+xhr.status);
-            alertify.alert(thrownError);
-          }
-      })        
-}  
 /**
  * Escribe en una caja de texto
  * @param {type} idCaja
@@ -106,39 +27,19 @@ function CambiarOrden(){
     }
 }
 
-/**
- * Dibuja una tabla con todos sus componentes
- * @param {type} Tabla
- * @returns {undefined}
- */
-function DibujeTabla(Tabla=''){
-    document.getElementById('ContenidoPagina').innerHTML="";
-    document.getElementById('tabla').innerHTML='<div style="text-align:center"><img src="../../images/processing.gif" alt="Procesando" height="100" width="100"></div>';
-    if(Tabla==''){
-        var Tabla = document.getElementById('TxtTabla').value;
-    }else{
-       document.getElementById('TxtTabla').value=Tabla;
-    }
-    LimpiarFiltros();
-    SeleccionarTabla(Tabla);
-    DibujaAccionesTablas();
-    DibujaFiltros(Tabla);
-    DibujaControlCampos();
-    DibujaOperacionesTablas(Tabla);
-}
+
 /**
  * Limpia las cajas de texto utilizadas para los filtros
  * @returns {undefined}
  */
-function LimpiarFiltros(){
-    document.getElementById('TxtOrdenTabla').value='DESC';
-    document.getElementById('TxtCondicion').value='';
-    document.getElementById('TxtOrdenNombreColumna').value='';
-    document.getElementById('TxtPage').value='1';
-    if ($('#DivFiltrosAplicados').length){
-        document.getElementById('DivFiltrosAplicados').innerHTML='';
-        var Tabla = document.getElementById('TxtTabla').value
-        SeleccionarTabla(Tabla);
+function LimpiarFiltros(Tabla,DivTablas){
+    document.getElementById(Tabla+'_orden').value='DESC';
+    document.getElementById(Tabla+'_condicion').value='';
+    document.getElementById(Tabla+'_ordenColumna').value='';
+    document.getElementById(Tabla+'_page').value='1';
+    if ($('#'+Tabla+'_DivFiltrosAplicados').length){
+        document.getElementById(Tabla+'_DivFiltrosAplicados').innerHTML='';        
+        DibujeTablaDB(Tabla,DivTablas);
     }
     
 }
@@ -179,18 +80,18 @@ $(document).on("click",function(e) {
  * Agrega un condicional a la caja de texto utilizada para ese fin
  * @returns {undefined}
  */
-function AgregaCondicional(){
+function AgregaCondicionalDB(Tabla,DivTablas){
    
-    var Tabla = document.getElementById('TxtTabla').value
-    var Columna = document.getElementById('CmbColumna').value
-    var Condicional = document.getElementById('CmbCondicion').value
-    var Busqueda = document.getElementById('TxtBusquedaTablas').value
-    var CondicionActual = document.getElementById('TxtCondicion').value
+    
+    var Columna = document.getElementById(Tabla+'_CmbColumna').value
+    var Condicional = document.getElementById(Tabla+'_CmbCondicion').value
+    var Busqueda = document.getElementById(Tabla+'_TxtBusquedaTablas').value
+    var CondicionActual = document.getElementById(Tabla+'_condicion').value
     var CondicionFinal="";
     var Operador = "";
-    var combo = document.getElementById("CmbColumna");
+    var combo = document.getElementById(Tabla+"_CmbColumna");
     var ColumnaSeleccionada = combo.options[combo.selectedIndex].text;
-    document.getElementById('TxtPage').value=1;
+    document.getElementById(Tabla+'_page').value=1;
     if(CondicionActual != ''){
         Operador = " AND ";
     }
@@ -220,14 +121,14 @@ function AgregaCondicional(){
             CondicionFinal= Operador + Columna + " <> '" + Busqueda + "'";            
             break;    
     } 
-    document.getElementById('TxtCondicion').value=document.getElementById('TxtCondicion').value+" "+CondicionFinal;
+    document.getElementById(Tabla+'_condicion').value=document.getElementById(Tabla+'_condicion').value+" "+CondicionFinal;
     
-    SeleccionarTabla(Tabla);
-    if(document.getElementById('DivFiltrosAplicados').innerHTML==''){
-        document.getElementById('DivFiltrosAplicados').innerHTML='<a href="#" id="aBorrarFiltros" onclick="LimpiarFiltros();" style="color:green"><span class="btn btn-block btn-primary btn-xs"><strong>Limpiar Filtros</strong></span></a> <strong>Filtros Aplicados: </strong><br>';
+    DibujeTablaDB(Tabla,DivTablas);
+    if(document.getElementById(Tabla+'_DivFiltrosAplicados').innerHTML==''){
+        document.getElementById(Tabla+'_DivFiltrosAplicados').innerHTML='<a href="#" id="aBorrarFiltros" onclick=LimpiarFiltros(`'+Tabla+'`,`'+DivTablas+'`); style="color:green"><span class="btn btn-block btn-primary btn-xs"><strong>Limpiar Filtros</strong></span></a> <strong>Filtros Aplicados: </strong><br>';
     }
     var lista='<i class="fa fa-circle-o text-aqua"></i><span> '+ColumnaSeleccionada+' '+ Condicional + ' '+Busqueda+' </span><br>';
-    document.getElementById('DivFiltrosAplicados').innerHTML=document.getElementById('DivFiltrosAplicados').innerHTML+" "+lista;
+    document.getElementById(Tabla+'_DivFiltrosAplicados').innerHTML=document.getElementById(Tabla+'_DivFiltrosAplicados').innerHTML+" "+lista;
     
 }
 
@@ -431,9 +332,10 @@ function DibujaAccionesTablas(){
  * Oculta o muestra un campo de una tabla
  * @param {type} Tabla
  * @param {type} Campo
+ * @param {type} DivTablas
  * @returns {undefined}
  */
-function OcultaMuestraCampoTabla(Tabla,Campo){
+function OcultaMuestraCampoTabla(Tabla,Campo,DivTablas){
        
     var form_data = new FormData();
         form_data.append('Accion', 6);
@@ -451,14 +353,12 @@ function OcultaMuestraCampoTabla(Tabla,Campo){
            
           if (data != "") { 
               if(data=="OK"){
-                  SeleccionarTabla(Tabla);
+                  DibujeTablaDB(Tabla,DivTablas);
                   alertify.success("Estado de la columna "+Campo+" Cambiado");
               }else{
                   alertify.alert(data);
               }
-              
-              SeleccionarTabla(Tabla);
-              
+                            
           }else{
                 alertify.alert("No se pudo dibujar el control de campos para la tabla");
           }
@@ -875,3 +775,83 @@ function ValidacionContrasenaSegura(){
   
 }
 
+
+function DibujeTablaDB(tabla,idDiv){
+      
+    var condicion="";
+    var idCondicion=tabla+"_condicion"; 
+
+    if(document.getElementById(idCondicion)){   
+
+        console.log(document.getElementById(idCondicion).value);
+        condicion=document.getElementById(idCondicion).value;
+
+    }
+    var form_data = new FormData();
+        form_data.append('Accion', 2);
+        form_data.append('Tabla', tabla);
+        form_data.append('Condicion', condicion);
+        form_data.append('OrdenColumna', "");
+        form_data.append('Orden', "");
+        form_data.append('Limit', 10);
+        form_data.append('Page', 1);
+
+    $.ajax({
+    url: '../../general/Consultas/administrador.draw.php',
+    //dataType: 'json',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    success: function(data){
+
+      if (data != "") { 
+          document.getElementById(idDiv).innerHTML=data;
+
+      }else {
+        alert("No hay resultados para la consulta");
+      }
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+
+        alertify.alert('Error en SeleccionarTabla'+xhr.status);
+        alertify.alert(thrownError);
+      }
+    });    
+}
+
+function DibujeOpcionesTablaDB(tabla,idDivOpcionesTabla,idDivTablas){
+            
+    var form_data = new FormData();
+        form_data.append('Accion', 11);
+        form_data.append('Tabla', tabla);
+        form_data.append('DivTablas', idDivTablas);
+        form_data.append('DivOpcionesTablas', idDivOpcionesTabla);
+
+    $.ajax({
+    url: '../../general/Consultas/administrador.draw.php',
+    //dataType: 'json',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    success: function(data){
+
+      if (data != "") { 
+          document.getElementById(idDivOpcionesTabla).innerHTML=data;
+
+      }else {
+        alert("No hay resultados para la consulta");
+      }
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+
+        alertify.alert('Error en SeleccionarTabla'+xhr.status);
+        alertify.alert(thrownError);
+      }
+    }); 
+
+}
+        

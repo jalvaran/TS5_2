@@ -114,3 +114,408 @@ INSERT INTO `empresapro_regimenes` (`ID`, `Regimen`, `Updated`, `Sync`) VALUES
 (2,	'SIMPLIFICADO',	'2018-10-08 04:03:47',	'0000-00-00 00:00:00');
 
 
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'empresa_pro_sucursales\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'empresa_pro_sucursales' WHERE `menu_submenus`.`ID` = 2;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'empresapro_resoluciones_facturacion\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'empresapro_resoluciones_facturacion' WHERE `menu_submenus`.`ID` = 3;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'formatos_calidad\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'formatos_calidad' WHERE `menu_submenus`.`ID` = 4;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'centrocosto\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'centrocosto' WHERE `menu_submenus`.`ID` = 5;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'cajas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'cajas' WHERE `menu_submenus`.`ID` = 6;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'config_tiketes_promocion\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'config_tiketes_promocion' WHERE `menu_submenus`.`ID` = 7;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'costos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'costos' WHERE `menu_submenus`.`ID` = 8;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'usuarios\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'usuarios' WHERE `menu_submenus`.`ID` = 9;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'usuarios_tipo\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'usuarios_tipo' WHERE `menu_submenus`.`ID` = 10;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'impret\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'impret' WHERE `menu_submenus`.`ID` = 12;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'colaboradores\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'colaboradores' WHERE `menu_submenus`.`ID` = 13;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'fechas_descuentos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'fechas_descuentos' WHERE `menu_submenus`.`ID` = 14;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'librodiario\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'librodiario' WHERE `menu_submenus`.`ID` = 15;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'facturas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'facturas' WHERE `menu_submenus`.`ID` = 16;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'subcuentas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'subcuentas' WHERE `menu_submenus`.`ID` = 17;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'cuentasfrecuentes\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'cuentasfrecuentes' WHERE `menu_submenus`.`ID` = 18;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'config_puertos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'config_puertos' WHERE `menu_submenus`.`ID` = 20;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'cajas_aperturas_cierres\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'cajas_aperturas_cierres' WHERE `menu_submenus`.`ID` = 22;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'separados\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'separados' WHERE `menu_submenus`.`ID` = 23;
+
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'facturas_abonos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'facturas_abonos' WHERE `menu_submenus`.`ID` = 24;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_codbarras\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_codbarras' WHERE `menu_submenus`.`ID` = 25;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'cotizacionesv5\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'cotizacionesv5' WHERE `menu_submenus`.`ID` = 27;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'cot_itemscotizaciones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'cot_itemscotizaciones' WHERE `menu_submenus`.`ID` = 28;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'cotizaciones_anexos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'cotizaciones_anexos' WHERE `menu_submenus`.`ID` = 29;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'facturas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'facturas' WHERE `menu_submenus`.`ID` = 32;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_facturacion_detalles\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_facturacion_detalles' WHERE `menu_submenus`.`ID` = 33;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'notascredito\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'notascredito' WHERE `menu_submenus`.`ID` = 34;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'factura_compra\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'factura_compra' WHERE `menu_submenus`.`ID` = 36;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_compras_productos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_compras_productos' WHERE `menu_submenus`.`ID` = 37;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_compras_productos_devoluciones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_compras_productos_devoluciones' WHERE `menu_submenus`.`ID` = 38;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_compras_servicios\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_compras_servicios' WHERE `menu_submenus`.`ID` = 39;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'egresos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'egresos' WHERE `menu_submenus`.`ID` = 41;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'notascontables\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'notascontables' WHERE `menu_submenus`.`ID` = 42;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'compras_activas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'compras_activas' WHERE `menu_submenus`.`ID` = 44;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'registra_ediciones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'registra_ediciones' WHERE `menu_submenus`.`ID` = 54;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'productosalquiler\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'productosalquiler' WHERE `menu_submenus`.`ID` = 56;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'servicios\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'servicios' WHERE `menu_submenus`.`ID` = 57;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_kardex\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_kardex' WHERE `menu_submenus`.`ID` = 59;
+
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_codbarras\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_codbarras' WHERE `menu_submenus`.`ID` = 61;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_departamentos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_departamentos' WHERE `menu_submenus`.`ID` = 63;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_sub1\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_sub1' WHERE `menu_submenus`.`ID` = 64;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_sub2\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_sub2' WHERE `menu_submenus`.`ID` = 65;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_sub3\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_sub3' WHERE `menu_submenus`.`ID` = 66;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_sub4\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_sub4' WHERE `menu_submenus`.`ID` = 67;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_sub5\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_sub5' WHERE `menu_submenus`.`ID` = 68;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'bodega\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'bodega' WHERE `menu_submenus`.`ID` = 69;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'bodegas_externas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'bodegas_externas' WHERE `menu_submenus`.`ID` = 70;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_bajas_altas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_bajas_altas' WHERE `menu_submenus`.`ID` = 71;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_sistemas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_sistemas' WHERE `menu_submenus`.`ID` = 74;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'inventarios_temporal\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'inventarios_temporal' WHERE `menu_submenus`.`ID` = 78;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_diferencia_inventarios\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_diferencia_inventarios' WHERE `menu_submenus`.`ID` = 81;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'restaurante_mesas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'restaurante_mesas' WHERE `menu_submenus`.`ID` = 86;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_promociones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_promociones' WHERE `menu_submenus`.`ID` = 87;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_asignaciones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_asignaciones' WHERE `menu_submenus`.`ID` = 89;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_ventas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_ventas' WHERE `menu_submenus`.`ID` = 91;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_abonos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_abonos' WHERE `menu_submenus`.`ID` = 92;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_devoluciones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_devoluciones' WHERE `menu_submenus`.`ID` = 93;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_cuentasxcobrar\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_cuentasxcobrar' WHERE `menu_submenus`.`ID` = 94;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_comisiones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_comisiones' WHERE `menu_submenus`.`ID` = 95;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'titulos_traslados\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'titulos_traslados' WHERE `menu_submenus`.`ID` = 96;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'comprobantes_ingreso_anulaciones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'comprobantes_ingreso_anulaciones' WHERE `menu_submenus`.`ID` = 97;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'traslados_mercancia\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'traslados_mercancia' WHERE `menu_submenus`.`ID` = 99;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'kardex_alquiler\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'kardex_alquiler' WHERE `menu_submenus`.`ID` = 106;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'restaurante_cierres\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'restaurante_cierres' WHERE `menu_submenus`.`ID` = 107;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'restaurante_pedidos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'restaurante_pedidos' WHERE `menu_submenus`.`ID` = 108;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'registra_eliminaciones\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'registra_eliminaciones' WHERE `menu_submenus`.`ID` = 109;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'traslados_items\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'traslados_items' WHERE `menu_submenus`.`ID` = 111;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'sistemas\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'sistemas' WHERE `menu_submenus`.`ID` = 112;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_inventario_separados\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_inventario_separados' WHERE `menu_submenus`.`ID` = 113;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'productos_lista_precios\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'productos_lista_precios' WHERE `menu_submenus`.`ID` = 122;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'productos_precios_adicionales\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'productos_precios_adicionales' WHERE `menu_submenus`.`ID` = 123;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'libromayorbalances\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'libromayorbalances' WHERE `menu_submenus`.`ID` = 139;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_factura_compra_totales\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_factura_compra_totales' WHERE `menu_submenus`.`ID` = 147;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'registro_autorizaciones_pos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'registro_autorizaciones_pos' WHERE `menu_submenus`.`ID` = 156;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_diferencia_inventarios_selectivos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_diferencia_inventarios_selectivos' WHERE `menu_submenus`.`ID` = 157;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'documento_equivalente_items\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'documento_equivalente_items' WHERE `menu_submenus`.`ID` = 161;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'modelos_db\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'modelos_db' WHERE `menu_submenus`.`ID` = 163;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'modelos_agenda\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'modelos_agenda' WHERE `menu_submenus`.`ID` = 165;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_totales_facturacion\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_totales_facturacion' WHERE `menu_submenus`.`ID` = 167;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'modelos_cierres\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'modelos_cierres' WHERE `menu_submenus`.`ID` = 168;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'factura_compra_notas_devolucion\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'factura_compra_notas_devolucion' WHERE `menu_submenus`.`ID` = 170;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'vista_libro_diario\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'vista_libro_diario' WHERE `menu_submenus`.`ID` = 171;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'documentos_contables_control\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'documentos_contables_control' WHERE `menu_submenus`.`ID` = 174;
+
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'restaurante_pedidos_items\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'restaurante_pedidos_items' WHERE `menu_submenus`.`ID` = 175;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'insumos\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'insumos' WHERE `menu_submenus`.`ID` = 177;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'prod_sub6\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'prod_sub6' WHERE `menu_submenus`.`ID` = 178;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'ordenesdecompra\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'ordenesdecompra' WHERE `menu_submenus`.`ID` = 180;
+
+UPDATE `menu_submenus` 
+SET `JavaScript` = 'onclick=\"DibujeTabla(\'nomina_documentos_equivalentes\')\";',`Target` = '_SELF',`TipoLink` = '1',
+`TablaAsociada` = 'nomina_documentos_equivalentes' WHERE `menu_submenus`.`ID` = 181;
+
+

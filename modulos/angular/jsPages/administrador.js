@@ -16,7 +16,7 @@ function DibujaFiltros(Tabla){
         form_data.append('Accion', 3);
         form_data.append('Tabla', Tabla);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -45,7 +45,6 @@ function DibujaFiltros(Tabla){
  * @returns {undefined}
  */
 function SeleccionarTabla(Tabla){
-    
     document.getElementById('TxtTabla').value=Tabla;
     var Condicion = document.getElementById('TxtCondicion').value;
     var OrdenColumna = document.getElementById('TxtOrdenNombreColumna').value;
@@ -61,7 +60,7 @@ function SeleccionarTabla(Tabla){
         form_data.append('Limit', Limit);
         form_data.append('Page', Page);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -78,9 +77,8 @@ function SeleccionarTabla(Tabla){
           }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            
-            alertify.alert('Error en SeleccionarTabla'+xhr.status);
-            alertify.alert(thrownError);
+            alert(xhr.status);
+            alert(thrownError);
           }
       })        
 }  
@@ -112,12 +110,8 @@ function CambiarOrden(){
  * @returns {undefined}
  */
 function DibujeTabla(Tabla=''){
-    document.getElementById('ContenidoPagina').innerHTML="";
-    document.getElementById('tabla').innerHTML='<div style="text-align:center"><img src="../../images/processing.gif" alt="Procesando" height="100" width="100"></div>';
     if(Tabla==''){
         var Tabla = document.getElementById('TxtTabla').value;
-    }else{
-       document.getElementById('TxtTabla').value=Tabla;
     }
     LimpiarFiltros();
     SeleccionarTabla(Tabla);
@@ -241,7 +235,7 @@ function DibujaOperacionesTablas(Tabla){
         form_data.append('Accion', 4);
         form_data.append('Tabla', Tabla);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -290,7 +284,7 @@ function ConsultaAccionesTablas(){
         form_data.append('TxtAccionSeleccionada', TxtAccionSeleccionada);
         
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -365,7 +359,7 @@ function DibujaControlCampos(){
         form_data.append('Accion', 7);
         form_data.append('Tabla', Tabla);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -376,7 +370,7 @@ function DibujaControlCampos(){
            
           if (data != "") { 
               document.getElementById('DivControlCampos').innerHTML=data;
-              //SeleccionarTabla(Tabla);
+              SeleccionarTabla(Tabla);
               //iCheckCSS(); //Esta funcion no permite realizar funciones, se deshabilita hasta que se encuentre solucion
               
           }else {
@@ -402,7 +396,7 @@ function DibujaAccionesTablas(){
         form_data.append('Accion', 8);
         form_data.append('Tabla', Tabla);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -413,7 +407,7 @@ function DibujaAccionesTablas(){
            
           if (data != "") { 
               document.getElementById('DivOpciones3').innerHTML=data;
-              //SeleccionarTabla(Tabla);
+              SeleccionarTabla(Tabla);
               //iCheckCSS(); //Esta funcion no permite realizar funciones, se deshabilita hasta que se encuentre solucion
               
           }else {
@@ -440,7 +434,7 @@ function OcultaMuestraCampoTabla(Tabla,Campo){
         form_data.append('Tabla', Tabla);
         form_data.append('Campo', Campo);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -484,7 +478,7 @@ function DibujaFormularioNuevoRegistro(Tabla){
         form_data.append('Accion', 9);
         form_data.append('Tabla', Tabla);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -524,7 +518,7 @@ function DibujaFormularioEditarRegistro(Tabla,idEditar){
         form_data.append('Tabla', Tabla);
         form_data.append('idEditar', idEditar);
         $.ajax({
-        url: '../../general/Consultas/administrador.draw.php',
+        url: './Consultas/administrador.draw.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -640,7 +634,7 @@ function GuardarRegistro(event){
         form_data.append('idAccion', idAccion);
         form_data.append('Tabla', Tabla);
         $.ajax({
-        url: '../../general/procesadores/tablas.process.php',
+        url: './procesadores/tablas.process.php',
         //dataType: 'json',
         cache: false,
         contentType: false,

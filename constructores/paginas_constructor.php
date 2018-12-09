@@ -670,11 +670,13 @@ class PageConstruct extends html_estruct_class{
         print('<script src="../../dist/js/adminlte.min.js"></script>');
         print('<script src="../../dist/js/admintss.js"></script>');
         print('<script src="../../bower_components/select2/dist/js/select2.full.min.js"></script>');
-        print('<script src="../../general/js/administrador.js"></script>');  //script propio de la pagina
+        print('<script src="../../general/js/tablas.js"></script>');  //script propio de la pagina
         //print('<script type="text/javascript" src="../ext/jquery/jquery-1.11.0.min.js"></script>');
         
     }
-    
+    public function AgregaAngular(){
+        print('<script src="../../bower_components/angularjs/angular.min.js"></script>');
+    }
     /**
      * Crea una barra de progreso
      * @param type $NombreBarra -> Nombre
@@ -829,7 +831,7 @@ class PageConstruct extends html_estruct_class{
     function FilaTablaDB($tabla,$Datos,$js,$Vector){
         $obCon=new conexion(1);
         $DatosControlTablas=$obCon->DevuelveValores("configuracion_control_tablas", "TablaDB", $tabla);
-        if($DatosControlTablas["Editar"]<>0 or $DatosControlTablas["Editar"]==''){
+        if($DatosControlTablas["Editar"]<>0){
             $OpcionEditar=1;
         }else{
             $OpcionEditar=0;
@@ -926,11 +928,11 @@ class PageConstruct extends html_estruct_class{
      * @param type $styles
      * @param type $np_app
      */
-    public function CrearInputTextButton($type, $idText, $idButton, $class, $name,$nameButton, $title,$titleButton, $value,$valueButton, $placeholder, $autocomplete, $vectorhtml, $Script,$ScriptButton, $styles, $np_app) {
+    public function CrearInputTextButton($type, $idText, $idButton, $class, $name,$nameButton, $title,$titleButton, $value,$valueButton, $placeholder, $autocomplete, $vectorhtml, $Script,$ScriptButton, $styles, $ng_app_text,$ng_app_button='') {
         $this->div("", "input-group", "", "", "", "", "");
-            $this->input($type, $idText, $class, $name, $title, $value, $placeholder, $autocomplete, $vectorhtml, $Script, $styles, $np_app);
+            $this->input($type, $idText, $class, $name, $title, $value, $placeholder, $autocomplete, $vectorhtml, $Script, $styles, $ng_app_text);
             $this->span("", "input-group-btn", "", "");
-                print('<button id='.$idButton.' type="button" class="btn btn-success btn-flat" '.$ScriptButton.'>'.$valueButton.'</button>');
+                print('<button id='.$idButton.' type="button" class="btn btn-success btn-flat" '.$ScriptButton.' '.$ng_app_button.'>'.$valueButton.'</button>');
                 //$this->boton($idButton, "btn btn-info btn-flat", "button", $nameButton, $titleButton, $valueButton, "", $ScriptButton);
             $this->Cspan();
         $this->Cdiv();
