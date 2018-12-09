@@ -755,7 +755,7 @@ class PageConstruct extends html_estruct_class{
      * @param type $NumPage
      * @param type $Vector
      */
-    function CabeceraTabla($Tabla,$Limite,$Titulo,$Columnas,$js,$TotalRegistros,$NumPage,$Vector){
+    function CabeceraTabla($Tabla,$Limite,$Titulo,$Columnas,$js,$TotalRegistros,$NumPage,$Vector,$DivTablas=''){
         $obCon=new conexion(1);
         print("<thead><tr>");
         $ColSpanTitulo=count($Columnas["Field"]);
@@ -763,7 +763,7 @@ class PageConstruct extends html_estruct_class{
             print("<strong></strong>");
         $this->Cth();
         $this->th("", "", 2, 1, "", "");    
-            $this->select("CmbLimit", "form-control", "CmbLimit", "", "", "onchange=CambiarLimiteTablas()", "style=width:200px");
+            $this->select($Tabla."_CmbLimit", "form-control", $Tabla."_CmbLimit", "", "", "onchange=CambiarLimiteTablas('$Tabla','$DivTablas')", "style=width:200px");
                 $Sel=0;
                 if($Limite==10){
                     $Sel=1;
@@ -810,7 +810,7 @@ class PageConstruct extends html_estruct_class{
             
             $NombreColumna=utf8_encode($Columnas["Visualiza"][$key]);
             $this->th("", "", 1, 1, "", "");
-                $js="onclick=EscribirEnCaja('TxtOrdenNombreColumna','$value');CambiarOrden();SeleccionarTabla('$Tabla');";
+                $js="onclick=EscribirEnCaja('".$Tabla."_ordenColumna','$value');CambiarOrden('$Tabla','$DivTablas');DibujeTablaDB('$Tabla','$DivTablas');";
                 $this->a("", "", "#", "", "", "", $js);                    
                     print('<strong>'.$NombreColumna.'</strong>');
                 $this->Ca();
@@ -1051,7 +1051,7 @@ class PageConstruct extends html_estruct_class{
          * @param type $js
          * @param type $vector
          */
-        public function PaginadorTablas($Tabla,$Limit,$PaginaActual,$TotalRegistros,$vector) {
+        public function PaginadorTablas($Tabla,$Limit,$PaginaActual,$TotalRegistros,$vector,$DivTablas='') {
             $this->div("", "col-lg-12", "", "", "", "", "");
             $this->div("", "btn-group-vertical", "", "", "", "", "");
             
@@ -1059,13 +1059,13 @@ class PageConstruct extends html_estruct_class{
             $js="";
             if($PaginaActual<>1){
                 $Estado="";
-                $js="onclick=RetrocederPagina();";
+                $js="onclick=RetrocederPagina('$Tabla','$DivTablas');";
             }
-            $this->input("submit", "BtnRetroceder", "btn btn-block btn-warning btn-xs $Estado", "BtnRetroceder", "Atrás", "Atrás", "", "", "", $js);
+            $this->input("submit", $Tabla."_BtnRetroceder", "btn btn-block btn-warning btn-xs $Estado", $Tabla."_BtnRetroceder", "Atrás", "Atrás", "", "", "", $js);
             
             $TotalPaginas=ceil($TotalRegistros/$Limit);
             
-            $this->select("CmbPage", "btn btn-default btn-xs", "CmbPage", "", "", "onchange=SeleccionaPagina();", "");
+            $this->select($Tabla."_CmbPage", "btn btn-default btn-xs", $Tabla."_CmbPage", "", "", "onchange=SeleccionaPagina('$Tabla','$DivTablas');", "");
             for($i=1;$i<=$TotalPaginas;$i++){
                 $Estado=0;
                 if($PaginaActual==$i){
@@ -1078,12 +1078,12 @@ class PageConstruct extends html_estruct_class{
             }
             $this->Cselect();
             $Estado="";
-            $js="onclick=AvanzarPagina();";
+            $js="onclick=AvanzarPagina('$Tabla','$DivTablas');";
             if($TotalPaginas==$PaginaActual){
                 $Estado="disabled";
                 $js="";
             }
-            $this->input("submit", "BtnAvanzar", "btn btn-block btn-warning btn-xs $Estado", "BtnAvanzar", "Avanzar", "Avanzar", "", "", "", $js);
+            $this->input("submit", $Tabla."_BtnAvanzar", "btn btn-block btn-warning btn-xs $Estado", $Tabla."_BtnAvanzar", "Avanzar", "Avanzar", "", "", "", $js);
             $this->Cdiv();
             $this->Cdiv();
         }

@@ -21,7 +21,7 @@ $css->PageInit($myTitulo);
         
         $css->div("", "", "", "", "", "ng-controller='ControladorTablas'", "");
         
-        $css->button("", "", "", "", "", "Cargar Tabla", "", "", "", "","onclick=DibujeOpcionesTablaDB('usuarios','DivOpcionesTabla','DivTabla');DibujeTablaDB('usuarios','DivTabla');");
+        $css->button("", "", "", "", "", "Cargar Tabla", "", "", "", "","onclick=DibujeOpcionesTablaDB('facturas','DivOpcionesTabla','DivTabla');DibujeTablaDB('facturas','DivTabla');");
             print("Abre");
         $css->Cbutton();
         $css->div("DivOpcionesTabla", "container", "", "", "", "", ""); //aqui se dibujarán las opciones de la tabla

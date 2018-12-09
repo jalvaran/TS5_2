@@ -25,11 +25,15 @@ if( !empty($_REQUEST["Accion"]) ){
         case 2: //dibuja los datos de la tabla
             
             $Tabla=$obCon->normalizar($_REQUEST["Tabla"]);
+            $DivTablas=$obCon->normalizar($_REQUEST["DivTablas"]);
             $Condicion=$obCon->normalizar($_REQUEST["Condicion"]);
             $OrdenColumna=$obCon->normalizar($_REQUEST["OrdenColumna"]);
             $AscDesc=$obCon->normalizar($_REQUEST["Orden"]);
             $NumPage=$obCon->normalizar($_REQUEST["Page"]);
             $limit=$obCon->normalizar($_REQUEST["Limit"]);
+            if($limit==''){
+                $limit=10;
+            }
             /*
             $Tabla="formatos_calidad";
             $Condicion="";
@@ -52,12 +56,12 @@ if( !empty($_REQUEST["Accion"]) ){
             $QueryParcial=$DatosConsulta["QueryParcial"];
             
             if($TotalRegistros>$limit){                
-                $css->PaginadorTablas($Tabla, $limit, $NumPage, $TotalRegistros, "");
+                $css->PaginadorTablas($Tabla, $limit, $NumPage, $TotalRegistros, "",$DivTablas);
             }
             $js="";
             $css->CrearTablaDB($Tabla, $Tabla, "100%", $js, "");
             
-                $css->CabeceraTabla($Tabla,$limit,$TituloTabla,$ColumnasSeleccionadas, $js,$TotalRegistros,$NumPage, "");
+                $css->CabeceraTabla($Tabla,$limit,$TituloTabla,$ColumnasSeleccionadas, $js,$TotalRegistros,$NumPage, "",$DivTablas);
                 
                 $consulta=$obCon->Query($QueryCompleto);
                  
@@ -369,8 +373,8 @@ if( !empty($_REQUEST["Accion"]) ){
             $css->input($TipoCajaOpciones, $Tabla."_condicion", "", "", "", "", "", "", "", "","","","");
             $css->input($TipoCajaOpciones, $Tabla."_orden", "", "", "", "", "", "", "", "","","","");
             $css->input($TipoCajaOpciones, $Tabla."_ordenColumna", "", "", "", "", "", "", "", "","","","");
-            $css->input($TipoCajaOpciones, $Tabla."_limit", "", "", "", "", "", "", "", "","","","");
-            $css->input($TipoCajaOpciones, $Tabla."_page", "", "", "", "", "", "", "", "","","","");
+            $css->input($TipoCajaOpciones, $Tabla."_limit", "", "", "", "10", "", "", "", "","","","");
+            $css->input($TipoCajaOpciones, $Tabla."_page", "", "", "", "1", "", "", "", "","","","");
             /**
              * Dibujo El control de campos
              */
@@ -508,11 +512,11 @@ if( !empty($_REQUEST["Accion"]) ){
             $css->div("", "col-sm-3", "", "", "", "", "");
                 $css->fieldset("fOperaciones", "", "fOperaciones", "", "Operaciones", "");
                 $css->legend("", "");
-                    print("<a href='#' onclick='MuestraOcultaXID(`DivAccionesTablas`)'>Operaciones</a>");
+                    print("<a href='#' onclick='MuestraOcultaXID(`".$Tabla."_DivAccionesTablas`)'>Operaciones</a>");
                 $css->Clegend();   
-                $css->CrearDiv("DivAccionesTablas", "", "", 0, 0);
+                $css->CrearDiv($Tabla."_DivAccionesTablas", "", "", 0, 0);
 
-                $css->select("CmbAccionTabla", "form-control", "CmbAccionTabla", " ", "", $js,"");
+                $css->select($Tabla."_CmbAccionTabla", "form-control", $Tabla."_CmbAccionTabla", " ", "", $js,"");
                     $value="SUM";
                     $Display="SUMAR";
                     $css->option("", "", $Display,$value, "", "");
@@ -545,7 +549,7 @@ if( !empty($_REQUEST["Accion"]) ){
 
 
                 $css->Cselect();    
-                $css->select("CmbColumnaAcciones", "form-control", "CmbColumnaAcciones", "", "", $js,"");
+                $css->select($Tabla."_CmbColumnaAcciones", "form-control", $Tabla."_CmbColumnaAcciones", "", "", $js,"");
                 foreach ($ColumnasDisponibles["Field"] as $key => $value) {
                     $css->option("", "", $value, $value, "", "");
                         print(utf8_encode($ColumnasDisponibles["Visualiza"][$key]));
@@ -555,9 +559,9 @@ if( !empty($_REQUEST["Accion"]) ){
 
                 $Script="";
 
-                $ScriptButton="ConsultaAccionesTablas()";
-                $css->CrearBotonEvento("BtnAccionTabla", "Ejecutar", 1, "onclick", $ScriptButton, "verde", "");
-                $css->CrearDiv("DivResultadosAcciones", "", "", 1, 1);
+                $ScriptButton="ConsultaAccionesTablas('$Tabla')";
+                $css->CrearBotonEvento($Tabla."_BtnAccionTabla", "Ejecutar", 1, "onclick", $ScriptButton, "verde", "");
+                $css->CrearDiv($Tabla."_DivResultadosAcciones", "", "", 1, 1);
 
                 $css->CerrarDiv();            
                 $css->CerrarDiv();            

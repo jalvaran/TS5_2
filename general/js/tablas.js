@@ -18,12 +18,12 @@ function EscribirEnCaja(idCaja,Valor){
  * Funcion para cambiar la palabra desc x asc y viceversa en la caja de texto utilizada para enviar el orden al dobujador de la tabla
  * @returns {undefined}
  */
-function CambiarOrden(){
-    var OrdenActual=document.getElementById('TxtOrdenTabla').value;
+function CambiarOrden(Tabla){
+    var OrdenActual=document.getElementById(Tabla+'_orden').value;
     if(OrdenActual=='DESC'){
-        document.getElementById('TxtOrdenTabla').value='ASC';
+        document.getElementById(Tabla+'_orden').value='ASC';
     }else{
-        document.getElementById('TxtOrdenTabla').value='DESC';
+        document.getElementById(Tabla+'_orden').value='DESC';
     }
 }
 
@@ -169,16 +169,15 @@ function DibujaOperacionesTablas(Tabla){
  * Envia la peticion para realizar una consulta proveniente de las acciones
  * @returns {undefined}
  */
-function ConsultaAccionesTablas(){
+function ConsultaAccionesTablas(Tabla){
        
-    var Tabla = document.getElementById('TxtTabla').value
-    var Columna = document.getElementById('CmbColumnaAcciones').value
-    var AccionTabla = document.getElementById('CmbAccionTabla').value
-    var CondicionActual = document.getElementById('TxtCondicion').value    
-    var combo = document.getElementById("CmbColumnaAcciones");
+    var Columna = document.getElementById(Tabla+'_CmbColumnaAcciones').value
+    var AccionTabla = document.getElementById(Tabla+'_CmbAccionTabla').value
+    var CondicionActual = document.getElementById(Tabla+'_condicion').value    
+    var combo = document.getElementById(Tabla+'_CmbColumnaAcciones');
     var ColumnaSeleccionada = combo.options[combo.selectedIndex].text;   
     
-    var combo2 = document.getElementById("CmbAccionTabla");
+    var combo2 = document.getElementById(Tabla+'_CmbAccionTabla');
     var TxtAccionSeleccionada = combo2.options[combo2.selectedIndex].text;   
        
     var form_data = new FormData();
@@ -201,11 +200,11 @@ function ConsultaAccionesTablas(){
         success: function(data){
            
           if (data != "") { 
-                if(document.getElementById('DivResultadosAcciones').innerHTML==''){
-                    document.getElementById('DivResultadosAcciones').innerHTML='<strong>Resultados: </strong><br>';
+                if(document.getElementById(Tabla+'_DivResultadosAcciones').innerHTML==''){
+                    document.getElementById(Tabla+'_DivResultadosAcciones').innerHTML='<strong>Resultados: </strong><br>';
                 }
                 
-                document.getElementById('DivResultadosAcciones').innerHTML=document.getElementById('DivResultadosAcciones').innerHTML+" "+data;
+                document.getElementById(Tabla+'_DivResultadosAcciones').innerHTML=document.getElementById(Tabla+'_DivResultadosAcciones').innerHTML+" "+data;
               
               
           }else {
@@ -222,37 +221,37 @@ function ConsultaAccionesTablas(){
  * Cambia el limite de las tablas
  * @returns {undefined}
  */
-function CambiarLimiteTablas(){
-    var Tabla = document.getElementById('TxtTabla').value;
-    var Limite = document.getElementById('CmbLimit').value;
-    document.getElementById('TxtPage').value=1;
-    document.getElementById('TxtLimit').value=Limite;
-    SeleccionarTabla(Tabla);
+function CambiarLimiteTablas(Tabla,DivTablas){
+    
+    var Limite = document.getElementById(Tabla+'_CmbLimit').value;
+    document.getElementById(Tabla+'_page').value=1;
+    document.getElementById(Tabla+'_limit').value=Limite;
+    DibujeTablaDB(Tabla,DivTablas);
 }
 
-function AvanzarPagina(){
-    var Tabla = document.getElementById('TxtTabla').value;
-    var PaginaActual = document.getElementById('TxtPage').value;
+function AvanzarPagina(Tabla,DivTablas){
+    
+    var PaginaActual = document.getElementById(Tabla+'_page').value;
     PaginaActual++;
-    document.getElementById('TxtPage').value=PaginaActual;
-    SeleccionarTabla(Tabla);
+    document.getElementById(Tabla+'_page').value=PaginaActual;
+    DibujeTablaDB(Tabla,DivTablas);
 }
 
-function RetrocederPagina(){
-    var Tabla = document.getElementById('TxtTabla').value;
-    var PaginaActual = document.getElementById('TxtPage').value;
+function RetrocederPagina(Tabla,DivTablas){
+    
+    var PaginaActual = document.getElementById(Tabla+'_page').value;
     PaginaActual--;
     if(PaginaActual>0){
-        document.getElementById('TxtPage').value=PaginaActual;
-        SeleccionarTabla(Tabla);
+        document.getElementById(Tabla+'_page').value=PaginaActual;
+        DibujeTablaDB(Tabla,DivTablas);
     }
 }
 
-function SeleccionaPagina(){
-    var Tabla = document.getElementById('TxtTabla').value;
-    var PaginaActual = document.getElementById('CmbPage').value;
-    document.getElementById('TxtPage').value=PaginaActual;
-    SeleccionarTabla(Tabla);
+function SeleccionaPagina(Tabla,DivTablas){
+    
+    var PaginaActual = document.getElementById(Tabla+'_CmbPage').value;
+    document.getElementById(Tabla+'_page').value=PaginaActual;
+    DibujeTablaDB(Tabla,DivTablas);
 }
 
 /**
@@ -779,22 +778,52 @@ function ValidacionContrasenaSegura(){
 function DibujeTablaDB(tabla,idDiv){
       
     var condicion="";
+    var OrdenColumna="";
+    var Orden="";
+    var Limit=10;
+    var Page=1;
+    
     var idCondicion=tabla+"_condicion"; 
-
-    if(document.getElementById(idCondicion)){   
-
-        console.log(document.getElementById(idCondicion).value);
+    var idOrdenColumna=tabla+"ordenColumna";
+    var idOrden=tabla+"_orden";
+    var idLimit=tabla+"_limit";
+    var idPage = tabla + "_page";
+    
+    if(document.getElementById(idCondicion)){  
+        
         condicion=document.getElementById(idCondicion).value;
-
+    }
+    
+    if(document.getElementById(idOrdenColumna)){  
+        
+        OrdenColumna=document.getElementById(idOrdenColumna).value;
+    }
+    
+    if(document.getElementById(idOrden)){  
+        
+        Orden=document.getElementById(idOrden).value;
+    }
+    
+    if(document.getElementById(idLimit)){  
+        
+        Limit=document.getElementById(idLimit).value;
+        
+    }
+    
+    if(document.getElementById(idPage)){  
+        
+        Page=document.getElementById(idPage).value;
+        
     }
     var form_data = new FormData();
         form_data.append('Accion', 2);
         form_data.append('Tabla', tabla);
         form_data.append('Condicion', condicion);
-        form_data.append('OrdenColumna', "");
-        form_data.append('Orden', "");
-        form_data.append('Limit', 10);
-        form_data.append('Page', 1);
+        form_data.append('OrdenColumna', OrdenColumna);
+        form_data.append('Orden', Orden);
+        form_data.append('Limit', Limit);
+        form_data.append('Page', Page);
+        form_data.append('DivTablas', idDiv);
 
     $.ajax({
     url: '../../general/Consultas/administrador.draw.php',
