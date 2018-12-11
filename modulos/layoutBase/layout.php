@@ -2,21 +2,27 @@
 /**
  * Pagina base para la plataforma TSS
  * 2018-11-27, Julian Alvaran Techno Soluciones SAS
+ * 
+ * es recomendable No usar los siguientes ID para ningún objeto:
+ * FrmModal, ModalAcciones,DivFormularios,BtnModalGuardar,DivOpcionesTablas,
+ * DivControlCampos,DivOpciones1,DivOpciones2,DivOpciones3,DivParametrosTablas
+ * TxtTabla, TxtCondicion,TxtOrdenNombreColumna,TxtOrdenTabla,TxtLimit,TxtPage,tabla
+ * 
  */
-$myPage="layout.php";
-$myTitulo="Plataforma TSS";
+$myPage="Tablas.php";
+$myTitulo="Plataforma TS5";
 include_once("../../sesiones/php_control_usuarios.php");
 include_once("../../constructores/paginas_constructor.php");
-$css =  new PageConstruct($myTitulo, ""); //objeto con las funciones del html
+
+$css = new PageConstruct($myTitulo, "", "", "");
 $obCon = new conexion($idUser); //Conexion a la base de datos
 
 $css->PageInit($myTitulo);
-
-    //Codigo del desarrollador para su pagina
         
+       
 $css->PageFin();
-
-//print('<script src="jsPages/administrador.js"></script>');  //scrip propio de la pagina
+//$css->AgregaAngular();
+print('<script src="jsPages/Tablas.js"></script>');  //script propio de la pagina
 
 $css->Cbody();
 $css->Chtml();

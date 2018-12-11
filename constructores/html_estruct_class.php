@@ -23,9 +23,7 @@ class html_estruct_class {
      * @param type $Script -> Evento o funcionaliada
      */
     function html($lang,$vectorhtml,$Script,$ng_app=''){
-        if($ng_app<>''){
-            $ng_app="ng-app=".$ng_app;
-        }
+        
         print('<html lang="'.$lang.'" '.$Script.' '.$ng_app.'>');
     }
     

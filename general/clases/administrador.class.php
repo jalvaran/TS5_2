@@ -20,7 +20,7 @@ class Administrador extends conexion{
 
             $Consulta=$this->ConsultarTabla("tablas_campos_control", "WHERE NombreTabla='$Tabla' AND Campo='$value' AND (Visible=0 OR Habilitado=0)");
             $DatosExcluidas=$this->FetchAssoc($Consulta);
-            if($DatosExcluidas["ID"]=='' and $value<>'Updated' and $value<>'Sync'){
+            if($DatosExcluidas["ID"]=='' AND $value<>'Updated' AND $value<>'Sync'){
                 $DatosNombres=$this->DevuelveValores("configuraciones_nombres_campos", "NombreDB", $value);
                 $sql="SELECT * FROM configuracion_campos_asociados WHERE TablaOrigen='$Tabla' AND CampoTablaOrigen='$value'";
                 $consulta= $this->Query($sql);
@@ -69,7 +69,7 @@ class Administrador extends conexion{
 
             $Consulta=$this->ConsultarTabla("tablas_campos_control", "WHERE NombreTabla='$Tabla' AND Campo='$value' AND Habilitado=0");
             $DatosExcluidas=$this->FetchAssoc($Consulta);
-            if($DatosExcluidas["ID"]=='' and $value<>'Updated' and $value<>'Sync'){
+            if($DatosExcluidas["ID"]=='' AND $value<>'Updated' AND $value<>'Sync'){
                 $DatosNombres=$this->DevuelveValores("configuraciones_nombres_campos", "NombreDB", $value);
                 $ColumnasSeleccionadas["Field"][$i]=$value;
                 $ColumnasSeleccionadas["Visualiza"][$i]=$value;
@@ -98,6 +98,7 @@ class Administrador extends conexion{
      * @return type->Retorna un Array con el QueryParcial, QueryCompleto,TotalRegistros,Orden,Limite
      */
     public function getConsultaTabla($Tabla,$ColumnasSeleccionadas,$Condicion,$OrdenColumna,$AscDesc,$NumPage,$limit,$startpoint) {
+         
         $idTabla=$ColumnasSeleccionadas["Field"][0];        
         if($Condicion<>""){
             $Condicion=" WHERE ".$Condicion;
@@ -106,12 +107,14 @@ class Administrador extends conexion{
             $OrdenColumna=$idTabla;
         }
         $sql="SELECT ";
+       
         foreach ($ColumnasSeleccionadas["Field"] as $key => $value) {
             if($ColumnasSeleccionadas["SubQuery"][$key]<>''){
                 $value=$ColumnasSeleccionadas["SubQuery"][$key];
             }
             $sql.="$value,";
         }
+         
         $sql = substr($sql, 0, -1);
         $Seleccion=$sql;
         $sql = $sql." FROM $Tabla ";
@@ -119,6 +122,8 @@ class Administrador extends conexion{
         $sqlConteo="SELECT COUNT(*) as TotalRegistros FROM $Tabla $Condicion";
         $consulta= $this->Query($sqlConteo);
         $DatosConteo=$this->FetchAssoc($consulta);
+         
+         
         $TotalRegistros=$DatosConteo["TotalRegistros"];
 
         $Orden=" ORDER BY $OrdenColumna $AscDesc ";
@@ -131,6 +136,7 @@ class Administrador extends conexion{
         $DatosConsulta["Orden"]=$Orden;
         $DatosConsulta["Limite"]=$Limite;
         return($DatosConsulta);
+          
     }
     
     /**

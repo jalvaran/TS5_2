@@ -273,14 +273,25 @@ class PageConstruct extends html_estruct_class{
         $this->ConstruirMenuLateral($idUser, "");
         $this->CrearDiv("principal", "", "left", 1, 1);    
         $this->CrearDiv("", "content-wrapper", "", 1, 1);
-        $this->OpcionesParaTablasDB();
-        $this->CrearDiv("ContenidoPagina", "container", "", 1, 1);
+        
+            $this->CrearDiv("DivOpcionesTablasDB", "container", "", 1, 1);
+            $this->CerrarDiv();
+            $this->CrearDiv("DivTablaDB", "container", "", 1, 1);
+            $this->CerrarDiv();
+            $this->div("DivCentralMensajes", "clas", "", "", "", "", "style=position: absolute;top:50%;left:50%;padding:5px;");
+            
+            $this->Cdiv();
+        
     }
-    
-    public function OpcionesParaTablasDB() {
+    /**
+     * Se dibuja el modal para las opciones de las tablas
+     * @param type $Tabla
+     * @param type $DivTabla
+     */
+    public function ModalFormulariosTablasDB($Tabla,$DivTabla) {
         //$this->BotonAbreModal("Abrir", "ModalAcciones", "", "azul");
         
-        $JSBoton="onsubmit='GuardarRegistro(event);'";
+        $JSBoton="onsubmit=GuardarRegistro(event);";
         $this->form("FrmModal", "", "", "", "", "", "", $JSBoton);
         
             $this->Modal("ModalAcciones", "TSS", "", 0, 0, 1);
@@ -294,34 +305,6 @@ class PageConstruct extends html_estruct_class{
         $this->Cform();           
         
         
-        $this->CrearDiv("DivOpcionesTablas", "", "left", 1, 1);
-        
-            $this->CrearDiv("DivControlCampos", "col-sm-3", "left", 1, 1); //Control de campos
-            $this->CerrarDiv();
-            
-            $this->CrearDiv("DivOpciones1", "col-sm-3", "left", 1, 1); //Busquedas
-            $this->CerrarDiv();
-            
-            $this->CrearDiv("DivOpciones2", "col-sm-3", "left", 1, 1); //Acciones
-            $this->CerrarDiv();
-             
-            $this->CrearDiv("DivOpciones3", "col-sm-3", "left", 1, 1); //Agregar
-            $this->CerrarDiv();
-            
-        $this->CerrarDiv();
-        
-        $this->CrearDiv("DivParametrosTablas", "", "", 0, 0);
-            $this->CrearInputText("TxtTabla", "text", "", "", "", "", "", "", 300, 30, 0, 0,"1em");
-            $this->CrearInputText("TxtCondicion", "text", "", "", "", "", "", "", 300, 30, 0, 0,"1em");
-            $this->CrearInputText("TxtOrdenNombreColumna", "text", "", "", "", "", "", "", 300, 30, 0, 0,"1em");
-            $this->CrearInputText("TxtOrdenTabla", "text", "", "DESC", "", "", "", "", 300, 30, 0, 0,"1em");
-            $this->CrearInputText("TxtLimit", "text", "", "10", "", "", "", "", 300, 30, 0, 0,"1em");
-            $this->CrearInputText("TxtPage", "text", "", "1", "", "", "", "", 300, 30, 0, 0,"1em");
-        $this->CerrarDiv();    
-        
-        $this->CrearDiv("tabla", "", "", 1, 1); //Se dibujan las tablas realizando peticiones por ajax
-        
-        $this->CerrarDiv();
     }
                 
     /**
@@ -756,6 +739,7 @@ class PageConstruct extends html_estruct_class{
      * @param type $Vector
      */
     function CabeceraTabla($Tabla,$Limite,$Titulo,$Columnas,$js,$TotalRegistros,$NumPage,$Vector,$DivTablas=''){
+        
         $obCon=new conexion(1);
         print("<thead><tr>");
         $ColSpanTitulo=count($Columnas["Field"]);
@@ -811,7 +795,7 @@ class PageConstruct extends html_estruct_class{
             $NombreColumna=utf8_encode($Columnas["Visualiza"][$key]);
             $this->th("", "", 1, 1, "", "");
                 $js="onclick=EscribirEnCaja('".$Tabla."_ordenColumna','$value');CambiarOrden('$Tabla','$DivTablas');DibujeTablaDB('$Tabla','$DivTablas');";
-                $this->a("", "", "#", "", "", "", $js);                    
+                $this->a("", "", "#".$Tabla."_aControlCampos", "", "", "", $js);                    
                     print('<strong>'.$NombreColumna.'</strong>');
                 $this->Ca();
                 
@@ -828,7 +812,7 @@ class PageConstruct extends html_estruct_class{
      * @param type $js
      * @param type $Vector
      */
-    function FilaTablaDB($tabla,$Datos,$js,$Vector){
+    function FilaTablaDB($tabla,$DivTablas,$Datos,$js,$Vector){
         $obCon=new conexion(1);
         $DatosControlTablas=$obCon->DevuelveValores("configuracion_control_tablas", "TablaDB", $tabla);
         if($DatosControlTablas["Editar"]<>0){
@@ -851,7 +835,7 @@ class PageConstruct extends html_estruct_class{
                     print('<i class="fa fa-fw fa-eye" onclick=VerRegistro(`'.$tabla.'`,`'.$value.'`)></i><a href=# onclick=VerRegistro(`'.$tabla.'`,`'.$value.'`)> Ver </a><br>');
                 } 
                 if($OpcionEditar==1){
-                    print('<i class="fa fa-fw fa-edit" onclick=DibujaFormularioEditarRegistro(`'.$tabla.'`,`'.$value.'`)></i><a href=# onclick=DibujaFormularioEditarRegistro(`'.$tabla.'`,`'.$value.'`)> Editar </a><br>');
+                    print('<i class="fa fa-fw fa-edit" onclick=DibujaFormularioEditarRegistro(`'.$tabla.'`,`'.$DivTablas.'`,`'.$value.'`)></i><a href=# onclick=DibujaFormularioEditarRegistro(`'.$tabla.'`,`'.$DivTablas.'`,`'.$value.'`)> Editar </a><br>');
                 } 
                 print("</td>");
             }            
@@ -1439,8 +1423,11 @@ class PageConstruct extends html_estruct_class{
          * @param type $NumeroGrids
          * @param type $vector
          */        
-        public function DibujaCamposFormularioInsert($Tabla,$Columnas,$NumeroGrids,$vector) {
+        public function DibujaCamposFormularioInsert($Tabla,$idDivTabla,$Columnas,$NumeroGrids,$vector) {
             $obCon=new conexion($_SESSION["idUser"]);  
+            $this->input("hidden", "TxtTipoFormulario", "", "TxtTipoFormulario", "", "Insertar", "", "", "", "");
+            $this->input("hidden", "TxtTablaDB", "", "TxtTablaDB", "", $Tabla, "", "", "", "");
+            $this->input("hidden", "TxtIdDivTablaDB", "", "TxtIdDivTablaDB", "", $idDivTabla, "", "", "", "");
             $this->input("hidden", "TxtTipoFormulario", "", "TxtTipoFormulario", "", "Insertar", "", "", "", "");
             $this->div("", "row", "", "", "", "", "");
                 $this->div("content", "col-lg-12", "", "", "", "", "");
@@ -1516,7 +1503,7 @@ class PageConstruct extends html_estruct_class{
                                     $Pattern="";
                                     if($value=="Email"){
                                         $TipoCaja="email";
-                                        $Pattern="pattern=[A-Za-z0-9]+"; //Solo Letras y numeros
+                                        $Pattern=""; //Solo Letras y numeros
                                     }
                                     
                                     if($value=="Password"){
@@ -1554,10 +1541,12 @@ class PageConstruct extends html_estruct_class{
         }
         
         
-        public function DibujaCamposFormularioEdit($Tabla,$idEdit,$Columnas,$NumeroGrids,$vector) {
+        public function DibujaCamposFormularioEdit($Tabla,$idDivTabla,$idEdit,$Columnas,$NumeroGrids,$vector) {
             $obCon=new conexion($_SESSION["idUser"]);  
             $this->input("hidden", "TxtTipoFormulario", "", "TxtTipoFormulario", "", "Editar", "", "", "", "");
             $this->input("hidden", "TxtIdEdit", "", "TxtIdEdit", "", "$idEdit", "", "", "", "");
+            $this->input("hidden", "TxtTablaDB", "", "TxtTablaDB", "", $Tabla, "", "", "", "");
+            $this->input("hidden", "TxtIdDivTablaDB", "", "TxtIdDivTablaDB", "", $idDivTabla, "", "", "", "");
             $this->div("", "row", "", "", "", "", "");
                 $this->div("content", "col-lg-12", "", "", "", "", "");
                     $idTabla=$Columnas["Field"][0];

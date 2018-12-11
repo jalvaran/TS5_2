@@ -519,3 +519,5 @@ SET `JavaScript` = 'onclick=\"DibujeTabla(\'nomina_documentos_equivalentes\')\";
 `TablaAsociada` = 'nomina_documentos_equivalentes' WHERE `menu_submenus`.`ID` = 181;
 
 
+UPDATE menu_submenus SET JavaScript = REPLACE ( JavaScript, 'DibujeTabla', 'SeleccioneTablaDB' );
+

@@ -1,7 +1,7 @@
 /**
  * Controlador para el administrador
  * JULIAN ALVARAN 2018-07-19
- * TECHNO SOLUCIONES SAS EN ASOCIACION CON SITIS SA
+ * TECHNO SOLUCIONES SAS 
  * 317 774 0609
  */
 
@@ -256,7 +256,6 @@ function SeleccionaPagina(Tabla,DivTablas){
 
 /**
  * Dibuja el control de campos
- * @param {type} Tabla
  * @returns {undefined}
  */
 function DibujaControlCampos(){
@@ -375,13 +374,14 @@ function OcultaMuestraCampoTabla(Tabla,Campo,DivTablas){
  * @param {type} Tabla
  * @returns {undefined}
  */
-function DibujaFormularioNuevoRegistro(Tabla){
+function DibujaFormularioNuevoRegistro(Tabla,idDivTabla){
     
     $("#ModalAcciones").modal()
 
     var form_data = new FormData();
         form_data.append('Accion', 9);
         form_data.append('Tabla', Tabla);
+        form_data.append('idDivTabla', idDivTabla);
         $.ajax({
         url: '../../general/Consultas/administrador.draw.php',
         //dataType: 'json',
@@ -412,9 +412,11 @@ function DibujaFormularioNuevoRegistro(Tabla){
 /**
  * Dibuja el formulario para editar un registro
  * @param {type} Tabla
+ * @param {type} DivTabla
+ * @param {type} idEditar
  * @returns {undefined}
  */
-function DibujaFormularioEditarRegistro(Tabla,idEditar){
+function DibujaFormularioEditarRegistro(Tabla,DivTabla,idEditar){
     
     $("#ModalAcciones").modal()
 
@@ -422,6 +424,7 @@ function DibujaFormularioEditarRegistro(Tabla,idEditar){
         form_data.append('Accion', 10);
         form_data.append('Tabla', Tabla);
         form_data.append('idEditar', idEditar);
+        form_data.append('idDivTabla', DivTabla);
         $.ajax({
         url: '../../general/Consultas/administrador.draw.php',
         //dataType: 'json',
@@ -520,9 +523,9 @@ function CierraModal(idModal) {
  */
 function GuardarRegistro(event){
     event.preventDefault();
-    var TipoFormulario = document.getElementById('TxtTipoFormulario').value;
-    
-    var Tabla = document.getElementById('TxtTabla').value;    
+    var TipoFormulario = document.getElementById('TxtTipoFormulario').value;    
+    var Tabla = document.getElementById('TxtTablaDB').value;    
+    var DivTabla = document.getElementById('TxtIdDivTablaDB').value;    
     var form_data = getFormInsert('TxtNuevoRegistro');
     
     if(TipoFormulario == 'Insertar'){
@@ -553,7 +556,7 @@ function GuardarRegistro(event){
               document.getElementById('DivFormularios').innerHTML="";
               
               CierraModal("ModalAcciones");
-              SeleccionarTabla(Tabla);
+              DibujeTablaDB(Tabla,DivTabla);
               
           }else {
                 alertify.alert("Error: "+data);
@@ -774,9 +777,14 @@ function ValidacionContrasenaSegura(){
   
 }
 
-
+/**
+ * Dibuja una tabla en un div
+ * @param {type} tabla
+ * @param {type} idDiv
+ * @returns {undefined}
+ */
 function DibujeTablaDB(tabla,idDiv){
-      
+    document.getElementById('DivCentralMensajes').innerHTML='<div id="GifProcess" style="text-align:center;position: absolute;top:50%;left:50%;padding:5px;"><img   src="../../images/cargando.gif" alt="Cargando" height="100" width="100"></div>';  
     var condicion="";
     var OrdenColumna="";
     var Orden="";
@@ -816,7 +824,7 @@ function DibujeTablaDB(tabla,idDiv){
         
     }
     var form_data = new FormData();
-        form_data.append('Accion', 2);
+        form_data.append('Accion', 13);
         form_data.append('Tabla', tabla);
         form_data.append('Condicion', condicion);
         form_data.append('OrdenColumna', OrdenColumna);
@@ -836,8 +844,10 @@ function DibujeTablaDB(tabla,idDiv){
     success: function(data){
 
       if (data != "") { 
+          
           document.getElementById(idDiv).innerHTML=data;
-
+          DibujePaginadorTablaDB(tabla,idDiv)
+          document.getElementById('DivCentralMensajes').innerHTML="";
       }else {
         alert("No hay resultados para la consulta");
       }
@@ -849,7 +859,13 @@ function DibujeTablaDB(tabla,idDiv){
       }
     });    
 }
-
+/**
+ * Dibuja las diferentes opciones para las tablas
+ * @param {type} tabla
+ * @param {type} idDivOpcionesTabla
+ * @param {type} idDivTablas
+ * @returns {undefined}
+ */
 function DibujeOpcionesTablaDB(tabla,idDivOpcionesTabla,idDivTablas){
             
     var form_data = new FormData();
@@ -883,4 +899,100 @@ function DibujeOpcionesTablaDB(tabla,idDivOpcionesTabla,idDivTablas){
     }); 
 
 }
+/**
+ * Selecciona y dibuja una tabla en un div
+ * @param {type} Tabla
+ * @param {type} idDivTabla
+ * @param {type} idDivOpcionesTabla
+ * @returns {undefined}
+ */        
+function SeleccioneTablaDB(Tabla,idDivTabla="DivTablaDB",idDivOpcionesTabla="DivOpcionesTablasDB"){
+    
+    DibujeOpcionesTablaDB(Tabla,idDivOpcionesTabla,idDivTabla);
+    DibujeTablaDB(Tabla,idDivTabla);
+}
+
+
+/**
+ * Dibuja una tabla en un div
+ * @param {type} tabla
+ * @param {type} idDiv
+ * @returns {undefined}
+ */
+function DibujePaginadorTablaDB(tabla,idDiv){
+    //document.getElementById('DivCentralMensajes').innerHTML='<div id="GifProcess" style="text-align:center;position: absolute;top:50%;left:50%;padding:5px;"><img   src="../../images/cargando.gif" alt="Cargando" height="100" width="100"></div>';  
+    var condicion="";
+    var OrdenColumna="";
+    var Orden="";
+    var Limit=10;
+    var Page=1;
+    
+    var idCondicion=tabla+"_condicion"; 
+    var idOrdenColumna=tabla+"ordenColumna";
+    var idOrden=tabla+"_orden";
+    var idLimit=tabla+"_limit";
+    var idPage = tabla + "_page";
+    
+    if(document.getElementById(idCondicion)){  
         
+        condicion=document.getElementById(idCondicion).value;
+    }
+    
+    if(document.getElementById(idOrdenColumna)){  
+        
+        OrdenColumna=document.getElementById(idOrdenColumna).value;
+    }
+    
+    if(document.getElementById(idOrden)){  
+        
+        Orden=document.getElementById(idOrden).value;
+    }
+    
+    if(document.getElementById(idLimit)){  
+        
+        Limit=document.getElementById(idLimit).value;
+        
+    }
+    
+    if(document.getElementById(idPage)){  
+        
+        Page=document.getElementById(idPage).value;
+        
+    }
+    var form_data = new FormData();
+        form_data.append('Accion', 14);
+        form_data.append('Tabla', tabla);
+        form_data.append('Condicion', condicion);
+        form_data.append('OrdenColumna', OrdenColumna);
+        form_data.append('Orden', Orden);
+        form_data.append('Limit', Limit);
+        form_data.append('Page', Page);
+        form_data.append('DivTablas', idDiv);
+
+    $.ajax({
+    url: '../../general/Consultas/administrador.draw.php',
+    //dataType: 'json',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    success: function(data){
+
+      if (data != "") {           
+          document.getElementById(tabla+'_Paginador').innerHTML=data;
+          
+      }else {
+        alert("No hay resultados para la consulta en el paginador");
+      }
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+
+        alertify.alert('Error en SeleccionarTabla'+xhr.status);
+        alertify.alert(thrownError);
+      }
+    });    
+}
+
+//Se soluciona problema al cargar select2 en un modal (No borrar)
+$.fn.modal.Constructor.prototype.enforceFocus = $.noop;
