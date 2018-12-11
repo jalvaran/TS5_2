@@ -600,7 +600,7 @@ function VerificaLogin(){
       
     $.ajax({
         
-        url: 'buscadores/ConsultarLogin.search.php',
+        url: '../../general/buscadores/ConsultarLogin.search.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -646,7 +646,7 @@ function VerificaTipoUsuario(){
       
     $.ajax({
         
-        url: 'buscadores/ConsultarLogin.search.php',
+        url: '../../general/buscadores/ConsultarLogin.search.php',
         //dataType: 'json',
         cache: false,
         contentType: false,
@@ -784,7 +784,7 @@ function ValidacionContrasenaSegura(){
  * @returns {undefined}
  */
 function DibujeTablaDB(tabla,idDiv){
-    document.getElementById('DivCentralMensajes').innerHTML='<div id="GifProcess" style="text-align:center;position: absolute;top:50%;left:50%;padding:5px;"><img   src="../../images/cargando.gif" alt="Cargando" height="100" width="100"></div>';  
+    document.getElementById('DivCentralMensajes').innerHTML='<div id="GifProcess" style="text-align:center;position: absolute;top:50%;left:50%;padding:5px;"><img   src="../../images/loading.gif" alt="Cargando" height="100" width="100"></div>';  
     var condicion="";
     var OrdenColumna="";
     var Orden="";

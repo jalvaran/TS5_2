@@ -692,7 +692,7 @@ function VerificaLogin(){
       
     $.ajax({
         
-        url: 'buscadores/ConsultarLogin.search.php',
+        url: '../../general/buscadores/ConsultarLogin.search.php',
         //dataType: 'json',
         cache: false,
         contentType: false,

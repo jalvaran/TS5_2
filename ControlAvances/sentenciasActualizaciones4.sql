@@ -520,4 +520,4 @@ SET `JavaScript` = 'onclick=\"DibujeTabla(\'nomina_documentos_equivalentes\')\";
 
 
 UPDATE menu_submenus SET JavaScript = REPLACE ( JavaScript, 'DibujeTabla', 'SeleccioneTablaDB' );
-
+ALTER TABLE `usuarios` ADD `Habilitado` VARCHAR(2) NOT NULL DEFAULT 'SI' AFTER `Role`;

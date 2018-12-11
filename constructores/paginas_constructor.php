@@ -723,7 +723,7 @@ class PageConstruct extends html_estruct_class{
      */
     function CrearTablaDB($Titulo,$id,$Ancho,$js,$Vector) {
         print('<div class="row" >');
-        print('<div class="col-lg-11" style="overflow: auto; width:auto% ;">');
+        print('<div class="col-lg-11" style="overflow: auto; width:97% ;">');
         //print('<div class="panel panel-default">');
         //print('<div class="panel-heading">'.$Titulo.'</div>');
         print('<div class="panel-heading">');

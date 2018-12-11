@@ -14,7 +14,8 @@
         <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="assets/css/form-elements.css">
         <link rel="stylesheet" href="assets/css/style.css">
-
+        <link rel='stylesheet' href='..\bower_components\alertify/themes/alertify.core.css' />
+        <link rel='stylesheet' href='..\bower_components\alertify/themes/alertify.default.css' id='toggleCSS' />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -28,14 +29,14 @@
     </head>
 
     <body>
-
+                
         <!-- Top content -->
         <div class="top-content">
         	<div class="container">
                 	
                 <div class="row">
                     <div class="col-sm-8 col-sm-offset-2 text">
-                        <h1>Iniciar Sesión en Plataforma TS5</h1>
+                        <h1>Iniciar Sesión en Plataforma TSS</h1>
                         <div class="description">
                         	<p>
 	                         	Plataforma de Control de Procesos Empresariales 
@@ -56,17 +57,17 @@
                 
                 <div class="row register-form">
                     <div class="col-sm-4 col-sm-offset-1">
-                        <form role="form" action="../verificar.php" method="post" class="l-form">
+                        
 	                    	<div class="form-group">
 	                    		<label class="sr-only" for="l-form-username">Username</label>
-	                        	<input type="text" name="user" placeholder="Usuario..." class="l-form-username form-control" id="l-form-username" autocomplete="off">
+	                        	<input type="text" name="user" placeholder="Usuario..." class="l-form-username form-control" id="l-form-username" autocomplete="off" onkeypress="validar(event)">
 	                        </div>
 	                        <div class="form-group">
 	                        	<label class="sr-only" for="l-form-password">Password</label>
-                                        <input type="password" name="pw" placeholder="Password..." class="l-form-password form-control" id="l-form-password" autocomplete="off">
+                                        <input type="password" name="pw" placeholder="Password..." class="l-form-password form-control" id="l-form-password" autocomplete="off" onkeypress="validar(event)">
 	                        </div>
-				            <button type="submit" class="btn">Entrar..!</button>
-				    	</form>
+                        <button type="submit" class="btn" onclick="VerificaInicioSesion()">Entrar..!</button>
+				    	
 				    	
                     </div>
                     <div class="col-sm-6 forms-right-icons">
@@ -74,7 +75,7 @@
 							<div class="col-sm-2 icon"><i class="fa fa-cog fa-spin fa-fw"></i></div>
 							<div class="col-sm-10">
 								<h3>Integración de todos los procesos de su Compañía</h3>
-								<p>Gestión de Calidad, Gestión Comercial, Servicio al Cliente, Gestión del Talento Humano, Compras, Inventarios, Gestión Administrativa y Financiera.</p>
+								<p>Gestión de Calidad, Gestión Comercial, Gestión de los servicos en la salud, Servicio al Cliente, Gestión del Talento Humano, Compras, Inventarios, Gestión Administrativa y Financiera.</p>
 							</div>
 						</div>
 						<div class="row">
@@ -110,7 +111,7 @@
                                     <div class="footer-border">
                                         
                                     </div>
-        				<p>&copy; 2016 | <a href="#">Privacy Policy</a> <br> Software  designed by <a href="http://technosoluciones.com.co/" rel="nofollow" target="_blank">Techno Soluciones SAS</a>. (057) 317 774 0609</p>
+        				<p>&copy; <?php echo date("Y");?> | <a href="#">Privacy Policy</a> <br> Software  designed by <a href="http://technosoluciones.com.co/" rel="nofollow" target="_blank">Techno Soluciones SAS</a>. (057) 317 774 0609</p>
         			</div>
         			
         		</div>
@@ -122,6 +123,8 @@
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.backstretch.min.js"></script>
         <script src="assets/js/scripts.js"></script>
+        <script src="..\bower_components\alertify/lib/alertify.min.js"></script>
+        <script src="js/index.js"></script>
         
         <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>
