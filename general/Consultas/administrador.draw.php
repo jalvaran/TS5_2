@@ -662,7 +662,7 @@ if( !empty($_REQUEST["Accion"]) ){
               
             $Condicion= utf8_decode($Condicion);
             $DatosSubMenu=$obCon->DevuelveValores("menu_submenus", "TablaAsociada", $Tabla);
-            $TituloTabla=$DatosSubMenu["Nombre"];
+            $TituloTabla= utf8_encode($DatosSubMenu["Nombre"]);
             $startpoint = ($NumPage * $limit) - $limit;
             $DatosTabla[]="";
             
@@ -693,13 +693,14 @@ if( !empty($_REQUEST["Accion"]) ){
                         
             $css->CrearTablaDB($Tabla, $Tabla, "100%", "", "");
              
-            $css->CabeceraTabla($Tabla,$limit,"",$ColumnasSeleccionadas, "","","", "",$DivTablas);
+            $css->CabeceraTabla($Tabla,$limit,"$TituloTabla",$ColumnasSeleccionadas, "","","", "",$DivTablas);
             $consulta=$obCon->Query($sql);
                  
                 while($DatosConsulta=$obCon->FetchAssoc($consulta)){
                     $css->FilaTablaDB($Tabla,$DivTablas,$DatosConsulta, "", "");
                 }  
             $css->CerrarTablaDB();  
+           
         break; //Fin Case 13
         
         case 14://Dibuja el paginador

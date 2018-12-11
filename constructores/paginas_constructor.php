@@ -273,12 +273,14 @@ class PageConstruct extends html_estruct_class{
         $this->ConstruirMenuLateral($idUser, "");
         $this->CrearDiv("principal", "", "left", 1, 1);    
         $this->CrearDiv("", "content-wrapper", "", 1, 1);
-        
-            $this->CrearDiv("DivOpcionesTablasDB", "container", "", 1, 1);
+        $this->DivColapsable("DivColapsableTablas", "","style=display:none;overflow-x: scroll;");
+            $this->CrearDiv("DivOpcionesTablasDB", "", "", 1, 1);
             $this->CerrarDiv();
-            $this->CrearDiv("DivTablaDB", "container", "", 1, 1);
+             $this->div("DivTablaDB", "", "", "", "", "", "");
+            
             $this->CerrarDiv();
-            $this->div("DivCentralMensajes", "clas", "", "", "", "", "style=position: absolute;top:50%;left:50%;padding:5px;");
+        $this->CDivColapsable();
+            $this->div("DivCentralMensajes", "", "", "", "", "", "style=position: absolute;top:50%;left:50%;padding:5px;");
             
             $this->Cdiv();
         
@@ -720,11 +722,11 @@ class PageConstruct extends html_estruct_class{
      * @param type $Vector
      */
     function CrearTablaDB($Titulo,$id,$Ancho,$js,$Vector) {
-        print('<div class="row">');
-        print('<div class="col-lg-12">');
+        print('<div class="row" >');
+        print('<div class="col-lg-11" style="overflow: auto; width:auto% ;">');
         //print('<div class="panel panel-default">');
         //print('<div class="panel-heading">'.$Titulo.'</div>');
-        print('<div class="panel-body">');
+        print('<div class="panel-heading">');
         print('<table width="'.$Ancho.'" class="table table-striped table-bordered table-hover" id="'.$id.'" '.$js.'>');
     }
     /**
@@ -1760,6 +1762,35 @@ class PageConstruct extends html_estruct_class{
         function FinMenu(){
             print('</div></div>');
 	}
+        
+        /**
+         * Crear un Div Colapsable
+         * @param type $id
+         * @param type $Titulo
+         */
+        public function DivColapsable($id,$Titulo,$style) {
+            print('<div id='.$id.' class="box box-info box-solid" '.$style.'>
+                <div class="box-header with-border">
+                  <h3 id="TituloDivColapsableTabla" class="box-title">'.$Titulo.'</h3>
+
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    
+                  </div>
+                  <!-- /.box-tools -->
+                </div>
+                <div class="box-body" >');
+        }
+        /**
+         * Cerrar un div colapsable
+         */
+        public function CDivColapsable() {
+            print('</div>
+                <!-- /.box-body -->
+              </div>');
+        }
+        
         
         //////////////////////////////////FIN
 }

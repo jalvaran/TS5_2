@@ -907,7 +907,9 @@ function DibujeOpcionesTablaDB(tabla,idDivOpcionesTabla,idDivTablas){
  * @returns {undefined}
  */        
 function SeleccioneTablaDB(Tabla,idDivTabla="DivTablaDB",idDivOpcionesTabla="DivOpcionesTablasDB"){
-    
+    if(document.getElementById('DivColapsableTablas')){         
+        document.getElementById('DivColapsableTablas').style.display="block";
+    }
     DibujeOpcionesTablaDB(Tabla,idDivOpcionesTabla,idDivTabla);
     DibujeTablaDB(Tabla,idDivTabla);
 }
