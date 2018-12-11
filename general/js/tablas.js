@@ -996,5 +996,69 @@ function DibujePaginadorTablaDB(tabla,idDiv){
     });    
 }
 
+
+function ExportarTablaDBCSV(tabla,Separador=";",idDivExport='DivCentralMensajes'){
+    document.getElementById(idDivExport).innerHTML='<div id="GifProcess" style="text-align:center;position: absolute;top:50%;left:50%;padding:5px;"><img   src="../../images/loading.gif" alt="Cargando" height="100" width="100"></div>';   var condicion="";
+    var OrdenColumna="";
+    var Orden="";
+    var Limit=10;
+    var Page=1;
+    
+    var idCondicion=tabla+"_condicion"; 
+    var idOrdenColumna=tabla+"ordenColumna";
+    var idOrden=tabla+"_orden";
+        
+    if(document.getElementById(idCondicion)){  
+        
+        condicion=document.getElementById(idCondicion).value;
+    }
+    
+    if(document.getElementById(idOrdenColumna)){  
+        
+        OrdenColumna=document.getElementById(idOrdenColumna).value;
+    }
+    
+    if(document.getElementById(idOrden)){  
+        
+        Orden=document.getElementById(idOrden).value;
+    }
+    
+   
+    var form_data = new FormData();
+        form_data.append('Opcion', 1);
+        form_data.append('Tabla', tabla);
+        form_data.append('Condicion', condicion);
+        form_data.append('OrdenColumna', OrdenColumna);
+        form_data.append('Orden', Orden);
+        form_data.append('Separador', Separador);
+        
+
+    $.ajax({
+    url: '../../general/procesadores/GeneradorCSV.process.php',
+    //dataType: 'json',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    success: function(data){
+
+      if (data != "") {    
+          console.log(data);
+          document.getElementById(idDivExport).innerHTML=data;
+          
+      }else {
+        document.getElementById(idDivExport).innerHTML="";
+        alertify.alert("No se pudo exportar la tabla "+tabla+" a CSV");
+      }
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+
+        alertify.alert('Error Al Exportar la tabla a CSV: '+xhr.status);
+        alertify.alert(thrownError);
+      }
+    });    
+}
+
 //Se soluciona problema al cargar select2 en un modal (No borrar)
 $.fn.modal.Constructor.prototype.enforceFocus = $.noop;

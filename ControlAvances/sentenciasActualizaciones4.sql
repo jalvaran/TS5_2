@@ -81,6 +81,7 @@ CREATE TABLE `configuracion_control_tablas` (
   `Agregar` int(1) NOT NULL,
   `Editar` int(1) NOT NULL,
   `Ver` int(1) NOT NULL,
+  `Exportar` int(1) NOT NULL,
   `AccionesAdicionales` int(1) NOT NULL,
   `Eliminar` int(1) NOT NULL,
   PRIMARY KEY (`ID`)

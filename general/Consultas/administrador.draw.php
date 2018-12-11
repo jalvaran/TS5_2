@@ -329,6 +329,7 @@ if( !empty($_REQUEST["Accion"]) ){
             if($DatosControlTablas["Agregar"]<>0){
                 $css->CrearBotonEvento("BtnNuevoRegistroTabla", "Agregar Registro", 1, "onclick", "DibujaFormularioNuevoRegistro(`$Tabla`)", "azulclaro", "");
             }
+            
             $css->CerrarDiv();            
             $css->Cfieldset();
         break;  
@@ -581,6 +582,13 @@ if( !empty($_REQUEST["Accion"]) ){
                 if($DatosControlTablas["Agregar"]<>0){
                     $css->CrearBotonEvento("BtnNuevoRegistroTabla", "Agregar Registro", 1, "onclick", "DibujaFormularioNuevoRegistro(`$Tabla`,`$DivTablas`)", "azulclaro", "");
                 }
+                
+                if($DatosControlTablas["Exportar"]<>0 or $DatosControlTablas["Exportar"]==""){
+                    $css->CrearBotonEvento("BtnExportarTablaCSV", "Exportar a CSV (;)", 1, "onclick", "ExportarTablaDBCSV(`$Tabla`)", "verde", "");
+                    $css->CrearBotonEvento("BtnExportarTablaCSV", "Exportar a CSV (,)", 1, "onclick", "ExportarTablaDBCSV(`$Tabla`,`,`)", "verde", "");
+                }
+                
+                
                 $css->CerrarDiv();            
                 $css->Cfieldset();
             $css->CerrarDiv();

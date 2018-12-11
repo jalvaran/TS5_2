@@ -259,7 +259,7 @@ class PageConstruct extends html_estruct_class{
      * @param type $myTitulo
      */
     public function PageInit($myTitulo) {
-        $NombreUsuario=$_SESSION["nombre"];
+        $NombreUsuario= utf8_encode($_SESSION["nombre"]);
         $idUser=$_SESSION["idUser"];
         $this->CabeceraIni($myTitulo,"",""); //Inicia la cabecera de la pagina
             //$css->NotificacionMensajes();
@@ -957,7 +957,7 @@ class PageConstruct extends html_estruct_class{
                     break;
             }
             if($enabled==1){
-                print('<input type="submit" id="'.$nombre.'"  name="'.$nombre.'" value="'.$value.'" '.$evento.'="'.$funcion.' ; return false" class="'.$Clase.'">');
+                print('<input type="submit" id="'.$nombre.'"  name="'.$nombre.'" value="'.$value.'" '.$evento.'="'.$funcion.' ; return false" class="form-control '.$Clase.'">');
             }else{
                 print('<input type="submit" id="'.$nombre.'" disabled="true" name="'.$nombre.'" value="'.$value.'" '.$evento.'="'.$funcion.' ; return false" class="'.$Clase.'">');  
             }
@@ -1165,7 +1165,7 @@ class PageConstruct extends html_estruct_class{
             $Consulta=$obCon->Query($sql);
             $DatosUsuario=$obCon->FetchAssoc($Consulta);
             $TipoUser=$DatosUsuario["TipoUser"];
-            $NombreUsuario=$DatosUsuario["Nombre"]." ".$DatosUsuario["Apellido"];
+            $NombreUsuario= utf8_encode($DatosUsuario["Nombre"]." ".$DatosUsuario["Apellido"]);
             
             $this->MenuLateralInit();    
                 $this->PanelInfoUser($NombreUsuario);
