@@ -2975,21 +2975,7 @@ public function CalculePesoRemision($idCotizacion)
         return("Se han sincronizado todos los traslados");
          
      }
-     //Obtiene los nombres de las columnas de una tabla
      
-     public function MostrarColumnas($Tabla,$DataBase) {
-         
-        $sql="SHOW COLUMNS FROM `$DataBase`.`$Tabla`;";
-        $Results=$this->Query($sql);
-        $i=0;
-        while($Columnas = $this->FetchArray($Results) ){
-            $Nombres[$i]=$Columnas["Field"];
-            $i++;
-
-        }
-        return($Nombres);
-
-    }
     
     
     //Funcion para armar un sql de los datos en una tabla de acuerdo a una condicion
@@ -3813,15 +3799,7 @@ public function VerificaPermisos($VectorPermisos) {
         return("Backup Realizado a la tabla $Tabla");
          
      }
-     /*
-      * Muestra todas las tablas de una base de datos
-      */
-     public function MostrarTablas($DataBase,$Vector){
-         $sql="SHOW FULL TABLES FROM $DataBase";
-         $Datos=$this->Query($sql);
-         //$Tablas=$this->FetchArray($Datos);
-         return ($Datos);
-     }
+     
      
      /*
       * Agregar una Columna a una tabla

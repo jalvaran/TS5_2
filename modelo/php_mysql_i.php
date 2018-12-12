@@ -373,9 +373,79 @@ public function ShowColums($Tabla){
       $sql=$sqlCampos.$sqlValores;
       return $sql;
     }
+    /*
+      * Muestra todas las tablas de una base de datos
+      */
+     public function MostrarTablas($DataBase,$Vector){
+         $sql="SHOW FULL TABLES FROM $DataBase";
+         $Datos=$this->Query($sql);
+         //$Tablas=$this->FetchArray($Datos);
+         return ($Datos);
+     }
+     
+     //Obtiene los nombres de las columnas de una tabla
+     
+     public function MostrarColumnas($Tabla,$DataBase) {
+         
+        $sql="SHOW COLUMNS FROM `$DataBase`.`$Tabla`;";
+        $Results=$this->Query($sql);
+        $i=0;
+        while($Columnas = $this->FetchArray($Results) ){
+            $Nombres[$i]=$Columnas["Field"];
+            $i++;
+
+        }
+        return($Nombres);
+
+    }
     
+    /**
+     * Devuelve el sql para Reemplazar un dato
+     * @param type $Tabla
+     * @param type $Datos
+     * @return string
+     */
+    function getSQLReeplace($Tabla,$Datos){
+      $sqlCampos = "REPLACE INTO $Tabla (";
+      $sqlValores= ' VALUES (';
+      $length_array = count($Datos);
+      $i = 1;
+      foreach ($Datos as $key => $value) {
+        $sqlCampos .= "`$key`";
+        $sqlValores .= "'$value'";
+        if ($i!= $length_array) {
+          $sqlCampos .= ", " ;
+          $sqlValores .= ", " ;
+        }else {
+          $sqlCampos .= ')';
+          $sqlValores .= ');'."\n\r";
+        }
+        $i++;
+      }
+      $sql=$sqlCampos.$sqlValores;
+      return $sql;
+    }
+    /**
+     * Obtiene el sql para actualizar
+     * @param type $Tabla
+     * @param type $Datos
+     * @return string
+     */
+    function getSQLUpdate($Tabla,$Datos){
+      $sql = "UPDATE $Tabla SET";
+      
+      $length_array = count($Datos);
+      $i = 1;
+      foreach ($Datos as $key => $value) {
+        $sql .= " `$key`='$value',";
+        
+      }
+      $sql = substr($sql, 0, -1);
+      return $sql;
+    }
 //Fin Clases
 }
+
 
 $con = new mysqli($host, $user, $pw, $db);
 if ($con->connect_errno) {

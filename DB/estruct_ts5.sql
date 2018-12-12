@@ -1006,8 +1006,8 @@ CREATE TABLE `cuentas_frecuentes` (
   `TotalCuotas` int(11) NOT NULL,
   `CuotasPagas` int(11) NOT NULL,
   `CuotasFaltantes` int(11) NOT NULL,
-  `Estado` enum('A','I') COLLATE utf8_spanish_ci NOT NULL COMMENT '''A'' Activo, ''I'' Inactivo',
-  `MesPago` enum('S','N') COLLATE utf8_spanish_ci NOT NULL COMMENT 'La mensualidad Actual está paga S, N No está paga',
+  `Estado` enum('A','I') COLLATE utf8_spanish_ci NOT NULL,
+  `MesPago` enum('S','N') COLLATE utf8_spanish_ci NOT NULL,
   `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Sync` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`ID`)
