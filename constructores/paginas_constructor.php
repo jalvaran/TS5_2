@@ -203,23 +203,11 @@ class PageConstruct extends html_estruct_class{
      */
     public function NotificacionAlertas() {
         print('<!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
+          <li class="dropdown notifications-menu" >
+            <a href="#" onclick="AbreNotificaciones()">
+              <i class="fa fa-bell-o" onclick="AbreNotificaciones()"></i>
               <span id="spNotificacionAlertas" class="label label-warning"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Notificaciones</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <div id="DivNotificacionAlertas">
-                  </div>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">Ver Todas</a></li>
-            </ul>
-          </li>');
+            </a>');
     }
     
     /**
@@ -273,6 +261,7 @@ class PageConstruct extends html_estruct_class{
         $this->ConstruirMenuLateral($idUser, "");
         $this->CrearDiv("principal", "", "left", 1, 1);    
         $this->CrearDiv("", "content-wrapper", "", 1, 1);
+        $this->ModalUsoGeneral("ModalNotificaciones", "DivNotificacionesGenerales", "Notificaciones", "Leer Todo", "LeerTodo()", "");
         $this->DivColapsable("DivColapsableTablas", "","style=display:none;overflow-x: scroll;");
             $this->CrearDiv("DivOpcionesTablasDB", "", "", 1, 1);
             $this->CerrarDiv();
@@ -306,6 +295,23 @@ class PageConstruct extends html_estruct_class{
             $this->CModal("BtnModalGuardar", $JSBoton, "submit", "Guardar");
         $this->Cform();           
         
+        
+    }
+    /**
+     * Crear un modal para usos generales
+     * @param type $NombreModal
+     * @param type $idDivBodyModal
+     * @param type $TituloModal
+     * @param type $ValorBoton
+     * @param type $JSBoton
+     * @param type $Extras
+     */
+    public function ModalUsoGeneral($NombreModal,$idDivBodyModal,$TituloModal,$ValorBoton,$JSBoton,$Extras) {        
+           
+            $this->Modal($NombreModal, $TituloModal, "", 0, 0, 1);
+                    $this->CrearDiv($idDivBodyModal, "", "", 1, 1);
+                    $this->CerrarDiv();
+            $this->CModal("BtnModalGuardar", $JSBoton, "submit", $ValorBoton);
         
     }
                 
@@ -655,7 +661,7 @@ class PageConstruct extends html_estruct_class{
         print('<script src="../../dist/js/adminlte.min.js"></script>');
         print('<script src="../../dist/js/admintss.js"></script>');
         print('<script src="../../bower_components/select2/dist/js/select2.full.min.js"></script>');
-        print('<script src="../../general/js/tablas.js"></script>');  //script propio de la pagina
+        print('<script src="../../general/js/tablas.js"></script>');  //script genrral de la pagina
         //print('<script type="text/javascript" src="../ext/jquery/jquery-1.11.0.min.js"></script>');
         
     }

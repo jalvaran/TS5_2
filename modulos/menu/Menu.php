@@ -71,7 +71,7 @@ $css->PageInit($myTitulo);
 
 $css->PageFin();
 
-print('<script src="jsPages/funciones.js"></script>');  //script propio de la pagina
+print('<script src="../../general/js/notificaciones.js"></script>');
 
 $css->Cbody();
 $css->Chtml();

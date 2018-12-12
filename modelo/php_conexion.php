@@ -1,6 +1,6 @@
 <?php
 include_once 'php_serial.class.php';
-include_once 'php_mysql.php';
+include_once 'php_mysql_i.php';
         
 //////////////////////////////////////////////////////////////////////////
 ////////////Clase para manejar los procesos mas relevantes ///////////////////////////////////
@@ -3496,7 +3496,7 @@ public function AgregaPrecotizacion($Cantidad,$idProducto,$TablaItem,$ValorUnita
         
         //funcion para crear un servicio
     
-    public function CrearItemServicio($Tabla,$Nombre,$PrecioVenta,$CostoUnitario,$CostoUnitario,$CuentaPUC,$IVA,$Departamento,$VectorItem) {
+    public function CrearItemServicio($Tabla,$Nombre,$PrecioVenta,$CostoUnitario,$CostoUnitario2,$CuentaPUC,$IVA,$Departamento,$VectorItem) {
         
         
         $id = $this->ObtenerMAX($Tabla, "idProductosVenta", 1, "");
@@ -5939,7 +5939,7 @@ public function VerificaPermisos($VectorPermisos) {
          $this->Query($sql);
      }
      //Copia una tabla en otra 
-     public function CopiarTabla($TablaOrigen,$TablaDestino,$condicion,$BorrarOrigen,$BorrarDestino,$condicion,$Vector) {
+     public function CopiarTabla($TablaOrigen,$TablaDestino,$condicion,$BorrarOrigen,$BorrarDestino,$condicion2,$Vector) {
          if($BorrarDestino==1){
             $this->VaciarTabla($TablaDestino);
          }

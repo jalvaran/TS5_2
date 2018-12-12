@@ -9,45 +9,63 @@ class Factura_Electronica extends ProcesoVenta{
     public function ConstruyaLayoutEmitirFactura($idFactura) {
         $DocumentoFE="FACTURA";
         $TipoDocumentoFE="INVOIC";
-        $UserWebService="programacion@facturatech.co";
-        $PassWebService="Fact.Col.2018.a";
-        $NitEmisor="901143311";
-        $DVEmisor="01";
+        $UserWebService="900833180";
+        $PassWebService="#16b3-Q@NN";
+        $NitEmisor="900833180";
+        $DVEmisor="07";
         $NitAdquiriente="94481747";
         $UBLVersion="UBL 2.0";
         $VersionFormatoDocumento="DIAN 1.0";
         $PrefijoFactura="PRUE";
-        $NumeroFactura="980000503";
+        $NumeroFactura="980000001";
         $FacturaCompleta=$PrefijoFactura.$NumeroFactura;
         $FechaFactura="2018-11-30";
         $HoraFactura="09:19:19";
         $TipoFactura=1;//1 Factura 9 Nota Credito
         $MonedaFactura="COP";
         $FechaVencimiento="2018-12-30";
-        $EmisorTipoPersona=3; //1 Juridica 2 Persona Natural
+        $EmisorTipoPersona=1; //1 Juridica 2 Persona Natural
         $EmisorTipoDocumento=31; //Tabla tipos_documentos
         $EmisorNumTipoRegimen=2; //0 Simplificado 2 Comun 
-        $EmisorRazonSocial="Ftech Colombia SAS";
-        $EmisorDireccion="AvPoblado Cra 43 A 19 17";
-        $EmisorDepartamento="ANTIOQUIA";
-        $EmisorCiudad="MEDELLIN";
-        $EmisorBarrio="MEDELLIN";
+        $EmisorRazonSocial="TECHNO SOLUCIONES SAS";
+        $EmisorDireccion="CALLE 6 No 8-51";
+        $EmisorDepartamento="VALLE DEL CAUCA";
+        $EmisorCiudad="GUADALAJARA DE BUGA";
+        $EmisorBarrio="GUADALAJARA DE BUGA";
         $EmisorCodigoPais="CO";
         $EmisorPais="Colombia";
-        
+        //Actividades del RUT
         $TAC="      (TAC)
 
-                        TAC_1:O-42;
+                        TAC_1:7;
 
                     (/TAC)
 
                     (TAC)
 
-                        TAC_1:O-42;
+                        TAC_1:7;
+
+                    (/TAC)
+                    
+                    (TAC)
+
+                        TAC_1:9;
+
+                    (/TAC)
+                    
+                    (TAC)
+
+                        TAC_1:11;
+
+                    (/TAC)
+                    
+                    (TAC)
+
+                        TAC_1:12;
 
                     (/TAC)
                             ";
-        $EmisorMatriculaMercantil="1234567";
+        $EmisorMatriculaMercantil="58653";
         
         //Datos Adquiriente
         $AdqTipoPersona=2; //1 Juridica 2 Persona Natural
@@ -114,9 +132,9 @@ class Factura_Electronica extends ProcesoVenta{
         
         //Datos Resolucion
         
-        $NumeroResolucion="9000000123973223";
-        $FechaInicioResolucion="2018-01-11";
-        $FechaFinResolucion="2028-01-11";
+        $NumeroResolucion="9000000121226024";
+        $FechaInicioResolucion="2018-08-21";
+        $FechaFinResolucion="2028-08-21";
         $PrefijoResolucion="PRUE";
         $RangoInicialResolucion=980000000;
         $RangoFinalResolucion=985000000;

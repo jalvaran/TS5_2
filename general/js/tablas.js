@@ -608,7 +608,7 @@ function VerificaLogin(){
         data: form_data,
         type: 'post',
         success: function(data){
-            console.log(data)
+            //console.log(data)
            if(data=="Error"){
                 alertify.alert("El usuario ya Existe");
                 if ($('#BtnModalGuardar').length) {
@@ -654,7 +654,7 @@ function VerificaTipoUsuario(){
         data: form_data,
         type: 'post',
         success: function(data){
-            console.log(data)
+            //console.log(data)
            if(data=="Error"){
                 alertify.alert("El Tipo de Usuario ya Existe");
                 if ($('#BtnModalGuardar').length) {
@@ -996,7 +996,13 @@ function DibujePaginadorTablaDB(tabla,idDiv){
     });    
 }
 
-
+/**
+ * Exporta una tabla a CSV
+ * @param {type} tabla
+ * @param {type} Separador
+ * @param {type} idDivExport
+ * @returns {undefined}
+ */
 function ExportarTablaDBCSV(tabla,Separador=";",idDivExport='DivCentralMensajes'){
     document.getElementById(idDivExport).innerHTML='<div id="GifProcess" style="text-align:center;position: absolute;top:50%;left:50%;padding:5px;"><img   src="../../images/loading.gif" alt="Cargando" height="100" width="100"></div>';   var condicion="";
     var OrdenColumna="";
@@ -1044,7 +1050,7 @@ function ExportarTablaDBCSV(tabla,Separador=";",idDivExport='DivCentralMensajes'
     success: function(data){
 
       if (data != "") {    
-          console.log(data);
+          //console.log(data);
           document.getElementById(idDivExport).innerHTML=data;
           
       }else {
