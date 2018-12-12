@@ -3792,15 +3792,18 @@ public function VerificaPermisos($VectorPermisos) {
         
         
         
-        $this->ConToServer($DatosServer["IP"], $DatosServer["Usuario"], $DatosServer["Password"], $DatosServer["DataBase"], $VectorCon);
+        //$this->ConToServer($DatosServer["IP"], $DatosServer["Usuario"], $DatosServer["Password"], $DatosServer["DataBase"], $VectorCon);
         
         if(!empty($sqlCrearTabla)){
-            $this->Query($sqlCrearTabla);
+            $this->QueryExterno($sqlCrearTabla, $DatosServer["IP"], $DatosServer["Usuario"], $DatosServer["Password"], $DatosServer["DataBase"], "");
+            //$this->Query($sqlCrearTabla);
         }
         if(!empty($sql)){
-            $this->Query($sql);
+            $this->QueryExterno($sql, $DatosServer["IP"], $DatosServer["Usuario"], $DatosServer["Password"], $DatosServer["DataBase"], "");
+           
+            //$this->Query($sql);
         }
-        $this->ConToServer($host, $user, $pw, $db, $VectorCon); 
+        //$this->ConToServer($host, $user, $pw, $db, $VectorCon); 
         $sqlUp="UPDATE $Tabla SET Sync='$FechaSinc', Updated='$FechaSinc' $CondicionUpdate";
         $this->Query($sqlUp);
         if(empty($Existe["Nombre"])){
@@ -3808,7 +3811,6 @@ public function VerificaPermisos($VectorPermisos) {
             $this->Query($sqlInsertTabla);
         }
         return("Backup Realizado a la tabla $Tabla");
-        //return("<pre>$sql</pre>");
          
      }
      /*

@@ -1,9 +1,21 @@
--- Adminer 4.6.3 MySQL dump
+-- Adminer 4.7.0 MySQL dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+
+
+
+
+
+
+
+
+INSERT INTO `alertas` (`ID`, `AlertaTipo`, `Mensaje`, `Estado`, `TablaOrigen`, `idTabla`, `Updated`, `Sync`) VALUES
+(0,	'1',	'Prueba de alertas',	0,	'',	0,	'2018-12-12 04:27:07',	'0000-00-00 00:00:00');
+
 
 INSERT INTO `bodega` (`idBodega`, `Nombre`, `Direccion`, `Ciudad`, `Telefono`, `idServidor`, `Updated`, `Sync`) VALUES
 (1,	'BODEGA LOCAL ',	'',	'BUGA',	'',	2,	'2017-10-13 18:07:55',	'2017-10-13 13:07:55'),
@@ -16,6 +28,8 @@ INSERT INTO `cajas` (`ID`, `Nombre`, `Base`, `idUsuario`, `Estado`, `CuentaPUCEf
 (1,	'CAJA 1',	'200000',	3,	'ABIERTA',	110510,	11100502,	11100503,	240801,	900833180,	1,	1,	0,	'2018-06-24 14:40:56',	'2017-10-13 13:07:57'),
 (2,	'CAJA 2',	'200000',	1,	'ABIERTA',	11051002,	11100502,	11100503,	240801,	900833180,	1,	2,	0,	'2017-10-13 18:07:57',	'2017-10-13 13:07:57'),
 (3,	'CAJA 3',	'150000',	0,	'ABIERTA',	11051002,	11100502,	11100503,	240801,	900833180,	1,	1,	0,	'2017-10-13 18:07:57',	'2017-10-13 13:07:57');
+
+
 
 INSERT INTO `centrocosto` (`ID`, `Nombre`, `EmpresaPro`, `Updated`, `Sync`) VALUES
 (1,	'PRINCIPAL',	1,	'2017-10-13 18:08:07',	'2017-10-13 13:08:07');
@@ -759,6 +773,7 @@ INSERT INTO `clasecuenta` (`PUC`, `Clase`, `Valor`, `Updated`, `Sync`) VALUES
 ('7',	'Costos de produccion o de operacion',	'0',	'2017-10-13 18:08:16',	'2017-10-13 13:08:16'),
 ('8',	'Cuentas de Orden Deudoras',	'0',	'2017-10-13 18:08:16',	'2017-10-13 13:08:16'),
 ('9',	'Cuentas de orden Acreedoras',	'0',	'2017-10-13 18:08:16',	'2017-10-13 13:08:16');
+
 
 INSERT INTO `cod_departamentos` (`Cod_dpto`, `Nombre`, `Updated`, `Sync`) VALUES
 (5,	'ANTIOQUIA',	'2017-10-13 18:08:27',	'2017-10-13 13:08:27'),
@@ -2182,8 +2197,40 @@ INSERT INTO `cod_paises` (`Codigo`, `Pais`, `Updated`, `Sync`) VALUES
 (998,	'COMUNIDAD EUROPEA',	'2017-10-13 18:08:36',	'2017-10-13 13:08:36'),
 (999,	'NO DECLARADOS',	'2017-10-13 18:08:36',	'2017-10-13 13:08:36');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO `configuracion_campos_asociados` (`ID`, `TablaOrigen`, `CampoTablaOrigen`, `TablaAsociada`, `CampoAsociado`, `IDCampoAsociado`) VALUES
+(1,	'empresapro',	'Ciudad',	'cod_municipios_dptos',	'Ciudad',	'Ciudad'),
+(2,	'empresapro',	'Regimen',	'empresapro_regimenes',	'Regimen',	'Regimen');
+
+INSERT INTO `configuracion_control_tablas` (`ID`, `TablaDB`, `Agregar`, `Editar`, `Ver`, `Exportar`, `AccionesAdicionales`, `Eliminar`) VALUES
+(1,	'empresapro',	1,	1,	1,	0,	0,	0),
+(2,	'formatos_calidad',	1,	1,	1,	0,	0,	0);
+
 INSERT INTO `configuracion_general` (`ID`, `Descripcion`, `Valor`, `Updated`, `Sync`) VALUES
 (1,	'RUTA PARA EXPORTAR TABLAS EN CSV',	'../../htdocs/ts5/exports/tabla.csv',	'2018-07-13 23:16:47',	'0000-00-00 00:00:00');
+
 
 INSERT INTO `config_codigo_barras` (`ID`, `TituloEtiqueta`, `DistaciaEtiqueta1`, `DistaciaEtiqueta2`, `DistaciaEtiqueta3`, `AlturaLinea1`, `AlturaLinea2`, `AlturaLinea3`, `AlturaLinea4`, `AlturaLinea5`, `AlturaCodigoBarras`, `Updated`, `Sync`) VALUES
 (1,	'TRAKI',	10,	280,	560,	1,	20,	40,	60,	120,	30,	'2017-10-13 18:09:32',	'2017-10-13 13:09:32');
@@ -2223,6 +2270,10 @@ INSERT INTO `costos` (`idCostos`, `NombreCosto`, `ValorCosto`, `Updated`, `Sync`
 (25,	'papeleria ',	200000,	'2017-10-13 18:09:38',	'2017-10-13 13:09:38'),
 (26,	'dsadas',	43243234.5,	'2017-10-13 18:09:38',	'2017-10-13 13:09:38'),
 (27,	'ARRIENDO',	50000,	'2017-10-13 18:09:38',	'2017-10-13 13:09:38');
+
+
+
+
 
 INSERT INTO `cuentas` (`idPUC`, `Nombre`, `Valor`, `GupoCuentas_PUC`, `Updated`, `Sync`) VALUES
 ('1105',	'Caja',	'0',	'11',	'2017-10-13 18:09:54',	'2017-10-13 13:09:54'),
@@ -2568,6 +2619,22 @@ INSERT INTO `cuentasfrecuentes` (`CuentaPUC`, `Nombre`, `ClaseCuenta`, `UsoFutur
 ('11100501',	'CUENTA DE AHORROS DAVIVIENDA',	'ACTIVOS',	'_',	'2017-10-13 18:09:57',	'2017-10-13 13:09:57'),
 ('523505',	'Aseo y vigilacia',	'EGRESOS',	'',	'2017-10-13 18:09:57',	'2017-10-13 13:09:57');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO `egresos_tipo` (`id`, `Nombre`, `Cuentas_idCuentas`, `Visible`, `Updated`, `Sync`) VALUES
 (1,	'Gastos de Personal',	5105,	1,	'2017-10-13 18:10:28',	'2017-10-13 13:10:28'),
 (2,	'Honorarios',	5110,	1,	'2017-10-13 18:10:28',	'2017-10-13 13:10:28'),
@@ -2586,8 +2653,12 @@ INSERT INTO `egresos_tipo` (`id`, `Nombre`, `Cuentas_idCuentas`, `Visible`, `Upd
 (52,	'Equipos de Oficina',	1524,	1,	'2017-10-13 18:10:28',	'2017-10-13 13:10:28'),
 (53,	'Equipos de Computacion y Comunicacion',	1528,	1,	'2017-10-13 18:10:28',	'2017-10-13 13:10:28');
 
-INSERT INTO `empresapro` (`idEmpresaPro`, `RazonSocial`, `NIT`, `Direccion`, `Telefono`, `Celular`, `Ciudad`, `ResolucionDian`, `Regimen`, `Email`, `WEB`, `ObservacionesLegales`, `PuntoEquilibrio`, `DatosBancarios`, `RutaImagen`, `FacturaSinInventario`, `CXPAutomaticas`, `Updated`, `Sync`) VALUES
-(1,	'TECHNO SOLUCIONES SAS',	'900833180-1',	'CARRERA 17 7 18',	'3177740609',	'3177740609',	'BUGA',	'IVA REGIMEN COMUN\r\nACTIVIDAD ECONOMICA CIIU 8020\r\n',	'COMUN',	'info@technosoluciones.com',	'www.technosoluciones.com',	'Esta Factura de Venta se asimila en todos sus efectos a una letra de cambio (Art. 621 y siguientes del Codigo de Comercio). En caso de mora se causaran los intereses legales Vigentes. Cuenta',	'5000000',	'DATOS BANCARIOS: BANCOLOMBIA CUENTA DE AHORROS 848-232213-03 A NOMBRE DE TECNOAGRO R.L. SAS ',	'LogosEmpresas/logotipo1.png',	'SI',	'SI',	'2018-07-13 15:45:31',	'2017-10-13 13:10:34');
+INSERT INTO `empresapro` (`idEmpresaPro`, `RazonSocial`, `NIT`, `DigitoVerificacion`, `Direccion`, `Barrio`, `Telefono`, `Celular`, `Ciudad`, `ResolucionDian`, `Regimen`, `MatriculoMercantil`, `Email`, `WEB`, `ObservacionesLegales`, `PuntoEquilibrio`, `DatosBancarios`, `RutaImagen`, `FacturaSinInventario`, `CXPAutomaticas`, `Updated`, `Sync`) VALUES
+(1,	'TECHNO SOLUCIONES SAS',	900833180,	7,	'CARRERA 17 7 18',	'JOSE MARIA CABAL',	'3177740609',	'3177740609',	'GUADALAJARA DE BUGA',	'IVA REGIMEN COMUN\r\nACTIVIDAD ECONOMICA CIIU 8020\r\n',	'COMUN',	0,	'info@technosoluciones.com',	'www.technosoluciones.com',	'Esta Factura de Venta se asimila en todos sus efectos a una letra de cambio (Art. 621 y siguientes del Codigo de Comercio). En caso de mora se causaran los intereses legales Vigentes.',	5000000,	'_',	'LogosEmpresas/logotipo1.png',	'SI',	'SI',	'2018-12-12 04:11:04',	'2017-10-13 13:10:34');
+
+INSERT INTO `empresapro_regimenes` (`ID`, `Regimen`, `Updated`, `Sync`) VALUES
+(1,	'COMUN',	'2018-10-08 09:03:47',	'0000-00-00 00:00:00'),
+(2,	'SIMPLIFICADO',	'2018-10-08 09:03:47',	'0000-00-00 00:00:00');
 
 INSERT INTO `empresapro_resoluciones_facturacion` (`ID`, `NombreInterno`, `NumResolucion`, `Fecha`, `NumSolicitud`, `Tipo`, `Factura`, `Prefijo`, `Desde`, `Hasta`, `FechaVencimiento`, `idEmpresaPro`, `Estado`, `Completada`, `Updated`, `Sync`) VALUES
 (1,	'Facturas por computador',	'150000055430',	'2015-03-26',	'242',	'02',	'Computador',	'A',	1,	1000,	'2017-03-26',	1,	'',	'NO',	'2018-08-04 03:23:47',	'2017-10-20 10:29:51'),
@@ -2600,6 +2671,19 @@ INSERT INTO `empresa_pro_sucursales` (`ID`, `Nombre`, `Ciudad`, `Direccion`, `id
 (4,	'TECHNO SAN PEDRO',	'SAN PEDRO',	'',	1,	'SI',	'0',	0,	'2017-10-13 18:10:31',	'2017-10-13 13:10:31');
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO `facturas_tipo_pago` (`ID`, `TipoPago`, `Leyenda`, `Updated`, `Sync`) VALUES
 (1,	'Contado',	'Contado',	'2017-10-13 19:10:35',	'2017-10-13 14:10:35'),
 (2,	'15',	'Credito a 15 dias',	'2017-10-13 19:10:35',	'2017-10-13 14:10:35'),
@@ -2607,6 +2691,16 @@ INSERT INTO `facturas_tipo_pago` (`ID`, `TipoPago`, `Leyenda`, `Updated`, `Sync`
 (4,	'60',	'Credito a 60 dias',	'2017-10-13 19:10:35',	'2017-10-13 14:10:35'),
 (5,	'90',	'Credito a 90 dias',	'2017-10-13 19:10:35',	'2017-10-13 14:10:35'),
 (6,	'SisteCredito',	'SisteCredito',	'2017-10-13 19:10:35',	'2017-10-13 14:10:35');
+
+
+
+
+
+
+
+
+
+
 
 INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `CuerpoFormato`, `NotasPiePagina`, `Updated`, `Sync`) VALUES
 (1,	'PROPUESTA ECONOMICA',	'002',	'F-GA-015',	'2016-05-11',	'',	'Esta Propuesta tiene 15 dias de Vigencia',	'2017-10-13 19:10:40',	'2017-10-13 14:10:40'),
@@ -2640,7 +2734,8 @@ INSERT INTO `formatos_calidad` (`ID`, `Nombre`, `Version`, `Codigo`, `Fecha`, `C
 (29,	'ACUMULADO DE CUENTA POR TERCERO',	'001',	'F-GFC-003',	'2018-02-13',	'',	'',	'2018-02-19 16:39:11',	'2017-10-20 10:30:00'),
 (30,	'CUENTA DE COBRO',	'001',	'F-GFC-004',	'2018-02-13',	'',	'',	'2018-02-19 16:39:11',	'2017-10-20 10:30:00'),
 (31,	'NOTA DE DEVOLUCION',	'001',	'F-GC-003',	'2016-05-11',	'',	'',	'2017-10-20 15:30:00',	'2017-10-20 10:30:00'),
-(32,	'DOCUMENTO CONTABLE',	'001',	'F-GC-004',	'2018-05-15',	'',	'',	'2017-10-20 15:30:00',	'2017-10-20 10:30:00');
+(32,	'DOCUMENTO CONTABLE',	'001',	'F-GC-004',	'2018-05-15',	'',	'',	'2017-10-20 15:30:00',	'2017-10-20 10:30:00'),
+(33,	'DOCUMENTO EQUIVALENTE A FACTURA',	'001',	'F-GC-004',	'2018-05-15',	'',	'CUENTA DE COBRO (Art. 4 Decreto 3050/97), DCTO. EQUIVALENTE Art. 3 Decreto 522/03), NOTA DE CONTABILIDAD (Art. 3 Decreto 380/96). ',	'2017-10-20 15:30:00',	'2017-10-20 10:30:00');
 
 INSERT INTO `gupocuentas` (`PUC`, `Nombre`, `Valor`, `ClaseCuenta_PUC`, `Updated`, `Sync`) VALUES
 ('11',	'Disponible',	'0',	'1',	'2017-10-13 19:10:42',	'2017-10-13 14:10:42'),
@@ -2707,38 +2802,54 @@ INSERT INTO `impret` (`idImpRet`, `Nombre`, `Tipo`, `Valor`, `CuentaRetFavor`, `
 (8,	'Impuesto a las ventas retenido, aplicado al IVA',	'RetencionAplicada',	'0.15',	'',	'2367',	'IVA',	'2017-10-13 19:10:46',	'2017-10-13 14:10:46'),
 (9,	'Impuesto de industria y comercio retenido, las tarifas dependen de la ciudad y actividad',	'RetencionAplicada',	'0.009',	'',	'2368',	'Subtotal',	'2017-10-13 19:10:46',	'2017-10-13 14:10:46');
 
-INSERT INTO `menu` (`ID`, `Nombre`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES
-(1,	'Administrar',	1,	'Admin.php',	'_BLANK',	1,	'admin.png',	1,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(2,	'Gestión Comercial',	1,	'MnuVentas.php',	'_BLANK',	1,	'comercial.png',	2,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(3,	'Facturación',	1,	'MnuFacturacion.php',	'_BLANK',	1,	'factura.png',	3,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(4,	'Cartera',	3,	'cartera.php',	'_BLANK',	1,	'cartera.png',	4,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(5,	'Compras',	1,	'MnuCompras.php',	'_BLANK',	1,	'factura_compras.png',	5,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(6,	'Egresos',	1,	'MnuEgresos.php',	'_BLANK',	1,	'egresos.png',	6,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(7,	'Comprobantes Contables',	3,	'CreaComprobanteCont.php',	'_BLANK',	1,	'egresoitems.png',	7,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(8,	'Conceptos Contables',	3,	'ConceptosContablesUtilidad.php',	'_BLANK',	1,	'conceptos.png',	8,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(9,	'Clientes',	3,	'clientes.php',	'_BLANK',	1,	'clientes.png',	9,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(10,	'Proveedores',	3,	'proveedores.php',	'_BLANK',	1,	'proveedores.png',	10,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(11,	'Cuentas X Pagar',	1,	'MnuCuentasxPagar.php',	'_BLANK',	1,	'cuentasxpagar.png',	11,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(12,	'Inventarios',	1,	'MnuInventarios.php',	'_BLANK',	1,	'inventarios.png',	12,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(13,	'Ordenes de Servicio',	3,	'ordenesdetrabajo.php',	'_BLANK',	1,	'ordentrabajo.png',	13,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(14,	'Producción',	3,	'CronogramaProduccion.php',	'_BLANK',	1,	'produccion.png',	14,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(15,	'Títulos',	1,	'MnuTitulos.php',	'_BLANK',	1,	'titulos.jpg',	15,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(16,	'Restaurante',	1,	'MnuRestaurante.php',	'_BLANK',	1,	'restaurante.png',	16,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(17,	'Informes',	1,	'MnuInformes.php',	'_BLANK',	1,	'informes.png',	17,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(18,	'Gestión de Requerimientos',	1,	'MnuRequerimientos.php',	'_BLANK',	1,	'requerimientos.png',	18,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(19,	'Ajustes y Servicios Generales',	1,	'MnuAjustes.php',	'_BLANK',	1,	'ajustes.png',	19,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(20,	'Salir',	2,	'destruir.php',	'_SELF',	1,	'salir.png',	20,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(21,	'Administrar Tiempos',	3,	'crono_admin_sesiones.php',	'_BLANK',	0,	'admin.png',	21,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(22,	'Visualizar Tiempo',	3,	'crono.php',	'_BLANK',	0,	'crono.png',	22,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(23,	'Ingresos',	1,	'MnuIngresos.php',	'_BLANK',	1,	'ingresos.png',	5,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(24,	'Traslados',	1,	'MnuTraslados.php',	'_BLANK',	0,	'traslados.png',	1,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(25,	'Marketing',	1,	'MnuPublicidad.php',	'_BLANK',	1,	'pub.png',	17,	'2017-10-17 01:26:13',	'2017-10-13 14:16:49'),
-(26,	'Salud',	1,	'MnuSalud.php',	'_BLANK',	1,	'salud.png',	18,	'2017-12-11 15:31:39',	'2017-10-13 14:16:49'),
-(27,	'Gestión Documental',	1,	'MnuGestionDocumental.php',	'_BLANK',	0,	'gestiondocumental.png',	1,	'2018-01-04 17:57:29',	'2017-10-13 14:16:49'),
-(28,	'Graficos',	1,	'MnuGraficosVentas.php',	'_BLANK',	0,	'graficos.png',	1,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49'),
-(29,	'Reservas',	1,	'MnuReservas.php',	'_BLANK',	1,	'reservas.png',	18,	'2018-03-22 00:11:27',	'2017-10-13 14:16:49'),
-(30,	'Modelos',	1,	'MnuModelos.php',	'_BLANK',	1,	'modelos.png',	18,	'2018-03-22 00:11:27',	'2017-10-13 14:16:49'),
-(31,	'Documentos Contables',	1,	'MnuDocumentosContables.php',	'_BLANK',	1,	'documentos_contables.png',	8,	'2017-10-13 19:16:49',	'2017-10-13 14:16:49');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO `menu` (`ID`, `Nombre`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `CSS_Clase`, `Orden`, `Updated`, `Sync`) VALUES
+(1,	'Administrar',	7,	'administrador/Admin.php',	'_BLANK',	1,	'admin.png',	'fa fa-share',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(2,	'Gestión Comercial',	1,	'MnuVentas.php',	'_BLANK',	1,	'comercial.png',	'fa fa-share',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(3,	'Facturación',	1,	'MnuFacturacion.php',	'_BLANK',	1,	'factura.png',	'fa fa-share',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(4,	'Cartera',	3,	'cartera.php',	'_BLANK',	1,	'cartera.png',	'fa fa-share',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(5,	'Compras',	1,	'MnuCompras.php',	'_BLANK',	1,	'factura_compras.png',	'fa fa-share',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(6,	'Egresos',	1,	'MnuEgresos.php',	'_BLANK',	1,	'egresos.png',	'fa fa-share',	6,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(7,	'Comprobantes Contables',	3,	'CreaComprobanteCont.php',	'_BLANK',	1,	'egresoitems.png',	'fa fa-share',	7,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(8,	'Conceptos Contables',	3,	'ConceptosContablesUtilidad.php',	'_BLANK',	1,	'conceptos.png',	'fa fa-share',	8,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(9,	'Clientes',	3,	'clientes.php',	'_BLANK',	1,	'clientes.png',	'fa fa-share',	9,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(10,	'Proveedores',	3,	'proveedores.php',	'_BLANK',	1,	'proveedores.png',	'fa fa-share',	10,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(11,	'Cuentas X Pagar',	1,	'MnuCuentasxPagar.php',	'_BLANK',	1,	'cuentasxpagar.png',	'fa fa-share',	11,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(12,	'Inventarios',	1,	'MnuInventarios.php',	'_BLANK',	1,	'inventarios.png',	'fa fa-share',	12,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(13,	'Ordenes de Servicio',	3,	'ordenesdetrabajo.php',	'_BLANK',	1,	'ordentrabajo.png',	'fa fa-share',	13,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(14,	'Producción',	3,	'CronogramaProduccion.php',	'_BLANK',	1,	'produccion.png',	'fa fa-share',	14,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(15,	'Títulos',	1,	'MnuTitulos.php',	'_BLANK',	1,	'titulos.jpg',	'fa fa-share',	15,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(16,	'Restaurante',	1,	'MnuRestaurante.php',	'_BLANK',	1,	'restaurante.png',	'fa fa-share',	16,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(17,	'Informes',	1,	'MnuInformes.php',	'_BLANK',	1,	'informes.png',	'fa fa-share',	17,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(18,	'Gestión de Requerimientos',	1,	'MnuRequerimientos.php',	'_BLANK',	1,	'requerimientos.png',	'fa fa-share',	18,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(19,	'Ajustes y Servicios Generales',	1,	'MnuAjustes.php',	'_BLANK',	1,	'ajustes.png',	'fa fa-share',	19,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(20,	'Salir',	2,	'destruir.php',	'_SELF',	1,	'salir.png',	'fa fa-share',	50,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(21,	'Administrar Tiempos',	3,	'crono_admin_sesiones.php',	'_BLANK',	0,	'admin.png',	'fa fa-share',	21,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(22,	'Visualizar Tiempo',	3,	'crono.php',	'_BLANK',	0,	'crono.png',	'fa fa-share',	22,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(23,	'Ingresos',	1,	'MnuIngresos.php',	'_BLANK',	1,	'ingresos.png',	'fa fa-share',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(24,	'Traslados',	1,	'MnuTraslados.php',	'_BLANK',	0,	'traslados.png',	'fa fa-share',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(25,	'Marketing',	1,	'MnuPublicidad.php',	'_BLANK',	1,	'pub.png',	'fa fa-share',	17,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(26,	'Salud',	1,	'MnuSalud.php',	'_BLANK',	1,	'salud.png',	'fa fa-share',	18,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(27,	'Gestión Documental',	1,	'MnuGestionDocumental.php',	'_BLANK',	0,	'gestiondocumental.png',	'fa fa-share',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(28,	'Graficos',	1,	'MnuGraficosVentas.php',	'_BLANK',	0,	'graficos.png',	'fa fa-share',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(29,	'Reservas',	1,	'MnuReservas.php',	'_BLANK',	1,	'reservas.png',	'fa fa-share',	18,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(30,	'Modelos',	1,	'MnuModelos.php',	'_BLANK',	1,	'modelos.png',	'fa fa-share',	18,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(31,	'Documentos Contables',	1,	'MnuDocumentosContables.php',	'_BLANK',	1,	'documentos_contables.png',	'fa fa-share',	8,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49'),
+(32,	'Gestión del Personal',	1,	'MnuNomina.php',	'_BLANK',	1,	'colaboradores.png',	'fa fa-share',	20,	'2018-12-12 04:09:00',	'2017-10-13 14:16:49');
 
 INSERT INTO `menu_carpetas` (`ID`, `Ruta`, `Updated`, `Sync`) VALUES
 (1,	'',	'2017-10-13 19:16:51',	'2017-10-13 14:16:51'),
@@ -2746,7 +2857,8 @@ INSERT INTO `menu_carpetas` (`ID`, `Ruta`, `Updated`, `Sync`) VALUES
 (3,	'../VAtencion/',	'2017-10-13 19:16:51',	'2017-10-13 14:16:51'),
 (4,	'../VMenu/',	'2017-10-13 19:16:51',	'2017-10-13 14:16:51'),
 (5,	'../Graficos/',	'2017-10-13 19:16:51',	'2017-10-13 14:16:51'),
-(6,	'../VSalud/',	'2018-01-04 18:29:26',	'2017-10-13 14:16:51');
+(6,	'../VSalud/',	'2018-01-04 18:29:26',	'2017-10-13 14:16:51'),
+(7,	'../modulos/',	'2018-01-04 18:29:26',	'2017-10-13 14:16:51');
 
 INSERT INTO `menu_pestanas` (`ID`, `Nombre`, `idMenu`, `Orden`, `Estado`, `Updated`, `Sync`) VALUES
 (1,	'Empresa',	1,	1,	CONV('1', 2, 10) + 0,	'2018-01-04 17:52:49',	'2017-10-13 14:16:55'),
@@ -2794,182 +2906,226 @@ INSERT INTO `menu_pestanas` (`ID`, `Nombre`, `idMenu`, `Orden`, `Estado`, `Updat
 (43,	'Tesoreria',	26,	6,	CONV('1', 2, 10) + 0,	'2017-12-27 02:55:19',	'2017-10-13 14:16:55'),
 (44,	'Reservas',	29,	1,	CONV('1', 2, 10) + 0,	'2017-12-27 02:55:19',	'2017-10-13 14:16:55'),
 (45,	'Modelos',	30,	1,	CONV('1', 2, 10) + 0,	'2018-01-04 17:52:49',	'2017-10-13 14:16:55'),
-(46,	'Documentos',	31,	1,	CONV('1', 2, 10) + 0,	'2017-10-13 19:16:55',	'2017-10-13 14:16:55');
+(46,	'Documentos',	31,	1,	CONV('1', 2, 10) + 0,	'2017-10-13 19:16:55',	'2017-10-13 14:16:55'),
+(47,	'Ordenes de Compra',	5,	2,	CONV('1', 2, 10) + 0,	'2017-10-13 19:16:55',	'2017-10-13 14:16:55'),
+(48,	'Colaboradores',	20,	1,	CONV('1', 2, 10) + 0,	'2017-10-13 19:16:55',	'2017-10-13 14:16:55');
 
-INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES
-(1,	'Crear/Editar Empresa',	1,	3,	'empresapro.php',	'_SELF',	CONV('1', 2, 10) + 0,	'empresa.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(2,	'Crear/Editar Sucursal',	1,	3,	'empresa_pro_sucursales.php',	'_SELF',	CONV('1', 2, 10) + 0,	'sucursal.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(3,	'Resoluciones de Facturacion',	1,	3,	'empresapro_resoluciones_facturacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'resolucion.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(4,	'Formatos de Calidad',	1,	3,	'formatos_calidad.php',	'_SELF',	CONV('1', 2, 10) + 0,	'notacredito.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(5,	'Centros de Costos',	1,	3,	'centrocosto.php',	'_SELF',	CONV('1', 2, 10) + 0,	'centrocostos.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(6,	'Crear/Editar Cajas',	1,	3,	'cajas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cajas.png',	6,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(7,	'Configurar Tikete de Promocion',	1,	3,	'config_tiketes_promocion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'tiketes.png',	7,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(8,	'Costos operativos',	1,	3,	'costos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'costos.png',	8,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(9,	'Crear/Editar un Usuario',	2,	3,	'usuarios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'usuarios.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(10,	'Crear/Editar un Tipo de Usuario',	2,	3,	'usuarios_tipo.php',	'_SELF',	CONV('1', 2, 10) + 0,	'usuariostipo.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(11,	'Asignar usuarios a cajas',	2,	3,	'HabilitarUser.php',	'_SELF',	CONV('1', 2, 10) + 0,	'autorizarcajas.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(12,	'Crear/Editar un impuesto o una retencion',	3,	3,	'impret.php',	'_SELF',	CONV('1', 2, 10) + 0,	'impuestos.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(13,	'Colaboradores',	4,	3,	'colaboradores.php',	'_SELF',	CONV('1', 2, 10) + 0,	'colaboradores.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(14,	'Fechas Descuentos',	5,	3,	'fechas_descuentos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'descuentos.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(15,	'Libro Diario',	6,	3,	'librodiario.php',	'_SELF',	CONV('1', 2, 10) + 0,	'librodiario.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(16,	'Historial de Facturacion',	6,	3,	'facturas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'facturas.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(17,	'Cuentas',	6,	3,	'subcuentas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuentas.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(18,	'Cuentas Frecuentes',	6,	3,	'cuentasfrecuentes.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuentasfrecuentes.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(19,	'Informe Administrador',	7,	3,	'InformeVentasAdmin.php',	'_SELF',	CONV('1', 2, 10) + 0,	'informes2.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(20,	'Hardware',	8,	3,	'config_puertos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'configuracion.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(21,	'Ventas Rapidas',	9,	3,	'VentasRapidasV2.php',	'_SELF',	CONV('1', 2, 10) + 0,	'vender.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(22,	'Historial de Cierres',	9,	3,	'cajas_aperturas_cierres.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cierres_caja.jpg',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(23,	'Historial de Separados',	9,	3,	'separados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'separados.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(24,	'Historial de Abonos a Facturas',	9,	3,	'facturas_abonos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'abonar.jpg',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(25,	'Agregar Codigo de Barras',	9,	3,	'prod_codbarras.php',	'_SELF',	CONV('1', 2, 10) + 0,	'codigobarras.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(26,	'Cotizar',	10,	3,	'Cotizaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cotizacion.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(27,	'Historial de Cotizaciones',	10,	3,	'cotizacionesv5.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(28,	'Historial Cotizaciones Detallado',	10,	3,	'cot_itemscotizaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(29,	'Anexos a Cotizaciones',	10,	3,	'cotizaciones_anexos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'anexos2.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(30,	'Remisiones',	11,	3,	'Remisiones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'remision.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(31,	'Ajuste a Remision',	11,	3,	'Devoluciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'devolucion2.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(32,	'Historial de Facturas',	12,	3,	'facturas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'factura.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(33,	'Historial de Facturas Detallado',	12,	3,	'vista_facturacion_detalles.php',	'_SELF',	CONV('1', 2, 10) + 0,	'detalle.png',	2,	'2018-04-04 16:38:25',	'2017-10-13 14:16:57'),
-(34,	'Historial de Notas Credito',	12,	3,	'notascredito.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(35,	'Facturar desde Cotizacion',	12,	3,	'FactCoti.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cotizacion.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(36,	'Historial',	13,	3,	'factura_compra.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(37,	'Historial de Productos Comprados',	13,	3,	'vista_compras_productos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(38,	'Historial de Productos Devueltos',	13,	3,	'vista_compras_productos_devoluciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'devoluciones.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(39,	'Historial de Compras Servicios',	13,	3,	'vista_compras_servicios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'servicios_compras.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(40,	'Registrar una Compra',	13,	3,	'RegistraCompra.php',	'_SELF',	CONV('1', 2, 10) + 0,	'compras.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(41,	'Historial Egresos',	14,	3,	'egresos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(42,	'Historial Notas Contables',	14,	3,	'notascontables.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(43,	'Registrar Gasto o Compra',	14,	3,	'Egresos2.php',	'_SELF',	CONV('1', 2, 10) + 0,	'compramercancias.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(44,	'Historial de Compras Activas',	14,	3,	'compras_activas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial4.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(45,	'Realizar un comprobante de Egreso Libre',	14,	3,	'ComprobantesEgresoLibre.php',	'_SELF',	CONV('1', 2, 10) + 0,	'precuenta.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(46,	'Historial de Cuentas x Pagar',	15,	3,	'cuentasxpagar_all.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(47,	'Pagar',	15,	3,	'cuentasxpagar.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuentasxpagar.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(48,	'Balance General y Estado de Resultados',	16,	3,	'BalanceComprobacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'resultados.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(49,	'Cuentas Auxiliares',	17,	3,	'Auxiliares.php',	'_SELF',	CONV('1', 2, 10) + 0,	'auxiliar.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(50,	'Informe de Ventas',	18,	3,	'InformeVentas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'infventas.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(51,	'Reporte de IVA',	19,	3,	'ReporteFiscalIVA.php',	'_SELF',	CONV('1', 2, 10) + 0,	'fiscales.png',	1,	'2018-01-22 20:04:38',	'2017-10-13 14:16:57'),
-(52,	'Informe de Compras',	20,	3,	'InformeCompras.php',	'_SELF',	CONV('1', 2, 10) + 0,	'otrosinformes.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(53,	'Auditoria de Documentos',	21,	3,	'AuditoriaDocumentos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'auditoria.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(54,	'Historial de Ediciones',	21,	3,	'registra_ediciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'registros.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(55,	'Productos para la venta',	22,	3,	'productosventa.php',	'_SELF',	CONV('1', 2, 10) + 0,	'productosventa.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(56,	'Productos para alquilar',	22,	3,	'productosalquiler.php',	'_SELF',	CONV('1', 2, 10) + 0,	'alquiler.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(57,	'Servicios para la venta',	22,	3,	'servicios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'servicios.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(58,	'Ordenes de Compra',	22,	3,	'ordenesdecompra.php',	'_SELF',	CONV('1', 2, 10) + 0,	'ordendecompra.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(59,	'Kardex',	22,	3,	'vista_kardex.php',	'_SELF',	CONV('1', 2, 10) + 0,	'kardex.png',	7,	'2017-12-19 16:03:12',	'2017-10-13 14:16:57'),
-(60,	'Historial de Compras',	22,	3,	'relacioncompras.php',	'_SELF',	CONV('1', 2, 10) + 0,	'compras.png',	11,	'2017-12-19 16:03:35',	'2017-10-13 14:16:57'),
-(61,	'Agregar o Editar CB',	22,	3,	'prod_codbarras.php',	'_SELF',	CONV('1', 2, 10) + 0,	'codigobarras.png',	9,	'2017-12-19 16:03:28',	'2017-10-13 14:16:57'),
-(62,	'Traslados',	22,	1,	'MnuTraslados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'traslados.png',	10,	'2017-12-19 16:03:31',	'2017-10-13 14:16:57'),
-(63,	'Crear Departamentos',	23,	3,	'prod_departamentos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'departamentos.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(64,	'Subgrupo 1',	23,	3,	'prod_sub1.php',	'_SELF',	CONV('1', 2, 10) + 0,	'uno.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(65,	'Subgrupo 2',	23,	3,	'prod_sub2.php',	'_SELF',	CONV('1', 2, 10) + 0,	'dos.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(66,	'Subgrupo 3',	23,	3,	'prod_sub3.php',	'_SELF',	CONV('1', 2, 10) + 0,	'tres.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(67,	'Subgrupo 4',	23,	3,	'prod_sub4.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuatro.jpg',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(68,	'Subgrupo 5',	23,	3,	'prod_sub5.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cinco.png',	6,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(69,	'Ver/Crear/Editar Bodega',	24,	3,	'bodega.php',	'_SELF',	CONV('1', 2, 10) + 0,	'bodega.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(70,	'Ver Bodegas Externas',	24,	3,	'bodegas_externas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'externas.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(71,	'Ver el historial de las bajas y altas',	25,	3,	'prod_bajas_altas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(72,	'Dar de baja o alta a un producto',	25,	3,	'DarBajaAlta.php',	'_SELF',	CONV('1', 2, 10) + 0,	'baja.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(73,	'Actualizaciones Generales',	26,	3,	'ActualizacionesGeneralesInventarios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'actualizar.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(74,	'Consolidado Sistemas',	27,	3,	'vista_sistemas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'sistema.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(75,	'Crear',	27,	3,	'CreaSistema.php',	'_SELF',	CONV('1', 2, 10) + 0,	'crearsistema.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(76,	'Agregar Productos desde CSV',	28,	3,	'AgregarItemsXCB.php',	'_SELF',	CONV('1', 2, 10) + 0,	'csv.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(77,	'Preparar Conteo Fisico',	28,	3,	'inventario_preparacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'terminado.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(78,	'Tabla Temporal',	28,	3,	'inventarios_temporal.php',	'_SELF',	CONV('1', 2, 10) + 0,	'pedidos.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(79,	'Realizar Conteo Fisico',	28,	3,	'ConteoFisico.php',	'_SELF',	CONV('1', 2, 10) + 0,	'conteo_inventario.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(80,	'Iniciar',	28,	3,	'ConteoFisicoPDA.php',	'_SELF',	CONV('1', 2, 10) + 0,	'PDA.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(81,	'Diferencias en los inventarios',	28,	3,	'vista_diferencia_inventarios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'inventarios_diferencias.png',	6,	'2018-04-04 22:36:49',	'2017-10-13 14:16:57'),
-(82,	'Proyectos',	29,	3,	'requerimientos_proyectos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'proyectos.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(83,	'Atencion Mesas',	30,	3,	'AtencionMeseros2.php',	'_SELF',	CONV('0', 2, 10) + 0,	'mesero.png',	1,	'2018-06-25 19:38:31',	'2017-10-13 14:16:57'),
-(84,	'Atencion Domicilios',	30,	3,	'AtencionDomicilios.php',	'_SELF',	CONV('0', 2, 10) + 0,	'atencion_domicilios.png',	2,	'2018-06-25 19:39:29',	'2017-10-13 14:16:57'),
-(85,	'Pedidos',	30,	3,	'Restaurante_Admin.php',	'_SELF',	CONV('0', 2, 10) + 0,	'pedidos.png',	3,	'2018-06-25 19:40:06',	'2017-10-13 14:16:57'),
-(86,	'Crear o Editar Mesas',	31,	3,	'restaurante_mesas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'mesas.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(87,	'Promociones',	32,	3,	'titulos_promociones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'promociones.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(88,	'Inventario de Titulos',	32,	3,	'listados_titulos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'inventarios_titulos.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(89,	'Historial de Actas de Entrega',	32,	3,	'titulos_asignaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'acta.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(90,	'Venta de Titulos',	32,	3,	'VentasTitulos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'ventastitulos.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(91,	'Historial de Venta de Titulos',	32,	3,	'titulos_ventas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(92,	'Historial de Abonos a Ventas',	32,	3,	'titulos_abonos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'abonos.png',	6,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(93,	'Historial de Titulos Devueltos',	32,	3,	'titulos_devoluciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	7,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(94,	'Cuentas X Cobrar',	32,	3,	'titulos_cuentasxcobrar.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuentasxcobrar.png',	8,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(95,	'Comisiones',	32,	3,	'titulos_comisiones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'comisiones.png',	9,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(96,	'Historial de Traslados',	32,	3,	'titulos_traslados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'traslado.png',	10,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(97,	'Historial de Anulacion de Abonos',	32,	3,	'comprobantes_ingreso_anulaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	11,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(98,	'Informes',	32,	3,	'InformeTitulos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'informes.png',	12,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(99,	'Historial',	33,	3,	'traslados_mercancia.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(100,	'Nuevo',	33,	3,	'CreaTraslado.php',	'_SELF',	CONV('1', 2, 10) + 0,	'nuevo.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(101,	'Subir Traslados',	33,	3,	'SubirTraslado.php',	'_SELF',	CONV('1', 2, 10) + 0,	'upload.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(102,	'Descargar Traslados',	33,	3,	'DescargarTraslados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'descargar.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(103,	'Seguimiento',	34,	3,	'_.php',	'_SELF',	CONV('1', 2, 10) + 0,	'departamentos.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(104,	'Crear o Editar cartel de publicidad',	35,	3,	'CrearCartelPublicitario.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cartel.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(105,	'Resumen de facturacion',	12,	3,	'vista_resumen_facturacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'resumen.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(106,	'Kardex Alquiler',	22,	3,	'kardex_alquiler.php',	'_SELF',	CONV('1', 2, 10) + 0,	'kardex_alquiler.png',	8,	'2017-12-19 16:03:18',	'2017-10-13 14:16:57'),
-(107,	'Historial de Cierres',	30,	3,	'restaurante_cierres.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(108,	'Historial de Pedidos',	30,	3,	'restaurante_pedidos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(109,	'Historial de Eliminaciones',	21,	3,	'registra_eliminaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'papelera.png',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(110,	'Resumen de facturacion X Fecha',	12,	3,	'facturacionxfecha.php',	'_SELF',	CONV('1', 2, 10) + 0,	'fecha.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(111,	'Historial detallado',	33,	3,	'traslados_items.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(112,	'Sistemas',	27,	3,	'sistemas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'sistem.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(113,	'Inventario de Separados',	22,	3,	'vista_inventario_separados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'inventario_separados.png',	12,	'2017-12-19 16:04:13',	'2017-10-13 14:16:57'),
-(114,	'Comparacion Anual',	9,	5,	'YearsComparison.php',	'_SELF',	CONV('1', 2, 10) + 0,	'anualcomp.jpg',	6,	'2017-11-23 18:19:43',	'2017-10-13 14:16:57'),
-(115,	'Comparacion Diaria',	9,	5,	'DiasComparacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'diascomp.png',	6,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(116,	'Subir RIPS Generados',	36,	6,	'Salud_SubirRips.php',	'_SELF',	CONV('1', 2, 10) + 0,	'upload2.png',	1,	'2018-01-04 13:40:41',	'2017-10-13 14:16:57'),
-(117,	'Subir RIPS de pago',	36,	6,	'Salud_SubirRipsPagos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'upload.png',	3,	'2018-01-04 13:40:38',	'2017-10-13 14:16:57'),
-(118,	'Radicar Facturas',	36,	6,	'salud_radicacion_facturas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'radicar.jpg',	2,	'2018-01-04 13:40:35',	'2017-10-13 14:16:57'),
-(119,	'Historial de Facturas Pagas',	36,	6,	'vista_salud_facturas_pagas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	4,	'2018-01-04 13:40:32',	'2017-10-13 14:16:57'),
-(120,	'Historial de Facturas NO Pagadas',	36,	6,	'vista_salud_facturas_no_pagas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	5,	'2018-01-04 13:40:30',	'2017-10-13 14:16:57'),
-(121,	'Historial de Facturas Con Diferencias',	36,	6,	'vista_salud_facturas_diferencias.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	6,	'2018-01-04 13:40:27',	'2017-10-13 14:16:57'),
-(122,	'Listas de precios',	22,	3,	'productos_lista_precios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'listasprecios.png',	6,	'2017-12-19 16:03:04',	'2017-10-13 14:16:57'),
-(123,	'Precios Adicionales',	22,	3,	'productos_precios_adicionales.php',	'_SELF',	CONV('1', 2, 10) + 0,	'productos_precios.png',	5,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(124,	'Glosas',	37,	6,	'SaludGlosasDevoluciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'glosas.png',	1,	'2018-01-04 13:40:22',	'2017-10-13 14:16:57'),
-(125,	'Informe de Estado de Rips',	40,	6,	'SaludInformeEstadoRips.php',	'_SELF',	CONV('1', 2, 10) + 0,	'estadorips.png',	1,	'2018-01-04 13:40:20',	'2017-10-13 14:16:57'),
-(126,	'Cartera X Edades',	40,	6,	'salud_edad_cartera.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cartera.png',	2,	'2018-01-04 13:40:18',	'2017-10-13 14:16:57'),
-(127,	'Registro de Glosas',	37,	6,	'salud_registro_glosas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'glosas2.png',	7,	'2018-01-04 13:40:15',	'2017-10-13 14:16:57'),
-(128,	'Archivo de Consultas AC',	38,	6,	'salud_archivo_consultas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'ac.png',	7,	'2018-01-04 13:40:14',	'2017-10-13 14:16:57'),
-(129,	'Archivo de Hospitalizaciones AH',	38,	6,	'salud_archivo_hospitalizaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'ah.png',	7,	'2018-01-04 13:40:12',	'2017-10-13 14:16:57'),
-(130,	'Archivo de Medicamentos AM',	38,	6,	'salud_archivo_medicamentos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'am.png',	3,	'2018-01-04 13:40:07',	'2017-10-13 14:16:57'),
-(131,	'Otros Servicios AT',	38,	6,	'salud_archivo_otros_servicios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'at.png',	4,	'2018-01-04 13:40:05',	'2017-10-13 14:16:57'),
-(132,	'Archivo de Procedimientos AP',	38,	6,	'salud_archivo_procedimientos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'ap.jpg',	5,	'2018-01-04 13:40:02',	'2017-10-13 14:16:57'),
-(134,	'Archivo de usuarios US',	38,	6,	'salud_archivo_usuarios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'us.png',	6,	'2018-01-04 13:39:58',	'2017-10-13 14:16:57'),
-(135,	'Facturacion Generada AF',	38,	6,	'salud_archivo_facturacion_mov_generados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'af.png',	7,	'2018-01-04 13:39:56',	'2017-10-13 14:16:57'),
-(136,	'Facturacion Recaudada AR',	38,	6,	'salud_archivo_facturacion_mov_pagados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'ar.png',	8,	'2018-01-04 13:39:52',	'2017-10-13 14:16:57'),
-(137,	'Listado de EPS',	36,	6,	'salud_eps.php',	'_SELF',	CONV('1', 2, 10) + 0,	'eps.png',	8,	'2018-01-04 13:38:59',	'2017-10-13 14:16:57'),
-(138,	'Pagos de posibles VIGENCIAS ANTERIORES',	36,	6,	'vista_salud_pagas_no_generadas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'factura3.png',	8,	'2018-01-04 13:38:56',	'2017-10-13 14:16:57'),
-(139,	'Libro Mayor y Balances',	16,	3,	'libromayorbalances.php',	'_SELF',	CONV('1', 2, 10) + 0,	'libromayor.png',	1,	'2018-01-03 15:30:02',	'2017-10-13 14:16:57'),
-(140,	'Generar Prejuridicos',	39,	6,	'SaludPrejuridicos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'prejuridico.jpg',	1,	'2018-01-10 16:39:14',	'2017-10-13 14:16:57'),
-(141,	'Reportes Graficos',	41,	1,	'MnuGraficosVentas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'graficos.png',	1,	'2018-01-22 20:00:42',	'2017-10-13 14:16:57'),
-(142,	'Comparacion Anual',	42,	5,	'YearsComparison.php',	'_SELF',	CONV('1', 2, 10) + 0,	'anualcomp.jpg',	1,	'2017-11-23 18:19:43',	'2017-10-13 14:16:57'),
-(143,	'Comparacion Diaria',	42,	5,	'DiasComparacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'diascomp.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(144,	'Graficos Ventas Departamentos',	42,	3,	'GraficosVentasXDepartamentos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'graficos.png',	2,	'2018-01-22 20:19:35',	'2017-10-13 14:16:57'),
-(145,	'Circular 030',	40,	6,	'salud_genere_circular_030.php',	'_SELF',	CONV('1', 2, 10) + 0,	'030.jpg',	3,	'2018-03-11 16:38:11',	'2017-10-13 14:16:57'),
-(146,	'SIHO',	40,	6,	'SIHO.php',	'_SELF',	CONV('1', 2, 10) + 0,	'siho.png',	4,	'2018-05-02 12:12:34',	'2017-10-13 14:16:57'),
-(147,	'Totales en Compras',	13,	3,	'vista_factura_compra_totales.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	6,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(148,	'Generar Comprobante de Acumulado Cuenta por Tercero',	16,	3,	'ComprobantesContables.php',	'_SELF',	CONV('1', 2, 10) + 0,	'comprobantes.png',	3,	'2018-02-19 16:38:42',	'2017-10-13 14:16:57'),
-(149,	'Diagnostico de RIPS Circular 030',	40,	6,	'salud_edad_cartera.php',	'_SELF',	CONV('1', 2, 10) + 0,	'diagnostico.png',	3,	'2018-02-28 13:49:45',	'2017-10-13 14:16:57'),
-(150,	'Historial Prejuridicos',	39,	6,	'salud_cobros_prejuridicos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-01-10 16:39:14',	'2017-10-13 14:16:57'),
-(151,	'Historial de pagos ingresados por tesoreria',	43,	6,	'salud_tesoreria.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	1,	'2018-01-10 16:39:14',	'2017-10-13 14:16:57'),
-(152,	'Registrar Pago',	43,	6,	'Salud_Ingresar_Pago_Tesoreria.php',	'_SELF',	CONV('1', 2, 10) + 0,	'pago.png',	2,	'2018-01-10 16:39:14',	'2017-10-13 14:16:57'),
-(153,	'Procesos Gerenciales',	40,	6,	'salud_procesos_gerenciales.php',	'_SELF',	CONV('1', 2, 10) + 0,	'gestion.png',	6,	'2018-01-10 16:39:14',	'2017-10-13 14:16:57'),
-(154,	'Reserva de Espacios',	44,	3,	'ReservaEspacios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'reservas2.png',	1,	'2018-03-22 00:23:50',	'2017-10-13 14:16:57'),
-(155,	'Subir Circular 030 inicial',	40,	6,	'salud_subir_circular_030_inicial.php',	'_SELF',	CONV('1', 2, 10) + 0,	'030_inicial.png',	2,	'2018-03-11 16:38:11',	'2017-10-13 14:16:57'),
-(156,	'Historial de Autorizaciones',	21,	3,	'registro_autorizaciones_pos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'autorizacion.png',	4,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(157,	'Inventarios Selectivos',	28,	3,	'vista_diferencia_inventarios_selectivos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'diferencias.png',	6,	'2018-04-05 00:13:20',	'2017-10-13 14:16:57'),
-(158,	'Conteo Selectivo',	28,	3,	'ConteoFisicoSelectivo.php',	'_SELF',	CONV('1', 2, 10) + 0,	'conteo_selectivo.png',	7,	'2018-04-05 00:13:16',	'2017-10-13 14:16:57'),
-(159,	'Actualizacion de Precios Manual',	26,	3,	'ActualizarPreciosManual.php',	'_SELF',	CONV('1', 2, 10) + 0,	'pagos.png',	2,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(160,	'Informes',	44,	3,	'ReservasInformes.php',	'_SELF',	CONV('1', 2, 10) + 0,	'informes.png',	2,	'2018-03-22 00:23:50',	'2017-10-13 14:16:57'),
-(161,	'Historial de Documentos Equivalentes',	12,	3,	'documento_equivalente_items.php',	'_SELF',	CONV('1', 2, 10) + 0,	'equivalente.png',	7,	'2018-05-09 20:52:44',	'2017-10-11 14:16:57'),
-(162,	'Realizar un documento equivalente',	12,	3,	'CrearDocumentoEquivalente.php',	'_SELF',	CONV('1', 2, 10) + 0,	'docequivalente.png',	8,	'2017-10-13 19:16:57',	'2017-10-11 14:16:57'),
-(163,	'Base de Datos de Modelos',	45,	3,	'modelos_db.php',	'_SELF',	CONV('1', 2, 10) + 0,	'modelos.png',	1,	'2018-05-15 15:24:05',	'2017-10-13 14:16:57'),
-(164,	'Administrar Tiempos',	45,	3,	'modelos_admin.php',	'_SELF',	CONV('1', 2, 10) + 0,	'modelos_admin.png',	2,	'2018-05-15 15:24:10',	'2017-10-13 14:16:57'),
-(165,	'Historial de Agenda',	45,	3,	'modelos_agenda.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	4,	'2018-05-15 15:24:10',	'2017-10-13 14:16:57'),
-(166,	'Notas de Devolucion',	13,	3,	'RegistraNotaDevolucion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'devolucion.png',	7,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(167,	'Totales en Facturacion',	12,	3,	'vista_totales_facturacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'totales_facturacion.png',	9,	'2017-10-13 19:16:57',	'2017-10-11 14:16:57'),
-(168,	'Historial de Cierres',	45,	3,	'modelos_cierres.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	5,	'2018-05-15 15:24:10',	'2017-10-13 14:16:57'),
-(169,	'Ventas',	30,	3,	'VentasRestaurante.php',	'_SELF',	CONV('1', 2, 10) + 0,	'vender.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(170,	'Historial de Notas de Devolucion',	13,	3,	'factura_compra_notas_devolucion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial4.png',	8,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(171,	'Vista Libro Diario ',	6,	3,	'vista_libro_diario.php',	'_SELF',	CONV('1', 2, 10) + 0,	'anexos2.png',	1,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(172,	'Crear un Documento Contable',	46,	3,	'documentos_contables.php',	'_SELF',	CONV('1', 2, 10) + 0,	'030.jpg',	3,	'2017-10-13 19:16:57',	'2017-10-13 14:16:57'),
-(173,	'Registrar Documento Contable',	46,	3,	'CrearDocumentoContable.php',	'_SELF',	CONV('1', 2, 10) + 0,	'ordenessalida.png',	2,	'2018-07-31 16:41:10',	'2017-10-13 14:16:57'),
-(174,	'Historial Documentos Contables',	46,	3,	'documentos_contables_control.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-07-31 16:50:30',	'2017-10-13 14:16:57');
+INSERT INTO `menu_submenus` (`ID`, `Nombre`, `idPestana`, `idCarpeta`, `idMenu`, `TablaAsociada`, `TipoLink`, `JavaScript`, `Pagina`, `Target`, `Estado`, `Image`, `Orden`, `Updated`, `Sync`) VALUES
+(1,	'Crear/Editar Empresa',	1,	3,	0,	'empresapro',	1,	'onclick=\"SeleccioneTablaDB(\'empresapro\')\";',	'empresapro.php',	'_SELF',	CONV('1', 2, 10) + 0,	'empresa.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(2,	'Crear/Editar Sucursal',	1,	3,	0,	'empresa_pro_sucursales',	1,	'onclick=\"SeleccioneTablaDB(\'empresa_pro_sucursales\')\";',	'empresa_pro_sucursales.php',	'_SELF',	CONV('1', 2, 10) + 0,	'sucursal.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(3,	'Resoluciones de Facturacion',	1,	3,	0,	'empresapro_resoluciones_facturacion',	1,	'onclick=\"SeleccioneTablaDB(\'empresapro_resoluciones_facturacion\')\";',	'empresapro_resoluciones_facturacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'resolucion.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(4,	'Formatos de Calidad',	1,	3,	0,	'formatos_calidad',	1,	'onclick=\"SeleccioneTablaDB(\'formatos_calidad\')\";',	'formatos_calidad.php',	'_SELF',	CONV('1', 2, 10) + 0,	'notacredito.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(5,	'Centros de Costos',	1,	3,	0,	'centrocosto',	1,	'onclick=\"SeleccioneTablaDB(\'centrocosto\')\";',	'centrocosto.php',	'_SELF',	CONV('1', 2, 10) + 0,	'centrocostos.png',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(6,	'Crear/Editar Cajas',	1,	3,	0,	'cajas',	1,	'onclick=\"SeleccioneTablaDB(\'cajas\')\";',	'cajas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cajas.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(7,	'Configurar Tikete de Promocion',	1,	3,	0,	'config_tiketes_promocion',	1,	'onclick=\"SeleccioneTablaDB(\'config_tiketes_promocion\')\";',	'config_tiketes_promocion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'tiketes.png',	7,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(8,	'Costos operativos',	1,	3,	0,	'costos',	1,	'onclick=\"SeleccioneTablaDB(\'costos\')\";',	'costos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'costos.png',	8,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(9,	'Crear/Editar un Usuario',	2,	3,	0,	'usuarios',	1,	'onclick=\"SeleccioneTablaDB(\'usuarios\')\";',	'usuarios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'usuarios.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(10,	'Crear/Editar un Tipo de Usuario',	2,	3,	0,	'usuarios_tipo',	1,	'onclick=\"SeleccioneTablaDB(\'usuarios_tipo\')\";',	'usuarios_tipo.php',	'_SELF',	CONV('1', 2, 10) + 0,	'usuariostipo.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(11,	'Asignar usuarios a cajas',	2,	3,	0,	'',	0,	'',	'HabilitarUser.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'autorizarcajas.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(12,	'Crear/Editar un impuesto o una retencion',	3,	3,	0,	'impret',	1,	'onclick=\"SeleccioneTablaDB(\'impret\')\";',	'impret.php',	'_SELF',	CONV('1', 2, 10) + 0,	'impuestos.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(13,	'Colaboradores',	4,	3,	0,	'colaboradores',	1,	'onclick=\"SeleccioneTablaDB(\'colaboradores\')\";',	'colaboradores.php',	'_SELF',	CONV('1', 2, 10) + 0,	'colaboradores.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(14,	'Fechas Descuentos',	5,	3,	0,	'fechas_descuentos',	1,	'onclick=\"SeleccioneTablaDB(\'fechas_descuentos\')\";',	'fechas_descuentos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'descuentos.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(15,	'Libro Diario',	6,	3,	0,	'librodiario',	1,	'onclick=\"SeleccioneTablaDB(\'librodiario\')\";',	'librodiario.php',	'_SELF',	CONV('1', 2, 10) + 0,	'librodiario.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(16,	'Historial de Facturacion',	6,	3,	0,	'facturas',	1,	'onclick=\"SeleccioneTablaDB(\'facturas\')\";',	'facturas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'facturas.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(17,	'Cuentas',	6,	3,	0,	'subcuentas',	1,	'onclick=\"SeleccioneTablaDB(\'subcuentas\')\";',	'subcuentas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuentas.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(18,	'Cuentas Frecuentes',	6,	3,	0,	'cuentasfrecuentes',	1,	'onclick=\"SeleccioneTablaDB(\'cuentasfrecuentes\')\";',	'cuentasfrecuentes.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuentasfrecuentes.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(19,	'Informe Administrador',	7,	3,	0,	'',	0,	'',	'InformeVentasAdmin.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'informes2.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(20,	'Hardware',	8,	3,	0,	'config_puertos',	1,	'onclick=\"SeleccioneTablaDB(\'config_puertos\')\";',	'config_puertos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'configuracion.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(21,	'Ventas Rapidas',	9,	3,	0,	'',	0,	'',	'VentasRapidasV2.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'vender.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(22,	'Historial de Cierres',	9,	3,	0,	'cajas_aperturas_cierres',	1,	'onclick=\"SeleccioneTablaDB(\'cajas_aperturas_cierres\')\";',	'cajas_aperturas_cierres.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cierres_caja.jpg',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(23,	'Historial de Separados',	9,	3,	0,	'separados',	1,	'onclick=\"SeleccioneTablaDB(\'separados\')\";',	'separados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'separados.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(24,	'Historial de Abonos a Facturas',	9,	3,	0,	'facturas_abonos',	1,	'onclick=\"SeleccioneTablaDB(\'facturas_abonos\')\";',	'facturas_abonos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'abonar.jpg',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(25,	'Agregar Codigo de Barras',	9,	3,	0,	'prod_codbarras',	1,	'onclick=\"SeleccioneTablaDB(\'prod_codbarras\')\";',	'prod_codbarras.php',	'_SELF',	CONV('1', 2, 10) + 0,	'codigobarras.png',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(26,	'Cotizar',	10,	3,	0,	'',	0,	'',	'Cotizaciones.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'cotizacion.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(27,	'Historial de Cotizaciones',	10,	3,	0,	'cotizacionesv5',	1,	'onclick=\"SeleccioneTablaDB(\'cotizacionesv5\')\";',	'cotizacionesv5.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(28,	'Historial Cotizaciones Detallado',	10,	3,	0,	'cot_itemscotizaciones',	1,	'onclick=\"SeleccioneTablaDB(\'cot_itemscotizaciones\')\";',	'cot_itemscotizaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(29,	'Anexos a Cotizaciones',	10,	3,	0,	'cotizaciones_anexos',	1,	'onclick=\"SeleccioneTablaDB(\'cotizaciones_anexos\')\";',	'cotizaciones_anexos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'anexos2.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(30,	'Remisiones',	11,	3,	0,	'',	0,	'',	'Remisiones.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'remision.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(31,	'Ajuste a Remision',	11,	3,	0,	'',	0,	'',	'Devoluciones.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'devolucion2.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(32,	'Historial de Facturas',	12,	3,	0,	'facturas',	1,	'onclick=\"SeleccioneTablaDB(\'facturas\')\";',	'facturas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'factura.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(33,	'Historial de Facturas Detallado',	12,	3,	0,	'vista_facturacion_detalles',	1,	'onclick=\"SeleccioneTablaDB(\'vista_facturacion_detalles\')\";',	'vista_facturacion_detalles.php',	'_SELF',	CONV('1', 2, 10) + 0,	'detalle.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(34,	'Historial de Notas Credito',	12,	3,	0,	'notascredito',	1,	'onclick=\"SeleccioneTablaDB(\'notascredito\')\";',	'notascredito.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(35,	'Facturar desde Cotizacion',	12,	3,	0,	'',	0,	'',	'FactCoti.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'cotizacion.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(36,	'Historial',	13,	3,	0,	'factura_compra',	1,	'onclick=\"SeleccioneTablaDB(\'factura_compra\')\";',	'factura_compra.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(37,	'Historial de Productos Comprados',	13,	3,	0,	'vista_compras_productos',	1,	'onclick=\"SeleccioneTablaDB(\'vista_compras_productos\')\";',	'vista_compras_productos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(38,	'Historial de Productos Devueltos',	13,	3,	0,	'vista_compras_productos_devoluciones',	1,	'onclick=\"SeleccioneTablaDB(\'vista_compras_productos_devoluciones\')\";',	'vista_compras_productos_devoluciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'devoluciones.png',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(39,	'Historial de Compras Servicios',	13,	3,	0,	'vista_compras_servicios',	1,	'onclick=\"SeleccioneTablaDB(\'vista_compras_servicios\')\";',	'vista_compras_servicios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'servicios_compras.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(40,	'Registrar una Compra',	13,	3,	0,	'',	0,	'',	'RegistraCompra.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'compras.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(41,	'Historial Egresos',	14,	3,	0,	'egresos',	1,	'onclick=\"SeleccioneTablaDB(\'egresos\')\";',	'egresos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(42,	'Historial Notas Contables',	14,	3,	0,	'notascontables',	1,	'onclick=\"SeleccioneTablaDB(\'notascontables\')\";',	'notascontables.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(43,	'Registrar Gasto o Compra',	14,	3,	0,	'',	0,	'',	'Egresos2.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'compramercancias.png',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(44,	'Historial de Compras Activas',	14,	3,	0,	'compras_activas',	1,	'onclick=\"SeleccioneTablaDB(\'compras_activas\')\";',	'compras_activas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial4.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(45,	'Realizar un comprobante de Egreso Libre',	14,	3,	0,	'',	0,	'',	'ComprobantesEgresoLibre.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'precuenta.png',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(46,	'Historial de Cuentas x Pagar',	15,	3,	0,	'',	0,	'',	'cuentasxpagar_all.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(47,	'Pagar',	15,	3,	0,	'',	0,	'',	'cuentasxpagar.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'cuentasxpagar.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(48,	'Balance General y Estado de Resultados',	16,	3,	0,	'',	0,	'',	'BalanceComprobacion.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'resultados.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(49,	'Cuentas Auxiliares',	17,	3,	0,	'',	0,	'',	'Auxiliares.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'auxiliar.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(50,	'Informe de Ventas',	18,	3,	0,	'',	0,	'',	'InformeVentas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'infventas.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(51,	'Reporte de IVA',	19,	3,	0,	'',	0,	'',	'ReporteFiscalIVA.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'fiscales.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(52,	'Informe de Compras',	20,	3,	0,	'',	0,	'',	'InformeCompras.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'otrosinformes.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(53,	'Auditoria de Documentos',	21,	3,	0,	'',	0,	'',	'AuditoriaDocumentos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'auditoria.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(54,	'Historial de Ediciones',	21,	3,	0,	'registra_ediciones',	1,	'onclick=\"SeleccioneTablaDB(\'registra_ediciones\')\";',	'registra_ediciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'registros.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(55,	'Productos para la venta',	22,	3,	0,	'',	0,	'',	'productosventa.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'productosventa.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(56,	'Productos para alquilar',	22,	3,	0,	'productosalquiler',	1,	'onclick=\"SeleccioneTablaDB(\'productosalquiler\')\";',	'productosalquiler.php',	'_SELF',	CONV('1', 2, 10) + 0,	'alquiler.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(57,	'Servicios para la venta',	22,	3,	0,	'servicios',	1,	'onclick=\"SeleccioneTablaDB(\'servicios\')\";',	'servicios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'servicios.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(58,	'Crear Orden',	47,	3,	0,	'',	0,	'',	'CrearOrdenCompra.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'ordendecompra.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(59,	'Kardex',	22,	3,	0,	'vista_kardex',	1,	'onclick=\"SeleccioneTablaDB(\'vista_kardex\')\";',	'vista_kardex.php',	'_SELF',	CONV('1', 2, 10) + 0,	'kardex.png',	7,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(60,	'Historial de Compras',	22,	3,	0,	'',	0,	'',	'relacioncompras.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'compras.png',	11,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(61,	'Agregar o Editar CB',	22,	3,	0,	'prod_codbarras',	1,	'onclick=\"SeleccioneTablaDB(\'prod_codbarras\')\";',	'prod_codbarras.php',	'_SELF',	CONV('1', 2, 10) + 0,	'codigobarras.png',	9,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(62,	'Traslados',	22,	1,	0,	'',	0,	'',	'MnuTraslados.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'traslados.png',	10,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(63,	'Crear Departamentos',	23,	3,	0,	'prod_departamentos',	1,	'onclick=\"SeleccioneTablaDB(\'prod_departamentos\')\";',	'prod_departamentos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'departamentos.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(64,	'Subgrupo 1',	23,	3,	0,	'prod_sub1',	1,	'onclick=\"SeleccioneTablaDB(\'prod_sub1\')\";',	'prod_sub1.php',	'_SELF',	CONV('1', 2, 10) + 0,	'uno.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(65,	'Subgrupo 2',	23,	3,	0,	'prod_sub2',	1,	'onclick=\"SeleccioneTablaDB(\'prod_sub2\')\";',	'prod_sub2.php',	'_SELF',	CONV('1', 2, 10) + 0,	'dos.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(66,	'Subgrupo 3',	23,	3,	0,	'prod_sub3',	1,	'onclick=\"SeleccioneTablaDB(\'prod_sub3\')\";',	'prod_sub3.php',	'_SELF',	CONV('1', 2, 10) + 0,	'tres.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(67,	'Subgrupo 4',	23,	3,	0,	'prod_sub4',	1,	'onclick=\"SeleccioneTablaDB(\'prod_sub4\')\";',	'prod_sub4.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuatro.jpg',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(68,	'Subgrupo 5',	23,	3,	0,	'prod_sub5',	1,	'onclick=\"SeleccioneTablaDB(\'prod_sub5\')\";',	'prod_sub5.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cinco.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(69,	'Ver/Crear/Editar Bodega',	24,	3,	0,	'bodega',	1,	'onclick=\"SeleccioneTablaDB(\'bodega\')\";',	'bodega.php',	'_SELF',	CONV('1', 2, 10) + 0,	'bodega.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(70,	'Ver Bodegas Externas',	24,	3,	0,	'bodegas_externas',	1,	'onclick=\"SeleccioneTablaDB(\'bodegas_externas\')\";',	'bodegas_externas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'externas.png',	2,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(71,	'Ver el historial de las bajas y altas',	25,	3,	0,	'prod_bajas_altas',	1,	'onclick=\"SeleccioneTablaDB(\'prod_bajas_altas\')\";',	'prod_bajas_altas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(72,	'Dar de baja o alta a un producto',	25,	3,	0,	'',	0,	'',	'DarBajaAlta.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'baja.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(73,	'Actualizaciones Generales',	26,	3,	0,	'',	0,	'',	'ActualizacionesGeneralesInventarios.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'actualizar.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(74,	'Consolidado Sistemas',	27,	3,	0,	'vista_sistemas',	1,	'onclick=\"SeleccioneTablaDB(\'vista_sistemas\')\";',	'vista_sistemas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'sistema.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(75,	'Crear',	27,	3,	0,	'',	0,	'',	'CreaSistema.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'crearsistema.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(76,	'Agregar Productos desde CSV',	28,	3,	0,	'',	0,	'',	'AgregarItemsXCB.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'csv.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(77,	'Preparar Conteo Fisico',	28,	3,	0,	'',	0,	'',	'inventario_preparacion.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'terminado.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(78,	'Tabla Temporal',	28,	3,	0,	'inventarios_temporal',	1,	'onclick=\"SeleccioneTablaDB(\'inventarios_temporal\')\";',	'inventarios_temporal.php',	'_SELF',	CONV('1', 2, 10) + 0,	'pedidos.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(79,	'Realizar Conteo Fisico',	28,	3,	0,	'',	0,	'',	'ConteoFisico.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'conteo_inventario.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(80,	'Iniciar',	28,	3,	0,	'',	0,	'',	'ConteoFisicoPDA.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'PDA.png',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(81,	'Diferencias en los inventarios',	28,	3,	0,	'vista_diferencia_inventarios',	1,	'onclick=\"SeleccioneTablaDB(\'vista_diferencia_inventarios\')\";',	'vista_diferencia_inventarios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'inventarios_diferencias.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(82,	'Proyectos',	29,	3,	0,	'',	0,	'',	'requerimientos_proyectos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'proyectos.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(83,	'Atencion Mesas',	30,	3,	0,	'',	0,	'',	'AtencionMeseros2.php',	'_BLANK',	CONV('0', 2, 10) + 0,	'mesero.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(84,	'Atencion Domicilios',	30,	3,	0,	'',	0,	'',	'AtencionDomicilios.php',	'_BLANK',	CONV('0', 2, 10) + 0,	'atencion_domicilios.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(85,	'Pedidos',	30,	3,	0,	'',	0,	'',	'Restaurante_Admin.php',	'_BLANK',	CONV('0', 2, 10) + 0,	'pedidos.png',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(86,	'Crear o Editar Mesas',	31,	3,	0,	'restaurante_mesas',	1,	'onclick=\"SeleccioneTablaDB(\'restaurante_mesas\')\";',	'restaurante_mesas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'mesas.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(87,	'Promociones',	32,	3,	0,	'titulos_promociones',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_promociones\')\";',	'titulos_promociones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'promociones.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(88,	'Inventario de Titulos',	32,	3,	0,	'',	0,	'',	'listados_titulos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'inventarios_titulos.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(89,	'Historial de Actas de Entrega',	32,	3,	0,	'titulos_asignaciones',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_asignaciones\')\";',	'titulos_asignaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'acta.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(90,	'Venta de Titulos',	32,	3,	0,	'',	0,	'',	'VentasTitulos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'ventastitulos.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(91,	'Historial de Venta de Titulos',	32,	3,	0,	'titulos_ventas',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_ventas\')\";',	'titulos_ventas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(92,	'Historial de Abonos a Ventas',	32,	3,	0,	'titulos_abonos',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_abonos\')\";',	'titulos_abonos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'abonos.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(93,	'Historial de Titulos Devueltos',	32,	3,	0,	'titulos_devoluciones',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_devoluciones\')\";',	'titulos_devoluciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	7,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(94,	'Cuentas X Cobrar',	32,	3,	0,	'titulos_cuentasxcobrar',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_cuentasxcobrar\')\";',	'titulos_cuentasxcobrar.php',	'_SELF',	CONV('1', 2, 10) + 0,	'cuentasxcobrar.png',	8,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(95,	'Comisiones',	32,	3,	0,	'titulos_comisiones',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_comisiones\')\";',	'titulos_comisiones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'comisiones.png',	9,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(96,	'Historial de Traslados',	32,	3,	0,	'titulos_traslados',	1,	'onclick=\"SeleccioneTablaDB(\'titulos_traslados\')\";',	'titulos_traslados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'traslado.png',	10,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(97,	'Historial de Anulacion de Abonos',	32,	3,	0,	'comprobantes_ingreso_anulaciones',	1,	'onclick=\"SeleccioneTablaDB(\'comprobantes_ingreso_anulaciones\')\";',	'comprobantes_ingreso_anulaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	11,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(98,	'Informes',	32,	3,	0,	'',	0,	'',	'InformeTitulos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'informes.png',	12,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(99,	'Historial',	33,	3,	0,	'traslados_mercancia',	1,	'onclick=\"SeleccioneTablaDB(\'traslados_mercancia\')\";',	'traslados_mercancia.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(100,	'Nuevo',	33,	3,	0,	'',	0,	'',	'CreaTraslado.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'nuevo.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(101,	'Subir Traslados',	33,	3,	0,	'',	0,	'',	'SubirTraslado.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'upload.png',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(102,	'Descargar Traslados',	33,	3,	0,	'',	0,	'',	'DescargarTraslados.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'descargar.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(103,	'Seguimiento',	34,	3,	0,	'',	0,	'',	'_.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'departamentos.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(104,	'Crear o Editar cartel de publicidad',	35,	3,	0,	'',	0,	'',	'CrearCartelPublicitario.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'cartel.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(105,	'Resumen de facturacion',	12,	3,	0,	'',	0,	'',	'vista_resumen_facturacion.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'resumen.png',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(106,	'Kardex Alquiler',	22,	3,	0,	'kardex_alquiler',	1,	'onclick=\"SeleccioneTablaDB(\'kardex_alquiler\')\";',	'kardex_alquiler.php',	'_SELF',	CONV('1', 2, 10) + 0,	'kardex_alquiler.png',	8,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(107,	'Historial de Cierres',	30,	3,	0,	'restaurante_cierres',	1,	'onclick=\"SeleccioneTablaDB(\'restaurante_cierres\')\";',	'restaurante_cierres.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(108,	'Historial de Pedidos',	30,	3,	0,	'restaurante_pedidos',	1,	'onclick=\"SeleccioneTablaDB(\'restaurante_pedidos\')\";',	'restaurante_pedidos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(109,	'Historial de Eliminaciones',	21,	3,	0,	'registra_eliminaciones',	1,	'onclick=\"SeleccioneTablaDB(\'registra_eliminaciones\')\";',	'registra_eliminaciones.php',	'_SELF',	CONV('1', 2, 10) + 0,	'papelera.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(110,	'Resumen de facturacion X Fecha',	12,	3,	0,	'',	0,	'',	'facturacionxfecha.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'fecha.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(111,	'Historial detallado',	33,	3,	0,	'traslados_items',	1,	'onclick=\"SeleccioneTablaDB(\'traslados_items\')\";',	'traslados_items.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(112,	'Sistemas',	27,	3,	0,	'sistemas',	1,	'onclick=\"SeleccioneTablaDB(\'sistemas\')\";',	'sistemas.php',	'_SELF',	CONV('1', 2, 10) + 0,	'sistem.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(113,	'Inventario de Separados',	22,	3,	0,	'vista_inventario_separados',	1,	'onclick=\"SeleccioneTablaDB(\'vista_inventario_separados\')\";',	'vista_inventario_separados.php',	'_SELF',	CONV('1', 2, 10) + 0,	'inventario_separados.png',	12,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(114,	'Comparacion Anual',	9,	5,	0,	'',	0,	'',	'YearsComparison.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'anualcomp.jpg',	6,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(115,	'Comparacion Diaria',	9,	5,	0,	'',	0,	'',	'DiasComparacion.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'diascomp.png',	6,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(116,	'Subir RIPS Generados',	36,	6,	0,	'',	0,	'',	'Salud_SubirRips.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'upload2.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(117,	'Subir RIPS de pago',	36,	6,	0,	'',	0,	'',	'Salud_SubirRipsPagos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'upload.png',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(118,	'Radicar Facturas',	36,	6,	0,	'',	0,	'',	'salud_radicacion_facturas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'radicar.jpg',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(119,	'Historial de Facturas Pagas',	36,	6,	0,	'',	0,	'',	'vista_salud_facturas_pagas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'historial.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(120,	'Historial de Facturas NO Pagadas',	36,	6,	0,	'',	0,	'',	'vista_salud_facturas_no_pagas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'historial2.png',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(121,	'Historial de Facturas Con Diferencias',	36,	6,	0,	'',	0,	'',	'vista_salud_facturas_diferencias.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'historial3.png',	6,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(122,	'Listas de precios',	22,	3,	0,	'productos_lista_precios',	1,	'onclick=\"SeleccioneTablaDB(\'productos_lista_precios\')\";',	'productos_lista_precios.php',	'_SELF',	CONV('1', 2, 10) + 0,	'listasprecios.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(123,	'Precios Adicionales',	22,	3,	0,	'productos_precios_adicionales',	1,	'onclick=\"SeleccioneTablaDB(\'productos_precios_adicionales\')\";',	'productos_precios_adicionales.php',	'_SELF',	CONV('1', 2, 10) + 0,	'productos_precios.png',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(124,	'Glosas',	37,	6,	0,	'',	0,	'',	'SaludGlosasDevoluciones.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'glosas.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(125,	'Informe de Estado de Rips',	40,	6,	0,	'',	0,	'',	'SaludInformeEstadoRips.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'estadorips.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(126,	'Cartera X Edades',	40,	6,	0,	'',	0,	'',	'salud_edad_cartera.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'cartera.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(127,	'Registro de Glosas',	37,	6,	0,	'',	0,	'',	'salud_registro_glosas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'glosas2.png',	7,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(128,	'Archivo de Consultas AC',	38,	6,	0,	'',	0,	'',	'salud_archivo_consultas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'ac.png',	7,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(129,	'Archivo de Hospitalizaciones AH',	38,	6,	0,	'',	0,	'',	'salud_archivo_hospitalizaciones.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'ah.png',	7,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(130,	'Archivo de Medicamentos AM',	38,	6,	0,	'',	0,	'',	'salud_archivo_medicamentos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'am.png',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(131,	'Otros Servicios AT',	38,	6,	0,	'',	0,	'',	'salud_archivo_otros_servicios.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'at.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(132,	'Archivo de Procedimientos AP',	38,	6,	0,	'',	0,	'',	'salud_archivo_procedimientos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'ap.jpg',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(134,	'Archivo de usuarios US',	38,	6,	0,	'',	0,	'',	'salud_archivo_usuarios.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'us.png',	6,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(135,	'Facturacion Generada AF',	38,	6,	0,	'',	0,	'',	'salud_archivo_facturacion_mov_generados.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'af.png',	7,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(136,	'Facturacion Recaudada AR',	38,	6,	0,	'',	0,	'',	'salud_archivo_facturacion_mov_pagados.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'ar.png',	8,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(137,	'Listado de EPS',	36,	6,	0,	'',	0,	'',	'salud_eps.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'eps.png',	8,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(138,	'Pagos de posibles VIGENCIAS ANTERIORES',	36,	6,	0,	'',	0,	'',	'vista_salud_pagas_no_generadas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'factura3.png',	8,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(139,	'Libro Mayor y Balances',	16,	3,	0,	'libromayorbalances',	1,	'onclick=\"SeleccioneTablaDB(\'libromayorbalances\')\";',	'libromayorbalances.php',	'_SELF',	CONV('1', 2, 10) + 0,	'libromayor.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(140,	'Generar Prejuridicos',	39,	6,	0,	'',	0,	'',	'SaludPrejuridicos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'prejuridico.jpg',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(141,	'Reportes Graficos',	41,	1,	0,	'',	0,	'',	'MnuGraficosVentas.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'graficos.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(142,	'Comparacion Anual',	42,	5,	0,	'',	0,	'',	'YearsComparison.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'anualcomp.jpg',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(143,	'Comparacion Diaria',	42,	5,	0,	'',	0,	'',	'DiasComparacion.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'diascomp.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(144,	'Graficos Ventas Departamentos',	42,	3,	0,	'',	0,	'',	'GraficosVentasXDepartamentos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'graficos.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(145,	'Circular 030',	40,	6,	0,	'',	0,	'',	'salud_genere_circular_030.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'030.jpg',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(146,	'SIHO',	40,	6,	0,	'',	0,	'',	'SIHO.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'siho.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(147,	'Totales en Compras',	13,	3,	0,	'vista_factura_compra_totales',	1,	'onclick=\"SeleccioneTablaDB(\'vista_factura_compra_totales\')\";',	'vista_factura_compra_totales.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(148,	'Generar Comprobante de Acumulado Cuenta por Tercero',	16,	3,	0,	'',	0,	'',	'ComprobantesContables.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'comprobantes.png',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(149,	'Diagnostico de RIPS Circular 030',	40,	6,	0,	'',	0,	'',	'salud_edad_cartera.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'diagnostico.png',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(150,	'Historial Prejuridicos',	39,	6,	0,	'',	0,	'',	'salud_cobros_prejuridicos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(151,	'Historial de pagos ingresados por tesoreria',	43,	6,	0,	'',	0,	'',	'salud_tesoreria.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'historial2.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(152,	'Registrar Pago',	43,	6,	0,	'',	0,	'',	'Salud_Ingresar_Pago_Tesoreria.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'pago.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(153,	'Procesos Gerenciales',	40,	6,	0,	'',	0,	'',	'salud_procesos_gerenciales.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'gestion.png',	6,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(154,	'Reserva de Espacios',	44,	3,	0,	'',	0,	'',	'ReservaEspacios.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'reservas2.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(155,	'Subir Circular 030 inicial',	40,	6,	0,	'',	0,	'',	'salud_subir_circular_030_inicial.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'030_inicial.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(156,	'Historial de Autorizaciones',	21,	3,	0,	'registro_autorizaciones_pos',	1,	'onclick=\"SeleccioneTablaDB(\'registro_autorizaciones_pos\')\";',	'registro_autorizaciones_pos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'autorizacion.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(157,	'Inventarios Selectivos',	28,	3,	0,	'vista_diferencia_inventarios_selectivos',	1,	'onclick=\"SeleccioneTablaDB(\'vista_diferencia_inventarios_selectivos\')\";',	'vista_diferencia_inventarios_selectivos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'diferencias.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(158,	'Conteo Selectivo',	28,	3,	0,	'',	0,	'',	'ConteoFisicoSelectivo.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'conteo_selectivo.png',	7,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(159,	'Actualizacion de Precios Manual',	26,	3,	0,	'',	0,	'',	'ActualizarPreciosManual.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'pagos.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(160,	'Informes',	44,	3,	0,	'',	0,	'',	'ReservasInformes.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'informes.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(161,	'Historial de Documentos Equivalentes',	12,	3,	0,	'documento_equivalente_items',	1,	'onclick=\"SeleccioneTablaDB(\'documento_equivalente_items\')\";',	'documento_equivalente_items.php',	'_SELF',	CONV('1', 2, 10) + 0,	'equivalente.png',	7,	'2018-12-12 04:09:08',	'2017-10-11 14:16:57'),
+(162,	'Realizar un documento equivalente',	12,	3,	0,	'',	0,	'',	'CrearDocumentoEquivalente.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'docequivalente.png',	8,	'2018-12-12 04:09:00',	'2017-10-11 14:16:57'),
+(163,	'Base de Datos de Modelos',	45,	3,	0,	'modelos_db',	1,	'onclick=\"SeleccioneTablaDB(\'modelos_db\')\";',	'modelos_db.php',	'_SELF',	CONV('1', 2, 10) + 0,	'modelos.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(164,	'Administrar Tiempos',	45,	3,	0,	'',	0,	'',	'modelos_admin.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'modelos_admin.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(165,	'Historial de Agenda',	45,	3,	0,	'modelos_agenda',	1,	'onclick=\"SeleccioneTablaDB(\'modelos_agenda\')\";',	'modelos_agenda.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	4,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(166,	'Notas de Devolucion',	13,	3,	0,	'',	0,	'',	'RegistraNotaDevolucion.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'devolucion.png',	7,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(167,	'Totales en Facturacion',	12,	3,	0,	'vista_totales_facturacion',	1,	'onclick=\"SeleccioneTablaDB(\'vista_totales_facturacion\')\";',	'vista_totales_facturacion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'totales_facturacion.png',	9,	'2018-12-12 04:09:08',	'2017-10-11 14:16:57'),
+(168,	'Historial de Cierres',	45,	3,	0,	'modelos_cierres',	1,	'onclick=\"SeleccioneTablaDB(\'modelos_cierres\')\";',	'modelos_cierres.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial2.png',	5,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(169,	'Ventas',	30,	3,	0,	'',	0,	'',	'VentasRestaurante.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'vender.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(170,	'Historial de Notas de Devolucion',	13,	3,	0,	'factura_compra_notas_devolucion',	1,	'onclick=\"SeleccioneTablaDB(\'factura_compra_notas_devolucion\')\";',	'factura_compra_notas_devolucion.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial4.png',	8,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(171,	'Vista Libro Diario ',	6,	3,	0,	'vista_libro_diario',	1,	'onclick=\"SeleccioneTablaDB(\'vista_libro_diario\')\";',	'vista_libro_diario.php',	'_SELF',	CONV('1', 2, 10) + 0,	'anexos2.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(172,	'Crear un Documento Contable',	46,	3,	0,	'',	0,	'',	'documentos_contables.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'030.jpg',	3,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(173,	'Registrar Documento Contable',	46,	3,	0,	'',	0,	'',	'CrearDocumentoContable.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'ordenessalida.png',	2,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(174,	'Historial Documentos Contables',	46,	3,	0,	'documentos_contables_control',	1,	'onclick=\"SeleccioneTablaDB(\'documentos_contables_control\')\";',	'documentos_contables_control.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(175,	'Historial de Pedidos Items',	30,	3,	0,	'restaurante_pedidos_items',	1,	'onclick=\"SeleccioneTablaDB(\'restaurante_pedidos_items\')\";',	'restaurante_pedidos_items.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial3.png',	6,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(176,	'Recetas',	27,	3,	0,	'',	0,	'',	'CrearReceta.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'recetas.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(177,	'Insumos',	22,	3,	0,	'insumos',	1,	'onclick=\"SeleccioneTablaDB(\'insumos\')\";',	'insumos.php',	'_SELF',	CONV('1', 2, 10) + 0,	'insumos.png',	3,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(178,	'Subgrupo 6',	23,	3,	0,	'prod_sub6',	1,	'onclick=\"SeleccioneTablaDB(\'prod_sub6\')\";',	'prod_sub6.php',	'_SELF',	CONV('1', 2, 10) + 0,	'usuariostipo.png',	7,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(179,	'Facturación Frecuente',	12,	3,	0,	'',	0,	'',	'GenerarFacturacionFrecuente.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'repetitivo.png',	4,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(180,	'Historial',	47,	3,	0,	'ordenesdecompra',	1,	'onclick=\"SeleccioneTablaDB(\'ordenesdecompra\')\";',	'ordenesdecompra.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(181,	'Historial de Documentos Equivalentes',	48,	3,	0,	'nomina_documentos_equivalentes',	1,	'onclick=\"SeleccioneTablaDB(\'nomina_documentos_equivalentes\')\";',	'nomina_documentos_equivalentes.php',	'_SELF',	CONV('1', 2, 10) + 0,	'historial.png',	1,	'2018-12-12 04:09:08',	'2017-10-13 14:16:57'),
+(182,	'Manejo de Turnos',	48,	3,	0,	'',	0,	'',	'AdministrarTurnos.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'turnos.png',	1,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57'),
+(183,	'Verificar Orden',	47,	3,	0,	'',	0,	'',	'../modulos/compras/ReciboOrdenCompra.php',	'_BLANK',	CONV('1', 2, 10) + 0,	'verificarOC.jpg',	5,	'2018-12-12 04:09:00',	'2017-10-13 14:16:57');
+
+
+
+INSERT INTO `modelos_config_factura` (`ID`, `idItemFactura`, `TablaItem`, `Updated`, `Sync`) VALUES
+(1,	35,	'servicios',	'2018-05-21 19:37:33',	'0000-00-00 00:00:00');
+
+
+INSERT INTO `nomina_configuracion_documentos_equivalentes` (`ID`, `Titulo`, `Articulo1`, `Articulo2`, `Articulo3`, `Updated`, `Sync`) VALUES
+(1,	'DOCUMENTO EQUIVALENTE A LA FACTURA EN ADQUISICIONES  O SERVICIOS EFECTUADOS POR RESPONSABLES DEL REGIMEN COMUN A PERSONAS NATURALES NO COMERCIANTES O INSCRITAS EN EL REGIMEN SIMPLIFICADO',	'CUENTA DE COBRO (Art. 4 Decreto 3050/97)',	'DCTO. EQUIVALENTE Art. 3 Decreto 522/03)',	'NOTA DE CONTABILIDAD (Art. 3 Decreto 380/96)',	'2018-10-23 21:06:24',	'0000-00-00 00:00:00');
+
+
+INSERT INTO `nomina_parametros_contables` (`ID`, `CuentaPUC`, `NombreCuenta`, `Updated`, `Sync`) VALUES
+(1,	'523510',	'Servicios Temporales',	'2018-10-24 04:11:28',	'0000-00-00 00:00:00'),
+(2,	'236540',	'RETEFUENTE',	'2018-10-24 04:11:28',	'0000-00-00 00:00:00'),
+(3,	'233525',	'CUENTA POR PAGAR',	'2018-10-24 04:11:28',	'0000-00-00 00:00:00'),
+(4,	'236805',	'RETENCION DE INDUSTRIA Y COMERCIO',	'2018-10-24 04:11:28',	'0000-00-00 00:00:00');
+
+INSERT INTO `nomina_parametros_generales` (`ID`, `Descripcion`, `Valor`, `Updated`, `Sync`) VALUES
+(1,	'RETENCION DE ICA',	0.0066,	'2018-10-24 04:11:31',	'0000-00-00 00:00:00'),
+(2,	'Tope para realizar retencion de ICA',	99000,	'2018-10-24 04:11:31',	'0000-00-00 00:00:00'),
+(3,	'Retefuente por servicios para personas naturales',	0.06,	'2018-10-24 04:11:31',	'0000-00-00 00:00:00'),
+(4,	'Tope en servicios para personas naturales',	133000,	'2018-10-24 04:11:31',	'0000-00-00 00:00:00');
+
+
+
+
+
+
+
+
+
+
+
 
 INSERT INTO `paginas` (`ID`, `Nombre`, `TipoPagina`, `Visible`, `Updated`, `Sync`) VALUES
 (1,	'Admin.php',	'Menu',	1,	'2017-10-13 19:28:37',	'2017-10-13 14:28:37'),
@@ -3153,7 +3309,9 @@ INSERT INTO `parametros_contables` (`ID`, `Descripcion`, `CuentaPUC`, `NombreCue
 (18,	'Cuenta para registrar los abonos o pagos en ventas rapidas a los creditos o ventas con Cheques',	11100510,	'BANCOS CHEQUES',	'2018-02-22 15:04:49',	'2017-10-13 14:28:42'),
 (19,	'Cuenta x pagar Intereses Siste Credito',	220505,	'PROVEEDORES NACIONALES',	'2017-06-16 17:13:00',	'2017-06-16 12:11:00'),
 (20,	'Anticipos realizados por clientes',	238020,	'ANTICIPOS REALIZADOS POR CLIENTES',	'2017-12-11 13:53:33',	'2017-06-06 12:13:00'),
-(21,	'Cuenta para utilizar en operaciones donde el ingreso o la salida van a la caja general, ejemplo facturacion desde Reservas',	110505,	'CAJA GENERAL',	'2017-10-13 19:28:42',	'2017-10-13 14:28:42');
+(21,	'Cuenta para utilizar en operaciones donde el ingreso o la salida van a la caja general, ejemplo facturacion desde Reservas',	110505,	'CAJA GENERAL',	'2017-10-13 19:28:42',	'2017-10-13 14:28:42'),
+(22,	'Cuenta para contabilizar la compra de materia prima o insumos',	140505,	'Materias Primas',	'2017-10-13 19:28:42',	'2017-10-13 14:28:42'),
+(23,	'Cuenta para contabilizar el ingreso a inventario de  productos fabricados',	143005,	'Productos Manufacturados',	'2017-10-13 19:28:42',	'2017-10-13 14:28:42');
 
 
 INSERT INTO `plataforma_tablas` (`ID`, `Nombre`, `Updated`, `Sync`) VALUES
@@ -3378,8 +3536,68 @@ INSERT INTO `porcentajes_iva` (`ID`, `Nombre`, `Valor`, `Factor`, `CuentaPUC`, `
 (7,	'ImpoConsumo Bolsas',	'20',	'S',	24080511,	24081011,	'IMPUESTO AL CONSUMO DE BOLSAS',	'SI',	'2017-10-13 19:28:50',	'2017-10-13 14:28:50'),
 (8,	'impuesto del 1.9%',	'0.019',	'M',	24080505,	24081005,	'Impuestos del 10% del 19%',	'SI',	'2017-10-13 19:28:50',	'2017-10-13 14:28:50');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO `publicidad_encabezado_cartel` (`ID`, `Titulo`, `ColorTitulo`, `Desde`, `Hasta`, `Mes`, `Anio`, `ColorRazonSocial`, `ColorPrecios`, `ColorBordes`, `Updated`, `Sync`) VALUES
 (1,	'DIA DEL PADRE',	'#ff0000',	1,	30,	'Julio',	2017,	'#ff0000',	'#ff0000',	'#58f1fa',	'2017-10-13 19:37:10',	'2017-10-13 14:37:10');
+
+
+
+
+INSERT INTO `registra_ediciones` (`ID`, `Fecha`, `Hora`, `Tabla`, `Campo`, `ValorAnterior`, `ValorNuevo`, `ConsultaRealizada`, `idUsuario`, `Updated`, `Sync`) VALUES
+(1,	'2018-12-11',	'23:11:03',	'empresapro',	'DigitoVerificacion',	'0',	'7',	'idEmpresaPro = 1',	3,	'2018-12-12 04:11:03',	'0000-00-00 00:00:00'),
+(2,	'2018-12-11',	'23:11:03',	'empresapro',	'Barrio',	'',	'JOSE MARIA CABAL',	'idEmpresaPro = 1',	3,	'2018-12-12 04:11:03',	'0000-00-00 00:00:00'),
+(3,	'2018-12-11',	'23:11:03',	'empresapro',	'Ciudad',	'BUGA',	'GUADALAJARA DE BUGA',	'idEmpresaPro = 1',	3,	'2018-12-12 04:11:03',	'0000-00-00 00:00:00'),
+(4,	'2018-12-11',	'23:11:04',	'empresapro',	'ObservacionesLegales',	'Esta Factura de Venta se asimila en todos sus efectos a una letra de cambio (Art. 621 y siguientes del Codigo de Comercio). En caso de mora se causaran los intereses legales Vigentes. Cuenta',	'Esta Factura de Venta se asimila en todos sus efectos a una letra de cambio (Art. 621 y siguientes del Codigo de Comercio). En caso de mora se causaran los intereses legales Vigentes.',	'idEmpresaPro = 1',	3,	'2018-12-12 04:11:04',	'0000-00-00 00:00:00'),
+(5,	'2018-12-11',	'23:11:04',	'empresapro',	'DatosBancarios',	'DATOS BANCARIOS: BANCOLOMBIA CUENTA DE AHORROS 848-232213-03 A NOMBRE DE TECNOAGRO R.L. SAS ',	'_',	'idEmpresaPro = 1',	3,	'2018-12-12 04:11:04',	'0000-00-00 00:00:00');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 INSERT INTO `respuestas_condicional` (`ID`, `Valor`, `Updated`, `Sync`) VALUES
 (1,	'NO',	'2017-10-13 19:42:43',	'2017-10-13 14:42:43'),
@@ -3389,6 +3607,23 @@ INSERT INTO `respuestas_tipo_item` (`ID`, `Valor`, `Updated`, `Sync`) VALUES
 (1,	'PR',	'2017-10-13 19:42:45',	'2017-10-13 14:42:45'),
 (2,	'MO',	'2017-10-13 19:42:45',	'2017-10-13 14:42:45'),
 (3,	'AQ',	'2017-10-13 19:42:45',	'2017-10-13 14:42:45');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 INSERT INTO `subcuentas` (`PUC`, `Nombre`, `Valor`, `Cuentas_idPUC`, `Updated`, `Sync`) VALUES
 (1435,	'Mercancias no fabricadas por la empresa',	'0',	'1435',	'2017-10-13 19:43:19',	'2017-10-13 14:43:19'),
@@ -3413,6 +3648,8 @@ INSERT INTO `subcuentas` (`PUC`, `Nombre`, `Valor`, `Cuentas_idPUC`, `Updated`, 
 (135517,	'Impuesto a las Ventas Retenido',	'0',	'1355',	'2017-10-13 19:43:19',	'2017-10-13 14:43:19'),
 (135518,	'Impuesto de Industria y Comercio Retenido',	'0',	'1355',	'2017-10-13 19:43:19',	'2017-10-13 14:43:19'),
 (135595,	'Otros Autorretencion CREE',	'0',	'1355',	'2017-10-13 19:43:19',	'2017-10-13 14:43:19'),
+(140505,	'MATERIAS PRIMAS',	NULL,	'1405',	'2018-09-26 22:04:13',	'0000-00-00 00:00:00'),
+(143005,	'PRODUCTOS MANUFACTURADOS',	NULL,	'1430',	'2018-09-26 22:12:31',	'0000-00-00 00:00:00'),
 (143501,	'Mercancias no fabricadas por la empresa',	NULL,	'1435',	'2017-10-13 19:43:19',	'2017-10-13 14:43:19'),
 (152001,	'HERRAMIENTA DE DOTACION',	'0',	'1520',	'2017-10-13 19:43:19',	'2017-10-13 14:43:19'),
 (152405,	'Muebles y Enseres',	'0',	'1524',	'2017-10-13 19:43:19',	'2017-10-13 14:43:19'),
@@ -5025,7 +5262,17 @@ INSERT INTO `tablas_campos_control` (`ID`, `NombreTabla`, `Campo`, `Visible`, `E
 (60,	'modelos_db',	'Updated',	1,	1,	1,	'administrador',	3,	'2018-05-15 15:52:29',	'0000-00-00 00:00:00'),
 (61,	'modelos_db',	'Sync',	1,	1,	1,	'administrador',	3,	'2018-05-15 15:52:30',	'0000-00-00 00:00:00'),
 (62,	'vista_cierres_restaurante',	'Fecha',	1,	1,	1,	'administrador',	3,	'2018-06-25 19:36:32',	'0000-00-00 00:00:00'),
-(63,	'documentos_contables_items',	'idDocumento',	0,	1,	1,	'administrador',	3,	'2018-07-31 16:45:36',	'0000-00-00 00:00:00');
+(63,	'documentos_contables_items',	'idDocumento',	0,	1,	1,	'administrador',	3,	'2018-07-31 16:45:36',	'0000-00-00 00:00:00'),
+(64,	'empresapro',	'CXPAutomaticas',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:42',	'0000-00-00 00:00:00'),
+(65,	'empresapro',	'FacturaSinInventario',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:41',	'0000-00-00 00:00:00'),
+(66,	'empresapro',	'RutaImagen',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:41',	'0000-00-00 00:00:00'),
+(67,	'empresapro',	'DatosBancarios',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:40',	'0000-00-00 00:00:00'),
+(68,	'empresapro',	'PuntoEquilibrio',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:40',	'0000-00-00 00:00:00'),
+(69,	'empresapro',	'ObservacionesLegales',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:39',	'0000-00-00 00:00:00'),
+(70,	'empresapro',	'WEB',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:39',	'0000-00-00 00:00:00'),
+(71,	'empresapro',	'Email',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:37',	'0000-00-00 00:00:00'),
+(72,	'empresapro',	'MatriculoMercantil',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:36',	'0000-00-00 00:00:00'),
+(73,	'empresapro',	'Regimen',	1,	1,	1,	'administrador',	3,	'2018-12-12 04:11:35',	'0000-00-00 00:00:00');
 
 INSERT INTO `tablas_ventas` (`ID`, `NombreTabla`, `idTabla`, `TipoVenta`, `IVAIncluido`, `CuentaPUCDefecto`, `Updated`, `Sync`) VALUES
 (1,	'productosventa',	'idProductosVenta',	'PRODUCTOS',	'SI',	'4135',	'2017-10-13 19:43:29',	'2017-10-13 14:43:29'),
@@ -5037,17 +5284,32 @@ INSERT INTO `tarjetas_forma_pago` (`ID`, `Tipo`, `Nombre`, `PorcentajeComision`,
 (2,	'CREDITO',	'VISA',	0.04,	11100501,	'CUENTA DE AHORROS DAVIVIENDA',	'2017-10-13 19:43:32',	'2017-10-13 14:43:32'),
 (3,	'DEBITO',	'TARJETAS DEBITO',	0,	11100501,	'CUENTA DE AHORROS DAVIVIENDA',	'2017-10-13 19:43:32',	'2017-10-13 14:43:32');
 
+
 INSERT INTO `tiposretenciones` (`ID`, `Nombre`, `CuentaPasivo`, `NombreCuentaPasivo`, `CuentaActivo`, `NombreCuentaActivo`, `Updated`, `Sync`) VALUES
 (1,	'RETENCION EN LA FUENTE',	'236540',	'Rete Fuente x compras',	'135515',	'Anticipo de Impuestos Retefuente',	'2017-10-13 19:43:34',	'2017-10-13 14:43:34'),
 (2,	'RETEIVA',	'236701',	'IVA retenido',	'135517',	'Anticipo de Impuestos ReteIVA',	'2017-10-13 19:43:34',	'2017-10-13 14:43:34'),
 (3,	'RETE-ICA',	'2368',	'Rete Fuente x ICA',	'135518',	'Anticipo de Impuestos ReteICA',	'2017-10-13 19:43:34',	'2017-10-13 14:43:34');
 
-INSERT INTO `usuarios` (`idUsuarios`, `Nombre`, `Apellido`, `Identificacion`, `Telefono`, `Login`, `Password`, `TipoUser`, `Email`, `Role`, `Updated`, `Sync`) VALUES
-(1,	'TECHNO ',	'SOLUCIONES',	'900833180',	'3177740609',	'admin',	'technosoluciones',	'administrador',	'info@technosoluciones.com',	'SUPERVISOR',	'2017-10-13 19:44:50',	'2017-10-13 14:44:50'),
-(2,	'ADMINISTRADOR',	'SOFTCONTECH',	'1',	'1',	'administrador',	'administrador',	'operador',	'no@no.com',	'SUPERVISOR',	'2017-10-13 19:44:50',	'2017-10-13 14:44:50'),
-(3,	'JULIAN ANDRES',	'ALVARAN',	'94481747',	'3177740609',	'jalvaran',	'pirlo1985',	'administrador',	'jalvaran@gmail.com',	'SUPERVISOR',	'2018-06-26 20:45:09',	'2017-10-13 14:44:50'),
-(4,	'OPERADOR',	'OPERADOR ',	'11111',	'1',	'operador',	'demo',	'administrador',	'operador',	'prueba',	'2017-10-13 19:44:50',	'2017-10-13 14:44:50'),
-(5,	'WILSON',	'ALBERTO MOSQUERA',	'1',	'318 5658225',	'wamc',	'61320',	'comercial',	'no',	'ADMINISTRADOR',	'2018-06-26 21:04:48',	'0000-00-00 00:00:00');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO `usuarios` (`idUsuarios`, `Nombre`, `Apellido`, `Identificacion`, `Telefono`, `Login`, `Password`, `TipoUser`, `Email`, `Role`, `Habilitado`, `Updated`, `Sync`) VALUES
+(1,	'TECHNO ',	'SOLUCIONES',	'900833180',	'3177740609',	'admin',	'ede60ea0d2b47fe418be2e6cb94e1cc8',	'administrador',	'info@technosoluciones.com',	'SUPERVISOR',	'SI',	'2018-12-12 13:46:17',	'2017-10-13 14:44:50'),
+(2,	'ADMINISTRADOR',	'SOFTCONTECH',	'1',	'1',	'administrador',	'91f5167c34c400758115c2a6826ec2e3',	'operador',	'no@no.com',	'SUPERVISOR',	'SI',	'2018-12-12 13:46:17',	'2017-10-13 14:44:50'),
+(3,	'JULIAN ANDRES',	'ALVARAN',	'94481747',	'3177740609',	'jalvaran',	'398d347fc30e87747a81c8b08253f2a3',	'administrador',	'jalvaran@gmail.com',	'SUPERVISOR',	'SI',	'2018-12-12 13:46:17',	'2017-10-13 14:44:50'),
+(4,	'WILSON',	'ALBERTO MOSQUERA',	'1',	'318 5658225',	'wamc',	'f5dc2d19e23c69e58e398ea72ae06fd4',	'comercial',	'no',	'ADMINISTRADOR',	'SI',	'2018-12-12 13:46:17',	'0000-00-00 00:00:00');
+
 
 INSERT INTO `usuarios_tipo` (`ID`, `Tipo`, `Updated`, `Sync`) VALUES
 (1,	'administrador',	'2017-10-13 19:44:56',	'2017-10-13 14:44:56'),
@@ -5056,4 +5318,15 @@ INSERT INTO `usuarios_tipo` (`ID`, `Tipo`, `Updated`, `Sync`) VALUES
 (4,	'cajero',	'2017-10-13 19:44:56',	'2017-10-13 14:44:56'),
 (5,	'bodega',	'2017-10-13 19:44:56',	'2017-10-13 14:44:56');
 
--- 2018-08-13 14:28:43
+
+
+INSERT INTO `ventas_fechas_especiales` (`ID`, `NombreFecha`, `FechaInicial`, `FechaFinal`, `Habilitado`, `Updated`, `Sync`) VALUES
+(1,	'INFINITAZO',	'2018-08-18',	'2018-08-31',	1,	'2018-08-16 19:07:24',	'0000-00-00 00:00:00');
+
+
+
+
+INSERT INTO `vestasactivas` (`idVestasActivas`, `Nombre`, `Usuario_idUsuario`, `Clientes_idClientes`, `SaldoFavor`, `Updated`, `Sync`) VALUES
+(1,	'Venta por: JULIAN ANDRES',	'3',	1,	'',	'2018-12-12 04:27:38',	'0000-00-00 00:00:00');
+
+-- 2018-12-12 13:39:10
