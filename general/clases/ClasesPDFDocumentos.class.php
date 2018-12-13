@@ -25,7 +25,7 @@ class Documento{
      */
     public function PDF_Ini($TituloFormato,$FontSize,$VectorPDF,$Margenes=1) {
         
-        require_once('../../librerias/tcpdf/examples/config/tcpdf_config_alt.php');
+        //require_once('../../librerias/tcpdf/examples/config/tcpdf_config_alt.php');
         $tcpdf_include_dirs = array(realpath('../../librerias/tcpdf/tcpdf.php'), '/usr/share/php/tcpdf/tcpdf.php', '/usr/share/tcpdf/tcpdf.php', '/usr/share/php-tcpdf/tcpdf.php', '/var/www/tcpdf/tcpdf.php', '/var/www/html/tcpdf/tcpdf.php', '/usr/local/apache2/htdocs/tcpdf/tcpdf.php');
         foreach ($tcpdf_include_dirs as $tcpdf_include_path) {
                 if (@file_exists($tcpdf_include_path)) {
@@ -905,17 +905,17 @@ $this->PDF->MultiCell(93, 25, $tbl, 0, 'R', 1, 0, '', '', true,0, true, true, 10
         $DatosEmpresaPro=$this->PDF_Encabezado_Facturas($idFactura);
         
         $html= $this->HTML_Items_Factura($idFactura);
-        $Position=$this->PDF->SetY(80);
+        $Position=$this->PDF->SetY(90);
         $this->PDF_Write($html);
         
         $Position=$this->PDF->GetY();
-        if($Position>246){
+        if($Position>240){
           $this->PDF_Add();
         }
         
         $html= $this->HTML_Totales_Factura($idFactura, $DatosFactura["ObservacionesFact"], $DatosEmpresaPro["ObservacionesLegales"]);
         if($VistaFactura==1)
-        $this->PDF->SetY(246);
+        $this->PDF->SetY(239);
         $this->PDF_Write($html);
         if($VistaFactura==3){
             $this->PDF_Write("<br>");
@@ -1161,7 +1161,21 @@ EOD;
     
     return $tbl;
     }
- 
+    /**
+     * Firma para los documentos
+     * @return type
+     */
+    public function FirmaDocumentos() {
+        $html = '<table border="1" cellpadding="2" cellspacing="0" align="left">
+            <tr align="left" >
+                <td style="height: 100px;" >Preparado:</td>
+                <td style="height: 100px;" >Revisado:</td>
+                <td style="height: 100px;" >Aprobado:</td>
+                <td style="height: 100px;" >Contabilizado:</td>
+            </tr>
+        </table>';
+        return($html);
+    }
     
    //Fin Clases
 }
