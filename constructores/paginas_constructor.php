@@ -829,9 +829,29 @@ class PageConstruct extends html_estruct_class{
             $OpcionEditar=0;
         }
         if($DatosControlTablas["Ver"]==1){
+            $DatosLink=$obCon->DevuelveValores("configuracion_control_tablas", "TablaDB", $tabla);
+            $LinkVer=$DatosLink["LinkVer"];
             $OpcionVer=1;
         }else{
             $OpcionVer=0;
+        }
+        if($DatosControlTablas["AccionesAdicionales"]==1){
+            $sql="SELECT * FROM configuracion_tablas_acciones_adicionales WHERE TablaDB='$tabla'";
+            $consultaAccionesAdicionales=$obCon->Query($sql);
+            $AccionesAdicionales=[];
+            $i=0;
+            while ($DatosAccionesAdicionales = $obCon->FetchAssoc($consultaAccionesAdicionales)) {
+                $AccionesAdicionales[$i]["Titulo"]=$DatosAccionesAdicionales["Titulo"];
+                $AccionesAdicionales[$i]["JavaScript"]=$DatosAccionesAdicionales["JavaScript"];
+                $AccionesAdicionales[$i]["ClaseIcono"]=$DatosAccionesAdicionales["ClaseIcono"];
+                $AccionesAdicionales[$i]["Ruta"]=$DatosAccionesAdicionales["Ruta"];
+                $AccionesAdicionales[$i]["Target"]=$DatosAccionesAdicionales["Target"];
+                $i++;
+            }
+            $DatosOtrasAcciones=$obCon->DevuelveValores("configuracion_tablas_acciones_adicionales", "TablaDB", $tabla);
+            $OpcionOtrasAcciones=1;
+        }else{
+            $OpcionOtrasAcciones=0;
         }
         print('<tr class="odd gradeX">');
         $c=0;
@@ -840,10 +860,26 @@ class PageConstruct extends html_estruct_class{
                 $c=1;                
                 print("<td>");
                 if($OpcionVer==1){
-                    print('<i class="fa fa-fw fa-eye" onclick=VerRegistro(`'.$tabla.'`,`'.$value.'`)></i><a href=# onclick=VerRegistro(`'.$tabla.'`,`'.$value.'`)> Ver </a><br>');
+                    
+                    $Link="../../general/Consultas/".$LinkVer.$value;
+                    print('<i class="fa fa-fw fa-eye"></i><a href="'.$Link.'" target="_blank")> Ver </a><br>');
                 } 
                 if($OpcionEditar==1){
                     print('<i class="fa fa-fw fa-edit" onclick=DibujaFormularioEditarRegistro(`'.$tabla.'`,`'.$DivTablas.'`,`'.$value.'`)></i><a href=# onclick=DibujaFormularioEditarRegistro(`'.$tabla.'`,`'.$DivTablas.'`,`'.$value.'`)> Editar </a><br>');
+                } 
+                if($OpcionOtrasAcciones==1){
+                    foreach ($AccionesAdicionales as $key => $Accion) {
+                       //print_r($Accion);
+                       $TituloAccion=$Accion["Titulo"];
+                       $js=$Accion["JavaScript"];
+                       $ClaseIcono=$Accion["ClaseIcono"];
+                       $Ruta=$Accion["Ruta"].$value;
+                       $Target=$Accion["Target"];
+                       print('<i class="'.$ClaseIcono.'" '.$js.'></i><a href="'.$Ruta.'" target="'.$Target.'" '.$js.')> '.$TituloAccion.' </a><br>');
+              
+                    }
+                    //$Link="../../general/Consultas/".$LinkVer.$value;
+                    //print('<i class="fa fa-fw fa-eye"></i><a href="'.$Link.'" target="_blank")> Ver </a><br>');
                 } 
                 print("</td>");
             }            
