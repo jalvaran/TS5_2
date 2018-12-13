@@ -8,7 +8,7 @@ $param = array('LayOut' => "[901143311]
 [NO]
 [FACTURA]
 [programacion@facturatech.co]
-[Fact.Col.2018.a]
+[Demo.Col2018.1]
 (ENC)
 
 	ENC_1:INVOIC;
@@ -21,7 +21,7 @@ $param = array('LayOut' => "[901143311]
 
 	ENC_5:DIAN 1.0;
 
-	ENC_6:PRUE980000101; 
+	ENC_6:PRUE980000514; 
 
 	ENC_7:2018-07-17;
 

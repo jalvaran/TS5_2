@@ -206,7 +206,7 @@ class PageConstruct extends html_estruct_class{
           <li class="dropdown notifications-menu" >
             <a href="#" onclick="AbreNotificaciones()">
               <i class="fa fa-bell-o" onclick="AbreNotificaciones()"></i>
-              <span id="spNotificacionAlertas" class="label label-warning"></span>
+              <span id="spNotificacionAlertas" class="label label-danger" style="font-size:16px;color:red"></span>
             </a>');
     }
     

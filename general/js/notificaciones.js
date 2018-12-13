@@ -30,7 +30,7 @@ function ConsultaAlertas(){
               document.getElementById("spNotificacionAlertas").innerHTML="ERROR"+data;
           }
           
-          setTimeout('ConsultaAlertas()',1*1000);
+          setTimeout('ConsultaAlertas()',10*1000);
       }else {
         
         alertify.alert("No se pudo obtener informacion de las alertas");

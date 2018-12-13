@@ -18,36 +18,39 @@ if(isset($_REQUEST["idAccion"])){
             $idFactura=$obCon->normalizar($_REQUEST["idFactura"]);
             $WebService=$obCon->DevuelveValores("fe_webservice", "ID", 1); //Tabla que aloja la direccion del web service
             $client = new SoapClient($WebService["DireccionWebService"]);
-            $layout=$obCon->ConstruyaLayoutEmitirFactura($idFactura);
-                        
+            $param=$obCon->ConstruyaLayoutEmitirFactura($idFactura); 
+            /*
+            print("<pre>");
+            print_r($param);
+            print("</pre>");
+             */
             // Call RemoteFunction () 
             $error = 0; 
             try { 
-                $result= $client->__call("EmitirComprobante", array($layout)); 
+                $result= $client->__call("EmitirComprobante", array($param));
+                print_r($result);
+                //$EmitirComprobanteResult=$result->EmitirComprobanteResult;
+                //$errorMessage=$EmitirComprobanteResult->MensajeDocumentStatus->errorMessage;
+                //var_dump($result);
+                //print_r($errorMessage);
+                
             } catch (SoapFault $fault) { 
                 $error = 1; 
-                print("Error: ".$fault->faultcode." ".$fault->faultstring);
-
+                print(" 
+                alert('Sorry, blah returned the following ERROR: ".$fault->faultcode."-".$fault->faultstring.". We will now take you back to our home page.'); 
+                window.location = 'main.php'; 
+                "); 
             } 
-
-            //Validamos la respuesta
-            if($client->fault) {
-                echo '<pre>';
-                echo 'Fallo';
-                print_r($result);
-                echo '</pre>';
-            }else {	// Recibido
-                echo '<pre>';
-                print_r ($result);
-                echo '</pre>';
-                print($result->EmitirComprobanteResult->MensajeEmisor);
+            
+            catch (Exception $e){
+                    echo 'Error: '.$e->getMessage();
             }
-           
+            
             break;
 
-        default:
-            break;
-    }
+                    default:
+                        break;
+        }
 }else{
     print("No se recibieron parametros");
 }
